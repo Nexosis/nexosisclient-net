@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>Nexosis.Api.Client</id>
+        <version>1.0.2-alpha</version>
+        <title>Nexosis API Client</title>
+        <authors>Nexosis, Inc.</authors>
+        <owners>Nexosis, Inc.</owners>
+        <projectUrl>https://developers.nexosis.com/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Client library for Nexosis Machine Learning API.</description>
+        <tags>machinelearning timeseries nexosis</tags>
+        <dependencies>
+            <group targetFramework=".NETStandard1.5">
+                <dependency id="Microsoft.Extensions.Configuration.Json" version="1.1.2" exclude="Build,Analyzers" />
+                <dependency id="CsvHelper" version="2.16.3" exclude="Build,Analyzers" />
+                <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+                <dependency id="Newtonsoft.Json" version="9.0.1" exclude="Build,Analyzers" />
+            </group>
+        </dependencies>
+    </metadata>
+</package>
