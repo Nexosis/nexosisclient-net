@@ -1150,11 +1150,11 @@ namespace Nexosis.Api.Client
         [Newtonsoft.Json.JsonProperty("targetColumn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string TargetColumn { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("predictionStartDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? PredictionStartDate { get; set; }
+        [Newtonsoft.Json.JsonProperty("startDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? StartDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("predictionEndDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? PredictionEndDate { get; set; }
+        [Newtonsoft.Json.JsonProperty("endDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? EndDate { get; set; }
     
         public string ToJson() 
         {

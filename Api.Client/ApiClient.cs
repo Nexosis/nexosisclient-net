@@ -289,14 +289,14 @@ namespace Nexosis.Api.Client
             return metadata;
         }
 
-        private async Task<SessionResponseDto> SessionsForecastPostDataAsync(string data, string dataSetName, string targetColumn, string predictionStartDate, string predictionEndDate)
+        private async Task<SessionResponseDto> SessionsForecastPostDataAsync(string data, string dataSetName, string targetColumn, string startDate, string endDate)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl).Append("/sessions/forecast?");
             if (dataSetName != null) urlBuilder_.Append("dataSetName=").Append(System.Uri.EscapeDataString(dataSetName.ToString())).Append("&");
             if (targetColumn != null) urlBuilder_.Append("targetColumn=").Append(System.Uri.EscapeDataString(targetColumn.ToString())).Append("&");
-            if (predictionStartDate != null) urlBuilder_.Append("startDate=").Append(System.Uri.EscapeDataString(predictionStartDate.ToString())).Append("&");
-            if (predictionEndDate != null) urlBuilder_.Append("endDate=").Append(System.Uri.EscapeDataString(predictionEndDate.ToString())).Append("&");
+            if (startDate != null) urlBuilder_.Append("startDate=").Append(System.Uri.EscapeDataString(startDate.ToString())).Append("&");
+            if (endDate != null) urlBuilder_.Append("endDate=").Append(System.Uri.EscapeDataString(endDate.ToString())).Append("&");
             urlBuilder_.Length--;
 
             var client_ = new System.Net.Http.HttpClient();
@@ -554,8 +554,8 @@ namespace Nexosis.Api.Client
         {
             SessionId = source.SessionId.Value;
             DataSetName = source.DataSetName;
-            PredictionStartDate = source.PredictionStartDate.Value;
-            PredictionEndDate = source.PredictionEndDate.Value;
+            StartDate = source.StartDate.Value;
+            EndDate = source.EndDate.Value;
             TargetColumn = source.TargetColumn;
             Status = source.Status;
             Cost = source.Cost;
@@ -564,9 +564,9 @@ namespace Nexosis.Api.Client
 
         public string TargetColumn { get; set; }
 
-        public DateTime PredictionEndDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public DateTime PredictionStartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         public string DataSetName { get; set; }
 
@@ -584,13 +584,13 @@ namespace Nexosis.Api.Client
     {
         public string DataSetName { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("predictionStartDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("startDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? StartDate
         {
             get; set;
         }
 
-        [Newtonsoft.Json.JsonProperty("predictionEndDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("endDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? EndDate
         {
             get; set;
