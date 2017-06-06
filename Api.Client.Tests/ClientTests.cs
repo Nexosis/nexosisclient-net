@@ -1,11 +1,11 @@
-using System.Linq;
-using Nexosis.Api.Client;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using Nexosis.Api.Client;
+using Nexosis.Api.Client.Model;
 
 namespace Api.Client.Tests
 {
@@ -16,20 +16,20 @@ namespace Api.Client.Tests
         [Fact]
         public async Task SubmitCsvStartsNewSession()
         {  
-            var session = new SessionData { DataSetName = "FullTest", StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
+            var session = new SessionRequest { DataSetName = "FullTest", StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
             var target = new ApiClient();
             var actual = await target.ForecastFromCsvAsync(session, new FileInfo(productFilePath), "sales");
-            Assert.NotNull(actual.SessionId);
+            Assert.NotNull(actual.Session.SessionId);
         }
 
         [Fact]
         public async Task SubmitDataDirectlyStartsNewSession()
         {
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var session = new SessionData { DataSetName = "Something", StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
+            var session = new SessionRequest { DataSetName = "Something", StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
             var target = new ApiClient();
             var actual = await target.ForecastFromDataAsync(session, dataSet, "instances");
-            Assert.NotNull(actual.SessionId);
+            Assert.NotNull(actual.Session.SessionId);
         }
 
         [Fact]
@@ -37,9 +37,9 @@ namespace Api.Client.Tests
         {
             var target = new ApiClient();
             var sessions = await target.GetSessions();
-            var testSession = sessions.First(srd => srd.Status == SessionResponseDtoStatus.Completed);
-            var actual = await target.GetSessionResultsAsync(testSession.SessionId);
-            Assert.True(actual.Data.Count >= 0);
+            var testSession = sessions.First(srd => srd.Status == SessionStatus.Completed);
+            var actual = await target.GetSessionResultsAsync(testSession.SessionId.Value);
+            Assert.True(actual.Count >= 0);
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace Api.Client.Tests
         public async Task CostAndBalanceAreAvailableAfterRequest()
         {
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2016-12-31"), "instances");
-            var session = new SessionData { DataSetName = "Something", StartDate = DateTime.Parse("2017-01-01"), EndDate = DateTime.Parse("2017-01-31") };
+            var session = new SessionRequest { DataSetName = "Something", StartDate = DateTime.Parse("2017-01-01"), EndDate = DateTime.Parse("2017-01-31") };
             var target = new ApiClient();
             var result = await target.ForecastFromDataAsync(session, dataSet, "instances");
 
@@ -82,12 +82,12 @@ namespace Api.Client.Tests
             var key = $"foo-{DateTime.UtcNow:s}";
             await target.SaveDataSetAsync(key, GenerateDataSet(DateTime.Parse("2016-01-01"), DateTime.Parse("2017-01-01"), "foos"));
            
-            var session = new SessionData { DataSetName = key, StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25")  };
+            var session = new SessionRequest { DataSetName = key, StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25")  };
             var sessonResponse = await target.ForecastFromSavedDataSetAsync(session, "foos");
 
             Assert.NotNull(sessonResponse);
-            Assert.Equal(key, sessonResponse.DataSetName);
-            Assert.Equal("foos", sessonResponse.TargetColumn);
+            Assert.Equal(key, sessonResponse.Session.DataSetName);
+            Assert.Equal("foos", sessonResponse.Session.TargetColumn);
         }
 
         [Fact]
@@ -116,47 +116,44 @@ namespace Api.Client.Tests
         public async Task WillGiveStatusBackForRunningJob()
         {
             var target = new ApiClient();
-            var session = new SessionData { DataSetName = Guid.NewGuid().ToString(), StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
+            var session = new SessionRequest { DataSetName = Guid.NewGuid().ToString(), StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
             var actual = await target.ForecastFromCsvAsync(session, new FileInfo(productFilePath), "sales");
 
-            Assert.NotNull(actual.SessionId);
+            Assert.NotNull(actual.Session.SessionId);
 
-            var status = await target.GetSessionStatusAsync(actual.SessionId);
+            var status = await target.GetSessionStatusAsync(actual.Session.SessionId.Value);
 
             Assert.NotNull(status);
-            Assert.True((int)status.Status <= (int)SessionResponseDtoStatus.Started);
-            Assert.Equal(actual.SessionId, status.SessionId);
+            Assert.True((int)status.Status <= (int)SessionStatus.Started);
+            Assert.Equal(actual.Session.SessionId, status.SessionId);
         }
 
         [Fact]
         public async Task WillRunImpactSessionOnEvent()
         {
             var target = new ApiClient();
-            var session = new SessionData { DataSetName = Guid.NewGuid().ToString(), StartDate = DateTime.Parse("2015-10-01"), EndDate = DateTime.Parse("2016-01-01") };
+            var session = new SessionRequest { DataSetName = Guid.NewGuid().ToString(), StartDate = DateTime.Parse("2015-10-01"), EndDate = DateTime.Parse("2016-01-01") };
             var result = await target.EventImpactFromCsvAsync(session, new FileInfo(productFilePath), "super duper sale", "sales");
 
             Assert.NotNull(result);
 
-            var status = await target.GetSessionStatusAsync(result.SessionId);
+            var status = await target.GetSessionStatusAsync(result.Session.SessionId.Value);
 
             Assert.NotNull(status);
-            Assert.True((int)status.Status <= (int)SessionResponseDtoStatus.Started);
-            Assert.Equal(result.SessionId, status.SessionId);
+            Assert.True((int)status.Status <= (int)SessionStatus.Started);
+            Assert.Equal(result.Session.SessionId, status.SessionId);
         }
 
-        private DataSet GenerateDataSet(DateTime startDate, DateTime endDate, string targetKey)
+        private List<DataSetRow> GenerateDataSet(DateTime startDate, DateTime endDate, string targetKey)
         {
             var rand = new Random();
             var dates = Enumerable.Range(0, (endDate.Date - startDate.Date).Days).Select(i => startDate.Date.AddDays(i));
 
-            return new DataSet
+            return dates.Select(d => new DataSetRow
             {
-                Data = dates.Select(d => new DataSetRow
-                {
-                    Timestamp = d,
-                    Values = new Dictionary<string, double> { { targetKey, rand.NextDouble() * 100 } }
-                }).ToList()
-            };
+                Timestamp = d,
+                Values = new Dictionary<string, double> { { targetKey, rand.NextDouble() * 100 } }
+            }).ToList();
         }
 
     }

@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Nexosis.Api.Client.Model;
 
 namespace Nexosis.Api.Client
 {
@@ -29,7 +30,7 @@ namespace Nexosis.Api.Client
         /// <param name="endDate">Format - date-time (as date-time in RFC3339). Limits sessions to those created on or before the specified date</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<SessionsListDto> SessionsListAllAsync(string dataSetName, string startDate, string endDate)
+        internal System.Threading.Tasks.Task<Sessions> SessionsListAllAsync(string dataSetName, string startDate, string endDate)
         {
             return SessionsListAllAsync(dataSetName, startDate, endDate, System.Threading.CancellationToken.None);
         }
@@ -40,7 +41,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<SessionsListDto> SessionsListAllAsync(string dataSetName, string startDate, string endDate, System.Threading.CancellationToken cancellationToken)
+        internal async System.Threading.Tasks.Task<Sessions> SessionsListAllAsync(string dataSetName, string startDate, string endDate, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl).Append("/sessions?");
@@ -75,10 +76,10 @@ namespace Nexosis.Api.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(SessionsListDto); 
+                            var result_ = default(Sessions); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionsListDto>(responseData_);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Sessions>(responseData_);
                                 return result_; 
                             } 
                             catch (System.Exception exception) 
@@ -93,7 +94,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
             
-                        return default(SessionsListDto);
+                        return default(Sessions);
                     }
                     finally
                     {
@@ -112,7 +113,7 @@ namespace Nexosis.Api.Client
         /// <param name="sessionId">Format - uuid. Session identifier of the session to retrieve</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<SessionResponseDto> SessionsRetrieveSessionAsync(string sessionId)
+        internal System.Threading.Tasks.Task<SessionResult> SessionsRetrieveSessionAsync(string sessionId)
         {
             return SessionsRetrieveSessionAsync(sessionId, System.Threading.CancellationToken.None);
         }
@@ -121,7 +122,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<SessionResponseDto> SessionsRetrieveSessionAsync(string sessionId, System.Threading.CancellationToken cancellationToken)
+        internal async System.Threading.Tasks.Task<SessionResult> SessionsRetrieveSessionAsync(string sessionId, System.Threading.CancellationToken cancellationToken)
         {
             if (sessionId == null)
                 throw new System.ArgumentNullException("sessionId");
@@ -156,10 +157,10 @@ namespace Nexosis.Api.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(SessionResponseDto); 
+                            var result_ = new SessionResult(); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResponseDto>(responseData_);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResult>(responseData_);
                                 result_.AssignCost(headers_); 
                                 return result_; 
                             } 
@@ -181,7 +182,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
             
-                        return default(SessionResponseDto);
+                        return default(SessionResult);
                     }
                     finally
                     {
@@ -278,9 +279,9 @@ namespace Nexosis.Api.Client
         /// <param name="endDate">Format - date-time (as date-time in RFC3339). Last date of the event</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<SessionResponseDto> SessionsCreateImpactSessionAsync(string dataSetName, string targetColumn, string eventName, string startDate, string endDate, DataSetDataDto dataSetDataDto)
+        internal System.Threading.Tasks.Task<SessionResult> SessionsCreateImpactSessionAsync(string dataSetName, string targetColumn, string eventName, string startDate, string endDate, DataSetData dataSetData)
         {
-            return SessionsCreateImpactSessionAsync(dataSetName, targetColumn, eventName, startDate, endDate, dataSetDataDto, System.Threading.CancellationToken.None);
+            return SessionsCreateImpactSessionAsync(dataSetName, targetColumn, eventName, startDate, endDate, dataSetData, System.Threading.CancellationToken.None);
         }
     
         /// <param name="dataSetName">Name of the dataset for which to determine impact</param>
@@ -291,7 +292,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<SessionResponseDto> SessionsCreateImpactSessionAsync(string dataSetName, string targetColumn, string eventName, string startDate, string endDate, DataSetDataDto dataSetDataDto, System.Threading.CancellationToken cancellationToken)
+        internal async System.Threading.Tasks.Task<SessionResult> SessionsCreateImpactSessionAsync(string dataSetName, string targetColumn, string eventName, string startDate, string endDate, DataSetData dataSetData, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl).Append("/sessions/impact?");
@@ -307,7 +308,7 @@ namespace Nexosis.Api.Client
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(dataSetDataDto));
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(dataSetData));
                     content_.Headers.ContentType.MediaType = "application/json";
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -331,10 +332,10 @@ namespace Nexosis.Api.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(SessionResponseDto); 
+                            var result_ = new SessionResult(); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResponseDto>(responseData_);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResult>(responseData_);
                                 result_.AssignCost(headers_);
                                 return result_; 
                             } 
@@ -350,7 +351,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
             
-                        return default(SessionResponseDto);
+                        return default(SessionResult);
                     }
                     finally
                     {
@@ -372,9 +373,9 @@ namespace Nexosis.Api.Client
         /// <param name="endDate">Format - date-time (as date-time in RFC3339). Last date to forecast</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<SessionResponseDto> SessionsCreateForecastSessionAsync(string dataSetName, string targetColumn, string startDate, string endDate, DataSetDataDto dataSetDataDto)
+        internal System.Threading.Tasks.Task<SessionResult> SessionsCreateForecastSessionAsync(string dataSetName, string targetColumn, string startDate, string endDate, DataSetData dataSetData)
         {
-            return SessionsCreateForecastSessionAsync(dataSetName, targetColumn, startDate, endDate, dataSetDataDto, System.Threading.CancellationToken.None);
+            return SessionsCreateForecastSessionAsync(dataSetName, targetColumn, startDate, endDate, dataSetData, System.Threading.CancellationToken.None);
         }
     
         /// <param name="dataSetName">Name of the dataset to forecast</param>
@@ -384,7 +385,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<SessionResponseDto> SessionsCreateForecastSessionAsync(string dataSetName, string targetColumn, string startDate, string endDate, DataSetDataDto dataSetDataDto, System.Threading.CancellationToken cancellationToken)
+        internal async System.Threading.Tasks.Task<SessionResult> SessionsCreateForecastSessionAsync(string dataSetName, string targetColumn, string startDate, string endDate, DataSetData dataSetData, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl).Append("/sessions/forecast?");
@@ -399,7 +400,7 @@ namespace Nexosis.Api.Client
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(dataSetDataDto));
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(dataSetData));
                     content_.Headers.ContentType.MediaType = "application/json";
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -423,10 +424,10 @@ namespace Nexosis.Api.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(SessionResponseDto); 
+                            var result_ = new SessionResult(); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResponseDto>(responseData_);
+                                result_.Session = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionRequest>(responseData_);
                                 result_.AssignCost(headers_);
                                 return result_; 
                             } 
@@ -442,7 +443,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
             
-                        return default(SessionResponseDto);
+                        return default(SessionResult);
                     }
                     finally
                     {
@@ -461,7 +462,7 @@ namespace Nexosis.Api.Client
         /// <param name="sessionId">Format - uuid. Session identifier for which to retrieve results</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<SessionResults> SessionsRetrieveResultsAsync(string sessionId)
+        internal System.Threading.Tasks.Task<SessionResult> SessionsRetrieveResultsAsync(string sessionId)
         {
             return SessionsRetrieveResultsAsync(sessionId, System.Threading.CancellationToken.None);
         }
@@ -470,7 +471,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<SessionResults> SessionsRetrieveResultsAsync(string sessionId, System.Threading.CancellationToken cancellationToken)
+        internal async System.Threading.Tasks.Task<SessionResult> SessionsRetrieveResultsAsync(string sessionId, System.Threading.CancellationToken cancellationToken)
         {
             if (sessionId == null)
                 throw new System.ArgumentNullException("sessionId");
@@ -505,10 +506,10 @@ namespace Nexosis.Api.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(SessionResults); 
+                            var result_ = new SessionResult(); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResults>(responseData_);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResult>(responseData_);
                                 return result_; 
                             } 
                             catch (System.Exception exception) 
@@ -529,7 +530,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
             
-                        return default(SessionResults);
+                        return default(SessionResult);
                     }
                     finally
                     {
@@ -632,7 +633,7 @@ namespace Nexosis.Api.Client
         /// <param name="include">Limits results to the specified columns</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<DataSetDataDto> DatasetsRetrieveDataAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include)
+        internal System.Threading.Tasks.Task<DataSetData> DatasetsRetrieveDataAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include)
         {
             return DatasetsRetrieveDataAsync(dataSetName, startDate, endDate, page, pageSize, include, System.Threading.CancellationToken.None);
         }
@@ -646,7 +647,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<DataSetDataDto> DatasetsRetrieveDataAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include, System.Threading.CancellationToken cancellationToken)
+        internal async System.Threading.Tasks.Task<DataSetData> DatasetsRetrieveDataAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include, System.Threading.CancellationToken cancellationToken)
         {
             if (dataSetName == null)
                 throw new System.ArgumentNullException("dataSetName");
@@ -687,10 +688,10 @@ namespace Nexosis.Api.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(DataSetDataDto); 
+                            var result_ = default(DataSetData); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<DataSetDataDto>(responseData_);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<DataSetData>(responseData_);
                                 return result_; 
                             } 
                             catch (System.Exception exception) 
@@ -717,7 +718,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
             
-                        return default(DataSetDataDto);
+                        return default(DataSetData);
                     }
                     finally
                     {
@@ -736,16 +737,16 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Name of the dataset to which to add data</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<DataSetSummary> DatasetsAddDataAsync(string dataSetName, DataSetDataDto dataSetDataDto)
+        internal System.Threading.Tasks.Task<DataSetSummary> DatasetsAddDataAsync(string dataSetName, DataSetData dataSetData)
         {
-            return DatasetsAddDataAsync(dataSetName, dataSetDataDto, System.Threading.CancellationToken.None);
+            return DatasetsAddDataAsync(dataSetName, dataSetData, System.Threading.CancellationToken.None);
         }
     
         /// <param name="dataSetName">Name of the dataset to which to add data</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<DataSetSummary> DatasetsAddDataAsync(string dataSetName, DataSetDataDto dataSetDataDto, System.Threading.CancellationToken cancellationToken)
+        internal async System.Threading.Tasks.Task<DataSetSummary> DatasetsAddDataAsync(string dataSetName, DataSetData dataSetData, System.Threading.CancellationToken cancellationToken)
         {
             if (dataSetName == null)
                 throw new System.ArgumentNullException("dataSetName");
@@ -759,7 +760,7 @@ namespace Nexosis.Api.Client
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(dataSetDataDto));
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(dataSetData));
                     content_.Headers.ContentType.MediaType = "application/json";
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -913,7 +914,7 @@ namespace Nexosis.Api.Client
         /// <param name="include">Limits results to the specified columns</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<Results> DatasetsRetrieveForecastsAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include)
+        internal System.Threading.Tasks.Task<ForecastResults> DatasetsRetrieveForecastsAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include)
         {
             return DatasetsRetrieveForecastsAsync(dataSetName, startDate, endDate, page, pageSize, include, System.Threading.CancellationToken.None);
         }
@@ -927,7 +928,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<Results> DatasetsRetrieveForecastsAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include, System.Threading.CancellationToken cancellationToken)
+        internal async System.Threading.Tasks.Task<ForecastResults> DatasetsRetrieveForecastsAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include, System.Threading.CancellationToken cancellationToken)
         {
             if (dataSetName == null)
                 throw new System.ArgumentNullException("dataSetName");
@@ -968,10 +969,10 @@ namespace Nexosis.Api.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Results); 
+                            var result_ = default(ForecastResults); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Results>(responseData_);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ForecastResults>(responseData_);
                                 return result_; 
                             } 
                             catch (System.Exception exception) 
@@ -998,7 +999,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
             
-                        return default(Results);
+                        return default(ForecastResults);
                     }
                     finally
                     {
@@ -1016,219 +1017,7 @@ namespace Nexosis.Api.Client
     
     }
     
-    
-
-    /// <summary>The data sets that the user has uploaded.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.33.6323.36213")]
-    public partial class ListDataSetsResponse 
-    {
-        /// <summary>Summaries of the data sets that have been uploaded</summary>
-        [Newtonsoft.Json.JsonProperty("dataSets", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<DataSetSummary> DataSets { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static ListDataSetsResponse FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListDataSetsResponse>(data);
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.33.6323.36213")]
-    public partial class DataSetSummary : IReturnCostData
-    {
-        [Newtonsoft.Json.JsonProperty("dataSetName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DataSetName { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static DataSetSummary FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<DataSetSummary>(data);
-        }
-
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.33.6323.36213")]
-    public partial class Results 
-    {
-        /// <summary>Continuous results from all forecast sessions executed on the dataset</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Always)]
-        public System.Collections.ObjectModel.ObservableCollection<DataSetRow> Data { get; set; } = new System.Collections.ObjectModel.ObservableCollection<DataSetRow>();
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static Results FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Results>(data);
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.33.6323.36213")]
-    public partial class DataSetRow 
-    {
-        [Newtonsoft.Json.JsonProperty("timestamp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? Timestamp { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.Dictionary<string, double> Values { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static DataSetRow FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<DataSetRow>(data);
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.33.6323.36213")]
-    public partial class DataSetDataDto 
-    {
-        /// <summary>The data</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Always)]
-        public System.Collections.ObjectModel.ObservableCollection<DataSetRow> Data { get; set; } = new System.Collections.ObjectModel.ObservableCollection<DataSetRow>();
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static DataSetDataDto FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<DataSetDataDto>(data);
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.33.6323.36213")]
-    public partial class SessionsListDto 
-    {
-        [Newtonsoft.Json.JsonProperty("results", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<SessionResponseDto> Results { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static SessionsListDto FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SessionsListDto>(data);
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.33.6323.36213")]
-    public partial class SessionResponseDto : IReturnCostData
-    {
-        [Newtonsoft.Json.JsonProperty("sessionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid? SessionId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Type { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public SessionResponseDtoStatus? Status { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("extraParameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.Dictionary<string, string> ExtraParameters { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("dataSetName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DataSetName { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("targetColumn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string TargetColumn { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("startDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? StartDate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("endDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? EndDate { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static SessionResponseDto FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResponseDto>(data);
-        }
-
-    }
-
-    public abstract class IReturnCostData
-    {
-        public string Cost { get; set; }
-        public string Balance { get; set; }
-
-        public void AssignCost(IDictionary<string, IEnumerable<string>> headers)
-        {
-            Cost = headers["nexosis-request-cost"].FirstOrDefault() ?? "NA";
-            Balance = headers["nexosis-account-balance"].FirstOrDefault() ?? "NA";
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.33.6323.36213")]
-    public partial class SessionResults 
-    {
-        /// <summary>For impact sessions, an object containing overall metrics about the impact</summary>
-        [Newtonsoft.Json.JsonProperty("metrics", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.Dictionary<string, double> Metrics { get; set; }
-    
-        /// <summary>The session request that caused these results</summary>
-        [Newtonsoft.Json.JsonProperty("session", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public SessionResponseDto Session { get; set; }
-    
-        /// <summary>Continuous results from all forecast sessions executed on the dataset</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Always)]
-        public System.Collections.ObjectModel.ObservableCollection<DataSetRow> Data { get; set; } = new System.Collections.ObjectModel.ObservableCollection<DataSetRow>();
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static SessionResults FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResults>(data);
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.33.6323.36213")]
-    public enum SessionResponseDtoStatus
-    {
-        [System.Runtime.Serialization.EnumMember(Value = "requested")]
-        Requested = 0,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "started")]
-        Started = 1,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "completed")]
-        Completed = 2,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "cancelled")]
-        Cancelled = 3,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "failed")]
-        Failed = 4,
-    
-    }
-
-
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "10.6.6324.28497")]
+  [System.CodeDom.Compiler.GeneratedCode("NSwag", "10.6.6324.28497")]
     public class SwaggerException : System.Exception
     {
         public string StatusCode { get; private set; }
@@ -1262,5 +1051,7 @@ namespace Nexosis.Api.Client
             Result = result;
         }
     }
+   
+
 }
 

@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using CsvHelper;
+using Nexosis.Api.Client.Model;
 
 namespace Nexosis.Api.Client
 {
@@ -63,7 +64,7 @@ namespace Nexosis.Api.Client
         /// <param name="fileName">The path to the local file containing the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <returns>Session</returns>
-        public Task<Session> ForecastFromCsvAsync(SessionData session, string fileName, string targetColumn)
+        public Task<SessionResult> ForecastFromCsvAsync(SessionRequest session, string fileName, string targetColumn)
         {
             return ForecastFromCsvAsync(session, new FileInfo(fileName), targetColumn);
         }
@@ -75,13 +76,13 @@ namespace Nexosis.Api.Client
         /// <param name="file">A reference to a local file which contains the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <returns>Session</returns>
-        public async Task<Session> ForecastFromCsvAsync(SessionData session, FileInfo file, string targetColumn)
+        public async Task<SessionResult> ForecastFromCsvAsync(SessionRequest session, FileInfo file, string targetColumn)
         {
             if (file.Exists)
             {
                 TestParseCsv(file);
                 var contents = file.OpenText().ReadToEnd();
-                return new Session(await this.SessionsForecastPostDataAsync(contents, session.DataSetName, targetColumn, session.StartDate?.ToString(), session.EndDate.ToString()));
+                return await this.SessionsForecastPostDataAsync(contents, session.DataSetName, targetColumn, session.StartDate.ToString(), session.EndDate.ToString());
             }
             else
             {
@@ -96,9 +97,9 @@ namespace Nexosis.Api.Client
         /// <param name="data">A <see cref="DataSet">DataSet</see> containing the data used for the forecast.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <returns>Session</returns>
-        public async Task<Session> ForecastFromDataAsync(SessionData session, DataSet data, string targetColumn)
+        public async Task<SessionResult> ForecastFromDataAsync(SessionRequest session, List<DataSetRow> data, string targetColumn)
         {
-            return new Session(await SessionsCreateForecastSessionAsync(session.DataSetName, targetColumn, session.StartDate?.ToString(), session.EndDate.ToString(), data.ToDto()));
+            return await SessionsCreateForecastSessionAsync(session.DataSetName, targetColumn, session.StartDate.ToString(), session.EndDate.ToString(), new DataSetData { Data = data });
         }
 
         /// <summary>
@@ -107,9 +108,9 @@ namespace Nexosis.Api.Client
         /// <param name="session">A <c>SessionData</c> object describing the prediction session to run.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <returns>Session</returns>
-        public async Task<Session> ForecastFromSavedDataSetAsync(SessionData session, string targetColumn)
+        public async Task<SessionResult> ForecastFromSavedDataSetAsync(SessionRequest session, string targetColumn)
         {
-            return new Session(await SessionsCreateForecastSessionAsync(session.DataSetName, targetColumn, session.StartDate?.ToString(), session.EndDate.ToString(), null));
+            return await SessionsCreateForecastSessionAsync(session.DataSetName, targetColumn, session.StartDate.ToString(), session.EndDate.ToString(), null);
         }
 
         /// <summary>
@@ -120,7 +121,7 @@ namespace Nexosis.Api.Client
         /// <param name="eventName">The name of the event.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <returns></returns>
-        public Task<Session> EventImpactFromCsvAsync(SessionData session, string fileName, string eventName, string targetColumn)
+        public Task<SessionResult> EventImpactFromCsvAsync(SessionRequest session, string fileName, string eventName, string targetColumn)
         {
             return EventImpactFromCsvAsync(session, new FileInfo(fileName), eventName, targetColumn);
         }
@@ -133,13 +134,13 @@ namespace Nexosis.Api.Client
         /// <param name="eventName">The name of the event.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <returns></returns>
-        public async Task<Session> EventImpactFromCsvAsync(SessionData session, FileInfo file, string eventName, string targetColumn)
+        public async Task<SessionResult> EventImpactFromCsvAsync(SessionRequest session, FileInfo file, string eventName, string targetColumn)
         {
             if (file.Exists)
             {
                 TestParseCsv(file);
                 var contents = file.OpenText().ReadToEnd();
-                return new Session(await SessionsCreateImpactSessionAsync(session.DataSetName, targetColumn, eventName, session.StartDate?.ToString(), session.EndDate.ToString(), contents, CancellationToken.None));
+                return await SessionsCreateImpactSessionAsync(session.DataSetName, targetColumn, eventName, session.StartDate.ToString(), session.EndDate.ToString(), contents, CancellationToken.None);
             }
             else
             {
@@ -156,9 +157,9 @@ namespace Nexosis.Api.Client
         /// <param name="eventName">The name of the event.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <returns></returns>
-        public async Task<Session> EventImpactFromDataAsync(SessionData session, DataSet data, string eventName, string targetColumn)
+        public async Task<SessionResult> EventImpactFromDataAsync(SessionRequest session, List<DataSetRow> data, string eventName, string targetColumn)
         {
-            return new Session(await SessionsCreateImpactSessionAsync(session.DataSetName, targetColumn, eventName, session.StartDate?.ToString(), session.EndDate.ToString(), data.ToDto()));
+            return await SessionsCreateImpactSessionAsync(session.DataSetName, targetColumn, eventName, session.StartDate.ToString(), session.EndDate.ToString(), new DataSetData { Data = data});
         }
 
         /// <summary>
@@ -168,19 +169,19 @@ namespace Nexosis.Api.Client
         /// <param name="eventName">The name of the event.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <returns></returns>
-        public async Task<Session> EventImpactFromSavedDataAsync(SessionData session, string eventName, string targetColumn)
+        public async Task<SessionResult> EventImpactFromSavedDataAsync(SessionRequest session, string eventName, string targetColumn)
         {
-            return new Session(await SessionsCreateImpactSessionAsync(session.DataSetName, targetColumn, eventName, session.StartDate?.ToString(), session.EndDate.ToString(), null));
+            return await SessionsCreateImpactSessionAsync(session.DataSetName, targetColumn, eventName, session.StartDate.ToString(), session.EndDate.ToString(), null);
         }
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and dates that predictions were run over. 
         /// </summary>
         /// <returns>The list of sessions </returns>
-        public async Task<List<Session>> GetSessions()
+        public async Task<List<SessionRequest>> GetSessions()
         {
             var sessions = await SessionsListAllAsync(null, null, null);
-            return new List<Session>(sessions.Results.Select(s => new Session(s)));
+            return new List<SessionRequest>(sessions.Results);
         }
 
         /// <summary>
@@ -188,10 +189,10 @@ namespace Nexosis.Api.Client
         /// </summary>
         /// <param name="sessionId">The sessionId to lookup.</param>
         /// <returns>A DataSet which contains the results of the run.</returns>
-        public async Task<DataSet> GetSessionResultsAsync(Guid sessionId)
+        public async Task<List<DataSetRow>> GetSessionResultsAsync(Guid sessionId)
         {
             var result = await SessionsRetrieveResultsAsync(sessionId.ToString());
-            return new DataSet { Data = new List<DataSetRow>(result.Data) };
+            return result.Data;
         }
 
         /// <summary>
@@ -199,7 +200,7 @@ namespace Nexosis.Api.Client
         /// </summary>
         /// <param name="sessionId">The <c>sessionId</c> to lookup.</param>
         /// <returns>SessionStatus</returns>
-        public Task<SessionStatus> GetSessionStatusAsync(Guid sessionId)
+        public Task<SessionResultStatus> GetSessionStatusAsync(Guid sessionId)
         {
             return GetSessionStatusInternal(sessionId);
         }
@@ -210,9 +211,9 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Name of the dataset to which to add data.</param>
         /// <param name="data">A DataSet containing the data.</param>
         /// <returns>DataSetSummary</returns>
-        public Task<DataSetSummary> SaveDataSetAsync(string dataSetName, DataSet data)
+        public Task<DataSetSummary> SaveDataSetAsync(string dataSetName, List<DataSetRow> data)
         {
-            return DatasetsAddDataAsync(dataSetName, data.ToDto());
+            return DatasetsAddDataAsync(dataSetName, new DataSetData { Data = data });
         }
 
         /// <summary>
@@ -289,7 +290,7 @@ namespace Nexosis.Api.Client
             return metadata;
         }
 
-        private async Task<SessionResponseDto> SessionsForecastPostDataAsync(string data, string dataSetName, string targetColumn, string startDate, string endDate)
+        private async Task<SessionResult> SessionsForecastPostDataAsync(string data, string dataSetName, string targetColumn, string startDate, string endDate)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl).Append("/sessions/forecast?");
@@ -328,10 +329,11 @@ namespace Nexosis.Api.Client
                         if (status_ == "200")
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            var result_ = default(SessionResponseDto);
+                            var result_ = new SessionResult();
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResponseDto>(responseData_);
+                                result_.Session = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionRequest>(responseData_);
+
                                 result_.AssignCost(headers_);
                                 return result_;
                             }
@@ -347,7 +349,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
 
-                        return default(SessionResponseDto);
+                        return default(SessionResult);
                     }
                     finally
                     {
@@ -363,7 +365,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        private async System.Threading.Tasks.Task<SessionResponseDto> SessionsCreateImpactSessionAsync(string dataSetName, string targetColumn, string eventName, string startDate, string endDate, string dataSetData, System.Threading.CancellationToken cancellationToken)
+        private async System.Threading.Tasks.Task<SessionResult> SessionsCreateImpactSessionAsync(string dataSetName, string targetColumn, string eventName, string startDate, string endDate, string dataSetData, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl).Append("/sessions/impact?");
@@ -403,10 +405,10 @@ namespace Nexosis.Api.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(SessionResponseDto); 
+                            var result_ = new SessionResult();
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResponseDto>(responseData_);
+                                result_.Session = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionRequest>(responseData_);
                                 result_.AssignCost(headers_);
                                 return result_; 
                             } 
@@ -422,7 +424,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
             
-                        return default(SessionResponseDto);
+                        return default(SessionResult);
                     }
                     finally
                     {
@@ -438,7 +440,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        private async Task<SessionStatus> GetSessionStatusInternal(Guid sessionId)
+        private async Task<SessionResultStatus> GetSessionStatusInternal(Guid sessionId)
         {
             if (sessionId == null)
                 throw new System.ArgumentNullException(nameof(sessionId));
@@ -471,10 +473,10 @@ namespace Nexosis.Api.Client
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200")
                         {
-                            return new SessionStatus
+                            return new SessionResultStatus
                             {
                                 SessionId = sessionId,
-                                Status = (SessionResponseDtoStatus)Enum.Parse(typeof (SessionResponseDtoStatus), headers_["nexosis-session-status"].First())
+                                Status = (SessionStatus)Enum.Parse(typeof (SessionStatus), headers_["nexosis-session-status"].First())
                             };
                         }
                         else
@@ -490,7 +492,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
 
-                        return default(SessionStatus);
+                        return default(SessionResultStatus);
                     }
                     finally
                     {
@@ -542,20 +544,15 @@ namespace Nexosis.Api.Client
 
     }
 
-    public class SessionStatus
-    {
-        public Guid SessionId { get; set; }
-        public SessionResponseDtoStatus Status { get; set; }
-    }
-
+/*
     public class Session 
     {
-        public Session(SessionResponseDto source)
+        public Session(Nexosis.Api.Client.Model.Session source)
         {
             SessionId = source.SessionId.Value;
             DataSetName = source.DataSetName;
-            StartDate = source.StartDate.Value;
-            EndDate = source.EndDate.Value;
+            StartDate = source.StartDate;
+            EndDate = source.EndDate;
             TargetColumn = source.TargetColumn;
             Status = source.Status;
             Cost = source.Cost;
@@ -572,7 +569,7 @@ namespace Nexosis.Api.Client
 
         public Guid SessionId { get; set; }
 
-        public SessionResponseDtoStatus? Status { get; set; }
+        public SessionStatus Status { get; set; }
 
         public string Cost { get; set; }
 
@@ -606,24 +603,14 @@ namespace Nexosis.Api.Client
             get; set;
         }
 
-        internal DataSetDataDto ToDto()
+        internal DataSetData To()
         {
-            return new DataSetDataDto
+            return new DataSetData
             {
-                Data = new ObservableCollection<DataSetRow>(this.Data)
+                Data = new List<DataSetRow>(this.Data)
             };
         }
     }
 
-    public enum SessionType
-    {
-        [System.Runtime.Serialization.EnumMember(Value = "import")]
-        Import = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = "forecast")]
-        Forecast = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = "impact")]
-        Impact = 2,
-    }
+ */
 }
