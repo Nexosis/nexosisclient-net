@@ -1,16 +1,16 @@
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 
 namespace Nexosis.Api.Client.Model
 {
-    public class SessionRequest : ReturnsCost
+    public class SessionResponse : ReturnsCost
     {
-        [JsonProperty("sessionId", NullValueHandling = NullValueHandling.Ignore)]
-        public System.Guid? SessionId { get; set; }
+        [JsonProperty("sessionId")]
+        public System.Guid SessionId { get; set; }
     
         [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
-        public string Type { get; set; }
+        [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public SessionType Type { get; set; }
     
         [JsonProperty("status", NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
@@ -25,11 +25,14 @@ namespace Nexosis.Api.Client.Model
         [JsonProperty("targetColumn", NullValueHandling = NullValueHandling.Ignore)]
         public string TargetColumn { get; set; }
     
+        [JsonProperty("targetColumn", NullValueHandling = NullValueHandling.Ignore)]
+        public string EventName { get; set; }
+
         [JsonProperty("startDate", NullValueHandling = NullValueHandling.Ignore)]
-        public System.DateTime StartDate { get; set; }
+        public System.DateTimeOffset StartDate { get; set; }
     
         [JsonProperty("endDate", NullValueHandling = NullValueHandling.Ignore)]
-        public System.DateTime EndDate { get; set; }
+        public System.DateTimeOffset EndDate { get; set; }
     }
 
 }

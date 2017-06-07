@@ -16,7 +16,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task SubmitCsvStartsNewSession()
         {  
-            var session = new SessionRequest { DataSetName = "FullTest", StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
+            var session = new SessionResponse { DataSetName = "FullTest", StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
             var target = new ApiClient();
             var actual = await target.ForecastFromCsvAsync(session, new FileInfo(productFilePath), "sales");
             Assert.NotNull(actual.Session.SessionId);
@@ -26,7 +26,7 @@ namespace Api.Client.Tests
         public async Task SubmitDataDirectlyStartsNewSession()
         {
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var session = new SessionRequest { DataSetName = "Something", StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
+            var session = new SessionResponse { DataSetName = "Something", StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
             var target = new ApiClient();
             var actual = await target.ForecastFromDataAsync(session, dataSet, "instances");
             Assert.NotNull(actual.Session.SessionId);
@@ -38,7 +38,7 @@ namespace Api.Client.Tests
             var target = new ApiClient();
             var sessions = await target.GetSessions();
             var testSession = sessions.First(srd => srd.Status == SessionStatus.Completed);
-            var actual = await target.GetSessionResultsAsync(testSession.SessionId.Value);
+            var actual = await target.GetSessionResultsAsync(testSession.SessionId);
             Assert.True(actual.Count >= 0);
         }
 
@@ -54,7 +54,7 @@ namespace Api.Client.Tests
         public async Task CostAndBalanceAreAvailableAfterRequest()
         {
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2016-12-31"), "instances");
-            var session = new SessionRequest { DataSetName = "Something", StartDate = DateTime.Parse("2017-01-01"), EndDate = DateTime.Parse("2017-01-31") };
+            var session = new SessionResponse { DataSetName = "Something", StartDate = DateTime.Parse("2017-01-01"), EndDate = DateTime.Parse("2017-01-31") };
             var target = new ApiClient();
             var result = await target.ForecastFromDataAsync(session, dataSet, "instances");
 
@@ -82,7 +82,7 @@ namespace Api.Client.Tests
             var key = $"foo-{DateTime.UtcNow:s}";
             await target.SaveDataSetAsync(key, GenerateDataSet(DateTime.Parse("2016-01-01"), DateTime.Parse("2017-01-01"), "foos"));
            
-            var session = new SessionRequest { DataSetName = key, StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25")  };
+            var session = new SessionResponse { DataSetName = key, StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25")  };
             var sessonResponse = await target.ForecastFromSavedDataSetAsync(session, "foos");
 
             Assert.NotNull(sessonResponse);
@@ -116,12 +116,12 @@ namespace Api.Client.Tests
         public async Task WillGiveStatusBackForRunningJob()
         {
             var target = new ApiClient();
-            var session = new SessionRequest { DataSetName = Guid.NewGuid().ToString(), StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
+            var session = new SessionResponse { DataSetName = Guid.NewGuid().ToString(), StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
             var actual = await target.ForecastFromCsvAsync(session, new FileInfo(productFilePath), "sales");
 
             Assert.NotNull(actual.Session.SessionId);
 
-            var status = await target.GetSessionStatusAsync(actual.Session.SessionId.Value);
+            var status = await target.GetSessionStatusAsync(actual.Session.SessionId);
 
             Assert.NotNull(status);
             Assert.True((int)status.Status <= (int)SessionStatus.Started);
@@ -132,12 +132,12 @@ namespace Api.Client.Tests
         public async Task WillRunImpactSessionOnEvent()
         {
             var target = new ApiClient();
-            var session = new SessionRequest { DataSetName = Guid.NewGuid().ToString(), StartDate = DateTime.Parse("2015-10-01"), EndDate = DateTime.Parse("2016-01-01") };
+            var session = new SessionResponse { DataSetName = Guid.NewGuid().ToString(), StartDate = DateTime.Parse("2015-10-01"), EndDate = DateTime.Parse("2016-01-01") };
             var result = await target.EventImpactFromCsvAsync(session, new FileInfo(productFilePath), "super duper sale", "sales");
 
             Assert.NotNull(result);
 
-            var status = await target.GetSessionStatusAsync(result.Session.SessionId.Value);
+            var status = await target.GetSessionStatusAsync(result.Session.SessionId);
 
             Assert.NotNull(status);
             Assert.True((int)status.Status <= (int)SessionStatus.Started);

@@ -7,6 +7,6 @@ namespace Nexosis.Api.Client.Model
     {
         // TODO: we have SessionResults and Sessions.Results which is confusing
         [JsonProperty("results", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        public List<SessionRequest> Results { get; set; }
+        public List<SessionResponse> Results { get; set; }
     }
 }

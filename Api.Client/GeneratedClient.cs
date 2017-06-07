@@ -30,7 +30,7 @@ namespace Nexosis.Api.Client
         /// <param name="endDate">Format - date-time (as date-time in RFC3339). Limits sessions to those created on or before the specified date</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<Sessions> SessionsListAllAsync(string dataSetName, string startDate, string endDate)
+        public System.Threading.Tasks.Task<Sessions> SessionsListAllAsync(string dataSetName, string startDate, string endDate)
         {
             return SessionsListAllAsync(dataSetName, startDate, endDate, System.Threading.CancellationToken.None);
         }
@@ -41,7 +41,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<Sessions> SessionsListAllAsync(string dataSetName, string startDate, string endDate, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Sessions> SessionsListAllAsync(string dataSetName, string startDate, string endDate, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl).Append("/sessions?");
@@ -113,7 +113,7 @@ namespace Nexosis.Api.Client
         /// <param name="sessionId">Format - uuid. Session identifier of the session to retrieve</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<SessionResult> SessionsRetrieveSessionAsync(string sessionId)
+        public System.Threading.Tasks.Task<SessionResult> SessionsRetrieveSessionAsync(string sessionId)
         {
             return SessionsRetrieveSessionAsync(sessionId, System.Threading.CancellationToken.None);
         }
@@ -122,7 +122,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<SessionResult> SessionsRetrieveSessionAsync(string sessionId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<SessionResult> SessionsRetrieveSessionAsync(string sessionId, System.Threading.CancellationToken cancellationToken)
         {
             if (sessionId == null)
                 throw new System.ArgumentNullException("sessionId");
@@ -201,7 +201,7 @@ namespace Nexosis.Api.Client
         /// <param name="sessionId">Format - uuid. Session identifier of the session to retrieve</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task SessionsRetrieveSessionStatusAsync(string sessionId)
+        public System.Threading.Tasks.Task SessionsRetrieveSessionStatusAsync(string sessionId)
         {
             return SessionsRetrieveSessionStatusAsync(sessionId, System.Threading.CancellationToken.None);
         }
@@ -210,7 +210,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task SessionsRetrieveSessionStatusAsync(string sessionId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task SessionsRetrieveSessionStatusAsync(string sessionId, System.Threading.CancellationToken cancellationToken)
         {
             if (sessionId == null)
                 throw new System.ArgumentNullException("sessionId");
@@ -279,7 +279,7 @@ namespace Nexosis.Api.Client
         /// <param name="endDate">Format - date-time (as date-time in RFC3339). Last date of the event</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<SessionResult> SessionsCreateImpactSessionAsync(string dataSetName, string targetColumn, string eventName, string startDate, string endDate, DataSetData dataSetData)
+        public System.Threading.Tasks.Task<SessionResult> SessionsCreateImpactSessionAsync(string dataSetName, string targetColumn, string eventName, string startDate, string endDate, DataSetData dataSetData)
         {
             return SessionsCreateImpactSessionAsync(dataSetName, targetColumn, eventName, startDate, endDate, dataSetData, System.Threading.CancellationToken.None);
         }
@@ -292,7 +292,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<SessionResult> SessionsCreateImpactSessionAsync(string dataSetName, string targetColumn, string eventName, string startDate, string endDate, DataSetData dataSetData, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<SessionResult> SessionsCreateImpactSessionAsync(string dataSetName, string targetColumn, string eventName, string startDate, string endDate, DataSetData dataSetData, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl).Append("/sessions/impact?");
@@ -373,7 +373,7 @@ namespace Nexosis.Api.Client
         /// <param name="endDate">Format - date-time (as date-time in RFC3339). Last date to forecast</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<SessionResult> SessionsCreateForecastSessionAsync(string dataSetName, string targetColumn, string startDate, string endDate, DataSetData dataSetData)
+        public System.Threading.Tasks.Task<SessionResult> SessionsCreateForecastSessionAsync(string dataSetName, string targetColumn, string startDate, string endDate, DataSetData dataSetData)
         {
             return SessionsCreateForecastSessionAsync(dataSetName, targetColumn, startDate, endDate, dataSetData, System.Threading.CancellationToken.None);
         }
@@ -385,7 +385,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<SessionResult> SessionsCreateForecastSessionAsync(string dataSetName, string targetColumn, string startDate, string endDate, DataSetData dataSetData, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<SessionResult> SessionsCreateForecastSessionAsync(string dataSetName, string targetColumn, string startDate, string endDate, DataSetData dataSetData, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl).Append("/sessions/forecast?");
@@ -427,7 +427,7 @@ namespace Nexosis.Api.Client
                             var result_ = new SessionResult(); 
                             try
                             {
-                                result_.Session = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionRequest>(responseData_);
+                                result_.Session = Newtonsoft.Json.JsonConvert.DeserializeObject<SessionResponse>(responseData_);
                                 result_.AssignCost(headers_);
                                 return result_; 
                             } 
@@ -462,7 +462,7 @@ namespace Nexosis.Api.Client
         /// <param name="sessionId">Format - uuid. Session identifier for which to retrieve results</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<SessionResult> SessionsRetrieveResultsAsync(string sessionId)
+        public System.Threading.Tasks.Task<SessionResult> SessionsRetrieveResultsAsync(string sessionId)
         {
             return SessionsRetrieveResultsAsync(sessionId, System.Threading.CancellationToken.None);
         }
@@ -471,7 +471,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<SessionResult> SessionsRetrieveResultsAsync(string sessionId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<SessionResult> SessionsRetrieveResultsAsync(string sessionId, System.Threading.CancellationToken cancellationToken)
         {
             if (sessionId == null)
                 throw new System.ArgumentNullException("sessionId");
@@ -549,7 +549,7 @@ namespace Nexosis.Api.Client
         /// <param name="partialName">Limits results to only those datasets with names containing the specified value</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<ListDataSetsResponse> DatasetsListAllAsync(string partialName)
+        public System.Threading.Tasks.Task<DataSetList> DatasetsListAllAsync(string partialName)
         {
             return DatasetsListAllAsync(partialName, System.Threading.CancellationToken.None);
         }
@@ -558,7 +558,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<ListDataSetsResponse> DatasetsListAllAsync(string partialName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DataSetList> DatasetsListAllAsync(string partialName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl).Append("/data?");
@@ -591,10 +591,10 @@ namespace Nexosis.Api.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(ListDataSetsResponse); 
+                            var result_ = default(DataSetList); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ListDataSetsResponse>(responseData_);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<DataSetList>(responseData_);
                                 return result_; 
                             } 
                             catch (System.Exception exception) 
@@ -609,7 +609,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
             
-                        return default(ListDataSetsResponse);
+                        return default(DataSetList);
                     }
                     finally
                     {
@@ -633,7 +633,7 @@ namespace Nexosis.Api.Client
         /// <param name="include">Limits results to the specified columns</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<DataSetData> DatasetsRetrieveDataAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include)
+        public System.Threading.Tasks.Task<DataSetData> DatasetsRetrieveDataAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include)
         {
             return DatasetsRetrieveDataAsync(dataSetName, startDate, endDate, page, pageSize, include, System.Threading.CancellationToken.None);
         }
@@ -647,7 +647,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<DataSetData> DatasetsRetrieveDataAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DataSetData> DatasetsRetrieveDataAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include, System.Threading.CancellationToken cancellationToken)
         {
             if (dataSetName == null)
                 throw new System.ArgumentNullException("dataSetName");
@@ -737,7 +737,7 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Name of the dataset to which to add data</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<DataSetSummary> DatasetsAddDataAsync(string dataSetName, DataSetData dataSetData)
+        public System.Threading.Tasks.Task<DataSetSummary> DatasetsAddDataAsync(string dataSetName, DataSetData dataSetData)
         {
             return DatasetsAddDataAsync(dataSetName, dataSetData, System.Threading.CancellationToken.None);
         }
@@ -746,7 +746,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<DataSetSummary> DatasetsAddDataAsync(string dataSetName, DataSetData dataSetData, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DataSetSummary> DatasetsAddDataAsync(string dataSetName, DataSetData dataSetData, System.Threading.CancellationToken cancellationToken)
         {
             if (dataSetName == null)
                 throw new System.ArgumentNullException("dataSetName");
@@ -824,7 +824,7 @@ namespace Nexosis.Api.Client
         /// <param name="endDate">Format - date-time (as date-time in RFC3339). Limits data removed to those on or before the specified date</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task DatasetsDeleteDataAsync(string dataSetName, string startDate, string endDate)
+        public System.Threading.Tasks.Task DatasetsDeleteDataAsync(string dataSetName, string startDate, string endDate)
         {
             return DatasetsDeleteDataAsync(dataSetName, startDate, endDate, System.Threading.CancellationToken.None);
         }
@@ -835,7 +835,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task DatasetsDeleteDataAsync(string dataSetName, string startDate, string endDate, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DatasetsDeleteDataAsync(string dataSetName, string startDate, string endDate, System.Threading.CancellationToken cancellationToken)
         {
             if (dataSetName == null)
                 throw new System.ArgumentNullException("dataSetName");
@@ -914,7 +914,7 @@ namespace Nexosis.Api.Client
         /// <param name="include">Limits results to the specified columns</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal System.Threading.Tasks.Task<ForecastResults> DatasetsRetrieveForecastsAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include)
+        public System.Threading.Tasks.Task<DataSetData> DatasetsRetrieveForecastsAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include)
         {
             return DatasetsRetrieveForecastsAsync(dataSetName, startDate, endDate, page, pageSize, include, System.Threading.CancellationToken.None);
         }
@@ -928,7 +928,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        internal async System.Threading.Tasks.Task<ForecastResults> DatasetsRetrieveForecastsAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DataSetData> DatasetsRetrieveForecastsAsync(string dataSetName, string startDate, string endDate, int? page, int? pageSize, string include, System.Threading.CancellationToken cancellationToken)
         {
             if (dataSetName == null)
                 throw new System.ArgumentNullException("dataSetName");
@@ -969,10 +969,10 @@ namespace Nexosis.Api.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(ForecastResults); 
+                            var result_ = default(DataSetData); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ForecastResults>(responseData_);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<DataSetData>(responseData_);
                                 return result_; 
                             } 
                             catch (System.Exception exception) 
@@ -999,7 +999,7 @@ namespace Nexosis.Api.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
                         }
             
-                        return default(ForecastResults);
+                        return default(DataSetData);
                     }
                     finally
                     {
