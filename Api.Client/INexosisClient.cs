@@ -17,9 +17,9 @@ namespace Nexosis.Api.Client
         Task<AccountBalance> GetAccountBalanceAsync();
 
         /// <summary>
-        /// Forecast from the contents of a CSV file.
+        /// Forecast from CSV formatted data.
         /// </summary>
-        /// <param name="file">A reference to a local file which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
@@ -27,7 +27,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecastSessionAsync(TextReader file, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
+        Task<SessionResponse> CreateForecastSessionAsync(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
 
         /// <summary>
         /// Forecast from data posted in the request.
@@ -56,9 +56,9 @@ namespace Nexosis.Api.Client
         Task<SessionResponse> CreateForecastSessionAsync(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
 
         /// <summary>
-        /// Analyze impact for an event with data from a CSV file.
+        /// Analyze impact for an event with CSV formatted data.
         /// </summary>
-        /// <param name="file">A reference to a local file which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a local file which contains the data you wish to submit.</param>
         /// <param name="eventName">The name of the event.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
@@ -67,7 +67,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> CreateImpactSessionAsync(TextReader file, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
+        Task<SessionResponse> CreateImpactSessionAsync(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
 
         /// <summary>
         /// Analyze impact for an event with data in the request.
@@ -100,14 +100,14 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Estimate the cost of a forecast from the contents of a CSV file.
         /// </summary>
-        /// <param name="file">A reference to a local file which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecastSessionAsync(TextReader file, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> EstimateForecastSessionAsync(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
 
         /// <summary>
         /// Estimate the cost of a forecast from data posted in the request.
@@ -136,7 +136,7 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data from a CSV file.
         /// </summary>
-        /// <param name="file">A reference to a local file which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
         /// <param name="eventName">The name of the event.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
@@ -144,7 +144,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpactSessionAsync(TextReader file, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> EstimateImpactSessionAsync(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
 
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data in the request.
@@ -232,6 +232,16 @@ namespace Nexosis.Api.Client
         Task<SessionResult> GetSessionResultsAsync(Guid id);
 
         /// <summary>
+        /// Get results of the session written to a file as CSV. It will only write the values of the forecast or impact session and not any of the 
+        /// other data normally returned in a <see cref="SessionResult"/>.
+        /// </summary>
+        /// <param name="id">The identifier of the session.</param>
+        /// <param name="output">An <see cref="TextWriter"/> where the results should be written.</param>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <remarks>GET of https://ml.nexosis.com/api/sessions/{id}/results</remarks>
+        Task GetSessionResultsAsync(Guid id, TextWriter output);
+
+        /// <summary>
         /// Save data in a data set.
         /// </summary>
         /// <param name="dataSetName">Name of the dataset to which to add data.</param>
@@ -271,6 +281,18 @@ namespace Nexosis.Api.Client
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}</remarks>
         Task<DataSetData> GetDataSetAsync(string dataSetName, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
 
+        /// <summary>Get the data in the set, written to a CSV file, optionally filtering it.</summary>
+        /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
+        /// <param name="output">A <see cref="TextWriter"/> where the data should be written.</param>
+        /// <param name="startDate"> Limits results to those on or after the specified date.</param>
+        /// <param name="endDate">Limits results to those on or before the specified date.</param>
+        /// <param name="pageNumber">Zero-based page number of results to retrieve.</param>
+        /// <param name="pageSize">Count of results to retrieve in each page (max 100).</param>
+        /// <param name="includeColumns">Limits results to the specified columns of the data set.</param>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}</remarks>
+        Task GetDataSetAsync(string dataSetName, TextWriter output, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
+
         /// <summary>Remove data from a data set or the entire set.</summary>
         /// <param name="dataSetName">Name of the dataset from which to remove data.</param>
         /// <param name="startDate">Limits data removed to those on or after the specified date.</param>
@@ -291,6 +313,19 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="DataSetData" /></returns>
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}/forecast</remarks>
         Task<DataSetData> GetDataSetForecastAsync(string dataSetName, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
+
+        /// <summary>Gets the forecasts associated with a data set, written as CSV.</summary>
+        /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
+        /// <param name="output">A <see cref="TextWriter"/> where the data should be written.</param>
+        /// <param name="startDate"> Limits results to those on or after the specified date.</param>
+        /// <param name="endDate">Limits results to those on or before the specified date.</param>
+        /// <param name="pageNumber">Zero-based page number of results to retrieve.</param>
+        /// <param name="pageSize">Count of results to retrieve in each page (max 100).</param>
+        /// <param name="includeColumns">Limits results to the specified columns of the data set.</param>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <returns><see cref="DataSetData" /></returns>
+        /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}/forecast</remarks>
+        Task GetDataSetForecastAsync(string dataSetName, TextWriter output, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
 
         /// <summary>
         /// Removes the forecasts associated with a data set.
