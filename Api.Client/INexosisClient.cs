@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Nexosis.Api.Client.Model;
 
@@ -14,7 +15,7 @@ namespace Nexosis.Api.Client
         /// <summary>Gets the current account balance.</summary>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<AccountBalance> GetAccountBalanceAsync();
+        Task<AccountBalance> GetAccountBalance();
 
         /// <summary>
         /// Forecast from CSV formatted data.
@@ -27,7 +28,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecastSessionAsync(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
+        Task<SessionResponse> CreateForecastSession(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
 
         /// <summary>
         /// Forecast from data posted in the request.
@@ -40,7 +41,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecastSessionAsync(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
+        Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
 
         /// <summary>
         /// Forecast from data already saved to the API.
@@ -53,7 +54,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecastSessionAsync(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
+        Task<SessionResponse> CreateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
 
         /// <summary>
         /// Analyze impact for an event with CSV formatted data.
@@ -67,7 +68,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> CreateImpactSessionAsync(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
+        Task<SessionResponse> CreateImpactSession(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
 
         /// <summary>
         /// Analyze impact for an event with data in the request.
@@ -81,7 +82,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> CreateImpactSessionAsync(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
+        Task<SessionResponse> CreateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
 
         /// <summary>
         /// Analyze impact for an event with data already saved to the API.
@@ -95,7 +96,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> CreateImpactSessionAsync(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
+        Task<SessionResponse> CreateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
 
         /// <summary>
         /// Estimate the cost of a forecast from the contents of a CSV file.
@@ -107,7 +108,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecastSessionAsync(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> EstimateForecastSession(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
 
         /// <summary>
         /// Estimate the cost of a forecast from data posted in the request.
@@ -119,7 +120,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecastSessionAsync(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> EstimateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
 
         /// <summary>
         /// Estimate the cost of a forecast from data already saved to the API.
@@ -131,7 +132,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecastSessionAsync(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> EstimateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
 
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data from a CSV file.
@@ -144,7 +145,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpactSessionAsync(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> EstimateImpactSession(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
 
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data in the request.
@@ -157,7 +158,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpactSessionAsync(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> EstimateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
 
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data already saved to the API.
@@ -170,7 +171,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpactSessionAsync(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> EstimateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
@@ -183,7 +184,7 @@ namespace Nexosis.Api.Client
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> GetSessionsAsync(string dataSetName, string eventName, DateTimeOffset? startDate, DateTimeOffset? endDate);
+        Task<List<SessionResponse>> ListSessions(string dataSetName, string eventName, DateTimeOffset? startDate, DateTimeOffset? endDate);
 
         /// <summary>
         /// Remove sessions that have been run. All parameters are optional and will be used to limit the sessions removed.
@@ -194,7 +195,7 @@ namespace Nexosis.Api.Client
         /// <param name="endDate">Limits sessions to those created on or before the specified date.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
-        Task RemoveSessionsAsync(string dataSetName, string eventName, DateTimeOffset? startDate, DateTimeOffset? endDate);
+        Task RemoveSessions(string dataSetName, string eventName, DateTimeOffset? startDate, DateTimeOffset? endDate);
 
         /// <summary>
         /// Get a specific session by id.
@@ -203,7 +204,7 @@ namespace Nexosis.Api.Client
         /// <returns>A <see cref="SessionResponse" /> populated with the sessions data.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions/{id}</remarks>
-        Task<SessionResponse> GetSessionAsync(Guid id);
+        Task<SessionResponse> GetSession(Guid id);
 
         /// <summary>
         /// Lookup the status of the session. 
@@ -212,7 +213,7 @@ namespace Nexosis.Api.Client
         /// <returns>A <see cref="SessionResultStatus"/> with the status set.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>HEAD of https://ml.nexosis.com/api/sessions/{id}</remarks>
-        Task<SessionResultStatus> GetSessionStatusAsync(Guid id);
+        Task<SessionResultStatus> GetSessionStatus(Guid id);
 
         /// <summary>
         /// Remove the session. 
@@ -220,7 +221,7 @@ namespace Nexosis.Api.Client
         /// <param name="id">The identifier of the session to remove.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/sessions/{id}</remarks>
-        Task RemoveSessionAsync(Guid id);
+        Task RemoveSession(Guid id);
 
         /// <summary>
         /// Get the results of the session.
@@ -229,7 +230,7 @@ namespace Nexosis.Api.Client
         /// <returns>A <see cref="SessionResult"/> which contains the results of the run.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions/{id}/results</remarks>
-        Task<SessionResult> GetSessionResultsAsync(Guid id);
+        Task<SessionResult> GetSessionResults(Guid id);
 
         /// <summary>
         /// Get results of the session written to a file as CSV. It will only write the values of the forecast or impact session and not any of the 
@@ -239,7 +240,7 @@ namespace Nexosis.Api.Client
         /// <param name="output">An <see cref="TextWriter"/> where the results should be written.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions/{id}/results</remarks>
-        Task GetSessionResultsAsync(Guid id, TextWriter output);
+        Task GetSessionResults(Guid id, TextWriter output);
 
         /// <summary>
         /// Save data in a data set.
@@ -249,7 +250,7 @@ namespace Nexosis.Api.Client
         /// <returns>A <see cref="DataSetSummary"/> for the data set created.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}</remarks>
-        Task<DataSetSummary> SaveDataSetAsync(string dataSetName, IEnumerable<DataSetRow> data);
+        Task<DataSetSummary> SaveDataSet(string dataSetName, IEnumerable<DataSetRow> data);
 
         /// <summary>
         /// Gets the list of all data sets that have been saved to the system.
@@ -258,7 +259,7 @@ namespace Nexosis.Api.Client
         /// <returns>A list of <see cref="DataSetSummary"/>.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data</remarks>
-        Task<List<DataSetSummary>> ListDataSetsAsync();
+        Task<List<DataSetSummary>> ListDataSets();
 
         /// <summary>
         /// Gets the list of data sets that have been saved to the system, filtering by partial name match.
@@ -267,7 +268,7 @@ namespace Nexosis.Api.Client
         /// <returns>A list of <see cref="DataSetSummary"/>.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data</remarks>
-        Task<List<DataSetSummary>> ListDataSetsAsync(string nameFilter);
+        Task<List<DataSetSummary>> ListDataSets(string nameFilter);
 
         /// <summary>Get the data in the set, optionally filtering it.</summary>
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
@@ -279,7 +280,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="DataSetData" /></returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}</remarks>
-        Task<DataSetData> GetDataSetAsync(string dataSetName, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
+        Task<DataSetData> GetDataSet(string dataSetName, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
 
         /// <summary>Get the data in the set, written to a CSV file, optionally filtering it.</summary>
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
@@ -291,7 +292,7 @@ namespace Nexosis.Api.Client
         /// <param name="includeColumns">Limits results to the specified columns of the data set.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}</remarks>
-        Task GetDataSetAsync(string dataSetName, TextWriter output, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
+        Task GetDataSet(string dataSetName, TextWriter output, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber,int? pageSize, IEnumerable<string> includeColumns);
 
         /// <summary>Remove data from a data set or the entire set.</summary>
         /// <param name="dataSetName">Name of the dataset from which to remove data.</param>
@@ -300,7 +301,7 @@ namespace Nexosis.Api.Client
         /// <param name="options">Controls the options associated with the removal.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/data/{dataSetName}</remarks>
-        Task RemoveDataSetAsync(string dataSetName, DateTimeOffset? startDate, DateTimeOffset? endDate, DataSetDeleteOptions options);
+        Task RemoveDataSet(string dataSetName, DateTimeOffset? startDate, DateTimeOffset? endDate, DataSetDeleteOptions? options);
 
         /// <summary>Gets the forecasts associated with a data set.</summary>
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
@@ -312,7 +313,7 @@ namespace Nexosis.Api.Client
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <returns><see cref="DataSetData" /></returns>
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}/forecast</remarks>
-        Task<DataSetData> GetDataSetForecastAsync(string dataSetName, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
+        Task<DataSetData> GetDataSetForecast(string dataSetName, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
 
         /// <summary>Gets the forecasts associated with a data set, written as CSV.</summary>
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
@@ -325,7 +326,7 @@ namespace Nexosis.Api.Client
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <returns><see cref="DataSetData" /></returns>
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}/forecast</remarks>
-        Task GetDataSetForecastAsync(string dataSetName, TextWriter output, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
+        Task GetDataSetForecast(string dataSetName, TextWriter output, DateTimeOffset? startDate, DateTimeOffset? endDate, int? pageNumber, int? pageSize, IEnumerable<string> includeColumns);
 
         /// <summary>
         /// Removes the forecasts associated with a data set.
@@ -335,7 +336,7 @@ namespace Nexosis.Api.Client
         /// <param name="endDate">Limits deletion to those on or before the specified date.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/data/{dataSetName}/forecast</remarks>
-        Task RemoveDataSetForecastAsync(string dataSetName, DateTimeOffset? startDate, DateTimeOffset? endDate);
+        Task RemoveDataSetForecast(string dataSetName, DateTimeOffset? startDate, DateTimeOffset? endDate);
 
         /// <summary>
         /// Describes the algorithms run and the models generated in the process of deciding how to generate the forecasts for all columns in a data set.
@@ -343,7 +344,7 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">The name of the data set.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}/forecast/model</remarks>
-        Task<List<ForecastModel>> GetDataSetForecastModelsAsync(string dataSetName);
+        Task<List<ForecastModel>> ListDataSetForecastModels(string dataSetName);
 
         /// <summary>
         /// Describes the algorithms run and the models generated in the process of deciding how to generate the forecasts for a specific column in a data set.
@@ -352,7 +353,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column in the data set used in forecasting.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}/forecast/model/{targetColumn}</remarks>
-        Task<ForecastModel> GetDataSetForecastModelAsync(string dataSetName, string targetColumn);
+        Task<ForecastModel> GetDataSetForecastModel(string dataSetName, string targetColumn);
 
         /// <summary>
         /// Gives back the raw prediction data for a particular algorithm evaluated during the process of generating the forecasts for the target column in a data set.
@@ -362,6 +363,6 @@ namespace Nexosis.Api.Client
         /// <param name="algorithmKey">The name of the the algorithm used to generate a specific set of forecasts considered.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}/forecast/model/{targetColumn}/{algorithmKey}</remarks>
-        Task<DataSetData> GetDataSetForecastModelForecastAsync(string dataSetName, string targetColumn, string algorithmKey);
+        Task<DataSetData> GetDataSetForecastModelForecast(string dataSetName, string targetColumn, string algorithmKey);
     }
 }
