@@ -1,7 +1,6 @@
 ﻿namespace Nexosis.Api.Client.Model
 {
-    public class AccountBalance
+    public class AccountBalance : ReturnsCost
     {
-        public decimal CurrentBalance { get; set; }
     }
 }

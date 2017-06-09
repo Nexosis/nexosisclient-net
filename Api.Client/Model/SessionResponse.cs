@@ -25,7 +25,7 @@ namespace Nexosis.Api.Client.Model
         [JsonProperty("targetColumn", NullValueHandling = NullValueHandling.Ignore)]
         public string TargetColumn { get; set; }
     
-        [JsonProperty("targetColumn", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("eventName", NullValueHandling = NullValueHandling.Ignore)]
         public string EventName { get; set; }
 
         [JsonProperty("startDate", NullValueHandling = NullValueHandling.Ignore)]

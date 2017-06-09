@@ -6,10 +6,13 @@ namespace Nexosis.Api.Client
 {
     public class NexosisClientException : Exception
     {
+        public NexosisClientException(string message) : base(message) { }
+
+        public NexosisClientException(string message, Exception inner) : base(message, inner) { }
+
         public NexosisClientException(string message, HttpStatusCode status) : base(message)
         {
             StatusCode = status;
-            ErrorDetails = new Dictionary<string, object>();
         }
 
         public NexosisClientException(string message, HttpStatusCode status, IDictionary<string, object> details) : base(message)

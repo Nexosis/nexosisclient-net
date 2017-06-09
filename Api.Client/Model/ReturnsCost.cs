@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using Newtonsoft.Json;
 
 namespace Nexosis.Api.Client.Model
@@ -12,10 +13,12 @@ namespace Nexosis.Api.Client.Model
         [JsonIgnore]
         public string Balance { get; set; }
 
-        public void AssignCost(IDictionary<string, IEnumerable<string>> headers)
+        public void AssignCost(HttpResponseHeaders headers)
         {
-            Cost = headers["nexosis-request-cost"].FirstOrDefault() ?? "NA";
-            Balance = headers["nexosis-account-balance"].FirstOrDefault() ?? "NA";
+            if (headers.Contains("nexosis-request-cost"))
+                Cost = headers.GetValues("nexosis-request-cost").FirstOrDefault() ?? "NA";
+            if (headers.Contains("nexosis-account-balance"))
+                Balance = headers.GetValues("nexosis-account-balance").FirstOrDefault() ?? "NA";
         }
     }
 }
