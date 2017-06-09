@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -92,18 +94,58 @@ namespace Nexosis.Api.Client
 
             public HttpClient CreateClient()
             {
-                return new HttpClient(handler);
+                if (handler != null)
+                {
+                    return new HttpClient(handler);
+                }
+
+                return new HttpClient();
             }
         }
 
         private Task<T> Get<T>(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            var uri = new Uri(endpoint + path);
-            uri = uri.AddParameters(parameters);
+            var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
             {
+                requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 return MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken);
             }
+        }
+
+        private async Task<T> Post<T>(string path, IDictionary<string, string> parameters, object body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
+            var uri = PrepareUri(path, parameters);
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri))
+            {
+                requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                // TODO: would it be better to do StreamContent with a MemoryStream?
+                requestMessage.Content = new ByteArrayContent(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(body)));
+                requestMessage.Content.Headers.Add("Content-Type", "application/json");
+                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken);
+            }
+        }
+
+        // TODO: this one needs to be async and await `MakeRequest` or we get an object disposed exp on the streamcontent
+        private async Task<T> Post<T>(string path, IDictionary<string, string> parameters, StreamReader body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
+            var uri = PrepareUri(path, parameters);
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri))
+            {
+                requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                requestMessage.Content = new StreamContent(body.BaseStream);
+                requestMessage.Content.Headers.Add("Content-Type", "text/csv");
+                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        private Uri PrepareUri(string path, IDictionary<string, string> parameters)
+        {
+            // ctor made sure endpoint ends with / and we don't want doubles
+            if (path.StartsWith("/"))
+                path = path.Substring(1);
+            var uri = new Uri(endpoint + path).AddParameters(parameters);
+            return uri;
         }
 
         private async Task<T> MakeRequest<T>(HttpRequestMessage requestMessage, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
@@ -137,12 +179,21 @@ namespace Nexosis.Api.Client
                 }
                 else
                 {
-                    throw new NexosisClientException("API Error", responseMessage.StatusCode);
+                    try
+                    {
+                        var errorResponseContent = responseMessage?.Content.ReadAsStringAsync();
+                        var errorResponse = JsonConvert.DeserializeObject<ApiErrorResponse>(await errorResponseContent);
+                        throw new NexosisClientException($"API Error: {errorResponse.StatusCode} - {errorResponse.ErrorType}", responseMessage.StatusCode);
+                    } catch {  // don't care what as we are already in an error state.
+                        throw new NexosisClientException($"API Error: {responseMessage.StatusCode} - Unknown Details", responseMessage.StatusCode);
+                    }
                 }
             }
-            catch (HttpRequestException hre)
+            // something is wrong with the HttpClient (network or other), not our code.
+            catch (HttpRequestException e)
             {
-                throw new NexosisClientException(hre.Message, hre);
+                // wrapping so user can catch one exception type and handle it.
+                throw new NexosisClientException(e.Message, e);
             }
             finally
             {
@@ -165,50 +216,70 @@ namespace Nexosis.Api.Client
             return Get<AccountBalance>("/data", null, httpMessageTransformer, cancellationToken);
         }
 
-        public async Task<SessionResponse> CreateForecastSession(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            throw new NotImplementedException();
+            return CreateForecastSession(input, targetColumn, startDate, endDate, null, null, CancellationToken.None);
         }
 
-        public async Task<SessionResponse> CreateForecastSession(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl)
         {
-            throw new NotImplementedException();
+            return CreateForecastSession(input, targetColumn, startDate, endDate, statusCallbackUrl, null, CancellationToken.None);
         }
 
-        public async Task<SessionResponse> CreateForecastSession(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            throw new NotImplementedException();
+            return CreateForecastSession(input, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task<SessionResponse> CreateForecastSession(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var parameters = new Dictionary<string, string>
+            {
+                { nameof(targetColumn), targetColumn },
+                { nameof(startDate), startDate.ToString("O") },
+                { nameof(endDate), endDate.ToString("O") }
+            };
+            if (!String.IsNullOrEmpty(statusCallbackUrl))
+            {
+                parameters.Add("callbackUrl", statusCallbackUrl);
+            }
+            return Post<SessionResponse>("sessions/forecast", parameters, input, httpMessageTransformer, cancellationToken);
         }
 
-        public async Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            throw new NotImplementedException();
+            return CreateForecastSession(data, targetColumn, startDate, endDate, null, null, CancellationToken.None);
         }
 
-        public async Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl)
         {
-            throw new NotImplementedException();
+            return CreateForecastSession(data, targetColumn, startDate, endDate, statusCallbackUrl, null, CancellationToken.None);
         }
 
-        public async Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            throw new NotImplementedException();
+            return CreateForecastSession(data, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var parameters = new Dictionary<string, string>
+            {
+                { nameof(targetColumn), targetColumn },
+                { nameof(startDate), startDate.ToString("O") },
+                { nameof(endDate), endDate.ToString("O") }
+            };
+            if (!String.IsNullOrEmpty(statusCallbackUrl))
+            {
+                parameters.Add("callbackUrl", statusCallbackUrl);
+            }
+            return Post<SessionResponse>("sessions/forecast", parameters, new { data = data }, httpMessageTransformer, cancellationToken);
         }
 
         public async Task<SessionResponse> CreateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)

@@ -76,7 +76,23 @@ namespace Api.Client.Tests
 
             Assert.True(handler.Request.Headers.Contains("User-Agent"));
             Assert.Equal(NexosisClient.ClientVersion, handler.Request.Headers.GetValues("User-Agent").First());
-            
+        }
+
+        [Fact]
+        public async Task ProcessesCostAndBalance()
+        {
+            var handler = new FakeHttpMessageHandler { ContentResult = new StringContent("{ }") };
+            handler.ResponseHeaders.Add("nexosis-request-cost", new [] { "123.12 USD" });
+            handler.ResponseHeaders.Add("nexosis-account-balance",new [] { "999.99 USD" });
+
+            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new NexosisClient.HttpClientFactory(handler));
+
+            var result = await target.GetAccountBalance();
+
+            Assert.Equal(123.12m, result.Cost.Amount);
+            Assert.Equal("USD", result.Cost.Currency);
+            Assert.Equal(999.99m, result.Balance.Amount);
+            Assert.Equal("USD", result.Balance.Currency);
         }
     }
 }
