@@ -9,12 +9,12 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class NexosisClient_ListSessionTests
+    public class NexosisClient_Sessions_ListTests
     {
         private NexosisClient target;
         private FakeHttpMessageHandler handler;
 
-        public NexosisClient_ListSessionTests()
+        public NexosisClient_Sessions_ListTests()
         {
             var data = new
             {

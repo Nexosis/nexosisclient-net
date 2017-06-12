@@ -94,5 +94,17 @@ namespace Api.Client.Tests
             Assert.Equal(999.99m, result.Balance.Amount);
             Assert.Equal("USD", result.Balance.Currency);
         }
+
+        [Fact]
+        public async Task CanHandleErrorResponse()
+        {
+            
+        }
+
+        [Fact]
+        public async Task WhenHandlingErrorAndThatErrorsWillStillThrowWithSomethingUseful()
+        {
+            
+        }
     }
 }
