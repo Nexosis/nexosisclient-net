@@ -60,8 +60,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public async Task<T> Get<T>(string path, IDictionary<string, string> parameters,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<T> Get<T>(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
@@ -72,8 +71,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public async Task<T> Post<T>(string path, IDictionary<string, string> parameters, object body,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<T> Post<T>(string path, IDictionary<string, string> parameters, object body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri))
@@ -88,8 +86,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public async Task<T> Post<T>(string path, IDictionary<string, string> parameters, StreamReader body,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<T> Post<T>(string path, IDictionary<string, string> parameters, StreamReader body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri))
@@ -124,7 +121,7 @@ namespace Nexosis.Api.Client
                 var responseMessage = await client.SendAsync(requestMessage, cancellationToken).ConfigureAwait(false);
                 httpMessageTransformer?.Invoke(requestMessage, responseMessage);
 
-                if (responseMessage != null && responseMessage.IsSuccessStatusCode)
+                if (responseMessage.IsSuccessStatusCode)
                 {
                     var resultContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
                     try
@@ -145,17 +142,14 @@ namespace Nexosis.Api.Client
                 {
                     try
                     {
-                        var errorResponseContent = responseMessage?.Content.ReadAsStringAsync();
-                        var errorResponse = JsonConvert.DeserializeObject<ApiErrorResponse>(await errorResponseContent);
-                        throw new NexosisClientException(
-                            $"API Error: {errorResponse.StatusCode} - {errorResponse.ErrorType}",
-                            responseMessage.StatusCode);
+                        var errorResponseContent = responseMessage.Content.ReadAsStringAsync();
+                        var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await errorResponseContent);
+                        throw new NexosisClientException($"API Error: {responseMessage.StatusCode}", errorResponse);
                     }
                     catch
                     {
                         // don't care what as we are already in an error state.
-                        throw new NexosisClientException($"API Error: {responseMessage.StatusCode} - Unknown Details",
-                            responseMessage.StatusCode);
+                        throw new NexosisClientException($"API Error: {responseMessage.StatusCode} - {await responseMessage.Content.ReadAsStringAsync()}", responseMessage.StatusCode);
                     }
                 }
             }

@@ -58,7 +58,7 @@ namespace Api.Client.Tests
         public async Task AddsApiKeyHeaderToRequest()
         {
             var handler = new FakeHttpMessageHandler { ContentResult = new StringContent(JsonConvert.SerializeObject(new {})) };
-            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new NexosisClient.HttpClientFactory(handler));
+            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(handler));
 
             await target.GetAccountBalance();
 
@@ -70,7 +70,7 @@ namespace Api.Client.Tests
         public async Task AddsUserAgentToRequest()
         {
             var handler = new FakeHttpMessageHandler { ContentResult = new StringContent(JsonConvert.SerializeObject(new {})) };
-            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new NexosisClient.HttpClientFactory(handler));
+            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(handler));
 
             await target.GetAccountBalance();
 
@@ -85,7 +85,7 @@ namespace Api.Client.Tests
             handler.ResponseHeaders.Add("nexosis-request-cost", new [] { "123.12 USD" });
             handler.ResponseHeaders.Add("nexosis-account-balance",new [] { "999.99 USD" });
 
-            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new NexosisClient.HttpClientFactory(handler));
+            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(handler));
 
             var result = await target.GetAccountBalance();
 

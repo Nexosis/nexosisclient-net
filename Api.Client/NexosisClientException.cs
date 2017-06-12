@@ -10,19 +10,18 @@ namespace Nexosis.Api.Client
 
         public NexosisClientException(string message, Exception inner) : base(message, inner) { }
 
+        public NexosisClientException(string message, ErrorResponse response) : base(message)
+        {
+            StatusCode = (HttpStatusCode)response.StatusCode;
+            ErrorResponse = response;
+        }
         public NexosisClientException(string message, HttpStatusCode status) : base(message)
         {
             StatusCode = status;
         }
 
-        public NexosisClientException(string message, HttpStatusCode status, IDictionary<string, object> details) : base(message)
-        {
-            StatusCode = status;
-            ErrorDetails = details;
-        }
-
         public HttpStatusCode StatusCode { get; set; }
-        public IDictionary<string, object> ErrorDetails { get; set; }
+        public ErrorResponse ErrorResponse { get; set; }
     }
 
     public class ErrorResponse
@@ -33,6 +32,7 @@ namespace Nexosis.Api.Client
         }
 
         public int StatusCode { get; set; }
+        public string Message { get; set; }
         public string ErrorType { get; set; }
         public Dictionary<string, object> ErrorDetails { get; set; }
     }
