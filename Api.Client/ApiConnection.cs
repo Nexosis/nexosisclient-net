@@ -60,14 +60,33 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public async Task<T> Get<T>(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<T> Get<T>(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, string acceptType = "appliction/json")
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
             {
+                requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptType));
+                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        public async Task Get(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, StreamWriter output, string acceptType = "application/json")
+        {
+            var uri = PrepareUri(path, parameters);
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
+            {
+                requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(acceptType));
+                await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, output).ConfigureAwait(false);
+            }
+        }
+
+        public async Task<T> Head<T>(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
+            var uri = PrepareUri(path, parameters);
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Head, uri))
+            {
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken)
-                    .ConfigureAwait(false);
+                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -78,11 +97,9 @@ namespace Nexosis.Api.Client
             {
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 // TODO: would it be better to do StreamContent with a MemoryStream?
-                requestMessage.Content =
-                    new ByteArrayContent(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(body)));
+                requestMessage.Content = new ByteArrayContent(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(body)));
                 requestMessage.Content.Headers.Add("Content-Type", "application/json");
-                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken)
-                    .ConfigureAwait(false);
+                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -94,8 +111,17 @@ namespace Nexosis.Api.Client
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 requestMessage.Content = new StreamContent(body.BaseStream);
                 requestMessage.Content.Headers.Add("Content-Type", "text/csv");
-                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken)
-                    .ConfigureAwait(false);
+                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        public async Task Delete(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
+            var uri = PrepareUri(path, parameters);
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Delete, uri))
+            {
+                requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -108,18 +134,12 @@ namespace Nexosis.Api.Client
             return uri;
         }
 
-        private async Task<T> MakeRequest<T>(HttpRequestMessage requestMessage,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        private async Task<T> MakeRequest<T>(HttpRequestMessage requestMessage, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var client = httpClientFactory.CreateClient();
             try
             {
-                requestMessage.Headers.Add("api-key", key);
-                requestMessage.Headers.Add("User-Agent", NexosisClient.ClientVersion);
-
-                httpMessageTransformer?.Invoke(requestMessage, null);
-                var responseMessage = await client.SendAsync(requestMessage, cancellationToken).ConfigureAwait(false);
-                httpMessageTransformer?.Invoke(requestMessage, responseMessage);
+                var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client);
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
@@ -140,24 +160,9 @@ namespace Nexosis.Api.Client
                 }
                 else
                 {
-                    try
-                    {
-                        var errorResponseContent = responseMessage.Content.ReadAsStringAsync();
-                        var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await errorResponseContent);
-                        throw new NexosisClientException($"API Error: {responseMessage.StatusCode}", errorResponse);
-                    }
-                    catch
-                    {
-                        // don't care what as we are already in an error state.
-                        throw new NexosisClientException($"API Error: {responseMessage.StatusCode} - {await responseMessage.Content.ReadAsStringAsync()}", responseMessage.StatusCode);
-                    }
+                    await ProcessFailureResponse(responseMessage);
+                    return default(T); // here to satify compiler as ProcessFailureRequest always throws
                 }
-            }
-            // something is wrong with the HttpClient (network or other), not our code.
-            catch (HttpRequestException e)
-            {
-                // wrapping so user can catch one exception type and handle it.
-                throw new NexosisClientException(e.Message, e);
             }
             finally
             {
@@ -165,6 +170,74 @@ namespace Nexosis.Api.Client
             }
         }
 
+        private async Task MakeRequest(HttpRequestMessage requestMessage, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
+            var client = httpClientFactory.CreateClient();
+            try
+            {
+                var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client);
+
+                if (!responseMessage.IsSuccessStatusCode)
+                {
+                    await ProcessFailureResponse(responseMessage);
+                }
+            }
+            finally
+            {
+                client.Dispose();
+            }
+        }
+
+        private async Task MakeRequest(HttpRequestMessage requestMessage, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, StreamWriter output)
+        {
+            var client = httpClientFactory.CreateClient();
+            try
+            {
+                var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    await responseMessage.Content.CopyToAsync(output.BaseStream);
+                }
+                else
+                { 
+                    await ProcessFailureResponse(responseMessage);
+                }
+            }
+            finally
+            {
+                client.Dispose();
+            }
+        }
+
+        private async Task<HttpResponseMessage> MakeRequest(HttpRequestMessage requestMessage, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
+            CancellationToken cancellationToken, HttpClient client)
+        {
+            requestMessage.Headers.Add("api-key", key);
+            requestMessage.Headers.Add("User-Agent", NexosisClient.ClientVersion);
+
+            httpMessageTransformer?.Invoke(requestMessage, null);
+            var responseMessage = await client.SendAsync(requestMessage, cancellationToken).ConfigureAwait(false);
+            httpMessageTransformer?.Invoke(requestMessage, responseMessage);
+            return responseMessage;
+        }
+
+        private static async Task ProcessFailureResponse(HttpResponseMessage responseMessage)
+        {
+            try
+            {
+                var errorResponseContent = responseMessage.Content.ReadAsStringAsync();
+                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await errorResponseContent);
+                throw new NexosisClientException($"API Error: {responseMessage.StatusCode}", errorResponse);
+            }
+            catch
+            {
+                // don't care what as we are already in an error state.
+                throw new NexosisClientException(
+                    $"API Error: {responseMessage.StatusCode} - {await responseMessage.Content.ReadAsStringAsync()}",
+                    responseMessage.StatusCode);
+            }
+        }
     }
 
 }

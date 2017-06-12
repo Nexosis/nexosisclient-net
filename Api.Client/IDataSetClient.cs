@@ -434,26 +434,5 @@ namespace Nexosis.Api.Client
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}/forecast/model/{targetColumn}</remarks>
         Task<ForecastModel> GetDataSetForecastModel(string dataSetName, string targetColumn, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Gives back the raw prediction data for a particular algorithm evaluated during the process of generating the forecasts for the target column in a data set.
-        /// </summary>
-        /// <param name="dataSetName">The name of the data set.</param>
-        /// <param name="targetColumn">The name of the column in the data set used in forecasting.</param>
-        /// <param name="algorithmKey">The name of the the algorithm used to generate a specific set of forecasts considered.</param>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
-        /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}/forecast/model/{targetColumn}/{algorithmKey}</remarks>
-        Task<DataSetData> GetDataSetForecastModelForecast(string dataSetName, string targetColumn, string algorithmKey);
-
-        /// <summary>
-        /// Gives back the raw prediction data for a particular algorithm evaluated during the process of generating the forecasts for the target column in a data set.
-        /// </summary>
-        /// <param name="dataSetName">The name of the data set.</param>
-        /// <param name="targetColumn">The name of the column in the data set used in forecasting.</param>
-        /// <param name="algorithmKey">The name of the the algorithm used to generate a specific set of forecasts considered.</param>
-        /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
-        /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}/forecast/model/{targetColumn}/{algorithmKey}</remarks>
-        Task<DataSetData> GetDataSetForecastModelForecast(string dataSetName, string targetColumn, string algorithmKey, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
     }
 }

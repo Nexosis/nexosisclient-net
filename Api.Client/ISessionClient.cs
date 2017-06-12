@@ -13,7 +13,7 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Forecast from CSV formatted data.
         /// </summary>
-        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="StreamReader"/> which contains the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
@@ -25,7 +25,7 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Forecast from CSV formatted data.
         /// </summary>
-        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="StreamReader"/> which contains the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
@@ -38,7 +38,7 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Forecast from CSV formatted data.
         /// </summary>
-        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="StreamReader"/> which contains the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
@@ -52,7 +52,7 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Forecast from CSV formatted data.
         /// </summary>
-        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="StreamReader"/> which contains the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
@@ -183,7 +183,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> CreateImpactSession(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> CreateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
         
         /// <summary>
         /// Analyze impact for an event with CSV formatted data.
@@ -197,7 +197,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> CreateImpactSession(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
+        Task<SessionResponse> CreateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl);
         
         /// <summary>
         /// Analyze impact for an event with CSV formatted data.
@@ -212,7 +212,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> CreateImpactSession(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> CreateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// Analyze impact for an event with CSV formatted data.
@@ -228,7 +228,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> CreateImpactSession(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> CreateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
         /// <summary>
         /// Analyze impact for an event with data in the request.
@@ -349,19 +349,19 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Estimate the cost of a forecast from the contents of a CSV file.
         /// </summary>
-        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="StreamReader"/> which contains the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecastSession(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> EstimateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
         
         /// <summary>
         /// Estimate the cost of a forecast from the contents of a CSV file.
         /// </summary>
-        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="StreamReader"/> which contains the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
@@ -369,12 +369,12 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecastSession(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> EstimateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// Estimate the cost of a forecast from the contents of a CSV file.
         /// </summary>
-        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="StreamReader"/> which contains the data you wish to submit.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data for prediction.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
@@ -383,7 +383,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecastSession(TextReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> EstimateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
         /// <summary>
         /// Estimate the cost of a forecast from data posted in the request.
@@ -466,7 +466,7 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data from a CSV file.
         /// </summary>
-        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="StreamReader"/> which contains the data you wish to submit.</param>
         /// <param name="eventName">The name of the event.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
@@ -474,12 +474,12 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpactSession(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<SessionResponse> EstimateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
         
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data from a CSV file.
         /// </summary>
-        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="StreamReader"/> which contains the data you wish to submit.</param>
         /// <param name="eventName">The name of the event.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
@@ -488,12 +488,12 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpactSession(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> EstimateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data from a CSV file.
         /// </summary>
-        /// <param name="input">A reference to a <see cref="TextReader"/> which contains the data you wish to submit.</param>
+        /// <param name="input">A reference to a <see cref="StreamReader"/> which contains the data you wish to submit.</param>
         /// <param name="eventName">The name of the event.</param>
         /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
@@ -503,7 +503,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpactSession(TextReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> EstimateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data in the request.
@@ -517,6 +517,48 @@ namespace Nexosis.Api.Client
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
         Task<SessionResponse> EstimateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
+        
+        /// <summary>
+        /// Estimate the cost of impact analysis for an event with data in the request.
+        /// </summary>
+        /// <param name="data">The data to run the impact analysis on.</param>
+        /// <param name="eventName">The name of the event.</param>
+        /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
+        /// <param name="startDate">The starting date of the forecast period.</param>
+        /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
+        Task<SessionResponse> EstimateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        
+        /// <summary>
+        /// Estimate the cost of impact analysis for an event with data in the request.
+        /// </summary>
+        /// <param name="data">The data to run the impact analysis on.</param>
+        /// <param name="eventName">The name of the event.</param>
+        /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
+        /// <param name="startDate">The starting date of the forecast period.</param>
+        /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
+        Task<SessionResponse> EstimateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        
+        /// <summary>
+        /// Estimate the cost of impact analysis for an event with data already saved to the API.
+        /// </summary>
+        /// <param name="dataSetName">The name of the saved data set that has the data to run the impact analysis on.</param>
+        /// <param name="eventName">The name of the event.</param>
+        /// <param name="targetColumn">The name of the column that should be used as the source data.</param>
+        /// <param name="startDate">The starting date of the forecast period.</param>
+        /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
+        Task<SessionResponse> EstimateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate);
         
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data already saved to the API.
@@ -621,57 +663,78 @@ namespace Nexosis.Api.Client
         Task RemoveSessions();
         
         /// <summary>
-        /// Remove sessions that have been run.
+        /// Remove sessions that have been run. All parameters are optional and will be used to limit the sessions removed.
         /// </summary>
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
         Task RemoveSessions(string dataSetName);
-        
+
         /// <summary>
         /// Remove sessions that have been run. All parameters are optional and will be used to limit the sessions removed.
         /// </summary>
-        /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
-        /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
+        /// <param name="type">Limits sessions to those of the specified type - can be null or if given a value it Impact or Forecast.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
-        Task RemoveSessions(string dataSetName, string eventName);
+        Task RemoveSessions(SessionType? type);
+
+        /// <summary>
+        /// Remove sessions that have been run. All parameters are optional and will be used to limit the sessions removed.
+        /// </summary>
+        /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
+        /// <param name="type">Limits sessions to those of the specified type - can be null or if given a value it Impact or Forecast.</param>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
+        Task RemoveSessions(string dataSetName, SessionType? type);
+
+        /// <summary>
+        /// Remove sessions that have been run. All parameters are optional and will be used to limit the sessions removed.
+        /// </summary>
+        /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
+        /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
+        /// <param name="type">Limits sessions to those of the specified type - can be null or if given a value it Impact or Forecast.</param>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
+        Task RemoveSessions(string dataSetName, string eventName, SessionType? type);
         
         /// <summary>
         /// Remove sessions that have been run. All parameters are optional and will be used to limit the sessions removed.
         /// </summary>
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
+        /// <param name="type">Limits sessions to those of the specified type - can be null or if given a value it Impact or Forecast.</param>
         /// <param name="startDate">Limits sessions to those created on or after the specified date.</param>
         /// <param name="endDate">Limits sessions to those created on or before the specified date.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
-        Task RemoveSessions(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task RemoveSessions(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate);
         
         /// <summary>
         /// Remove sessions that have been run. All parameters are optional and will be used to limit the sessions removed.
         /// </summary>
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
+        /// <param name="type">Limits sessions to those of the specified type - can be null or if given a value it Impact or Forecast.</param>
         /// <param name="startDate">Limits sessions to those created on or after the specified date.</param>
         /// <param name="endDate">Limits sessions to those created on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
-        Task RemoveSessions(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task RemoveSessions(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// Remove sessions that have been run. All parameters are optional and will be used to limit the sessions removed.
         /// </summary>
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
+        /// <param name="type">Limits sessions to those of the specified type - can be null or if given a value it Impact or Forecast.</param>
         /// <param name="startDate">Limits sessions to those created on or after the specified date.</param>
         /// <param name="endDate">Limits sessions to those created on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
-        Task RemoveSessions(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task RemoveSessions(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
         /// <summary>
         /// Get a specific session by id.
@@ -795,33 +858,33 @@ namespace Nexosis.Api.Client
         /// other data normally returned in a <see cref="SessionResult"/>.
         /// </summary>
         /// <param name="id">The identifier of the session.</param>
-        /// <param name="output">An <see cref="TextWriter"/> where the results should be written.</param>
+        /// <param name="output">An <see cref="StreamWriter"/> where the results should be written.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions/{id}/results</remarks>
-        Task GetSessionResults(Guid id, TextWriter output);
+        Task GetSessionResults(Guid id, StreamWriter output);
         
         /// <summary>
         /// Get results of the session written to a file as CSV. It will only write the values of the forecast or impact session and not any of the 
         /// other data normally returned in a <see cref="SessionResult"/>.
         /// </summary>
         /// <param name="id">The identifier of the session.</param>
-        /// <param name="output">An <see cref="TextWriter"/> where the results should be written.</param>
+        /// <param name="output">An <see cref="StreamWriter"/> where the results should be written.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions/{id}/results</remarks>
-        Task GetSessionResults(Guid id, TextWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task GetSessionResults(Guid id, StreamWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// Get results of the session written to a file as CSV. It will only write the values of the forecast or impact session and not any of the 
         /// other data normally returned in a <see cref="SessionResult"/>.
         /// </summary>
         /// <param name="id">The identifier of the session.</param>
-        /// <param name="output">An <see cref="TextWriter"/> where the results should be written.</param>
+        /// <param name="output">An <see cref="StreamWriter"/> where the results should be written.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions/{id}/results</remarks>
-        Task GetSessionResults(Guid id, TextWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task GetSessionResults(Guid id, StreamWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
     }
 }
