@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Nexosis.Api.Client;
 using System;
 using System.Collections.Generic;
@@ -16,19 +16,19 @@ namespace Api.Client.Tests
         [Fact]
         public async Task SubmitCsvStartsNewSession()
         {  
-            var session = new SessionData { DataSetName = "FullTest", StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
-            var target = new ApiClient();
-            var actual = await target.ForecastFromCsvAsync(session, new FileInfo(productFilePath), "sales");
-            Assert.NotNull(actual.SessionId);
+            using (var file = File.OpenText(productFilePath))
+            {
+                var actual = await target.Sessions.CreateForecastSession(file, "sales", DateTimeOffset.Parse("2017-03-25 -0:00"), DateTimeOffset.Parse("2017-04-25 -0:00"));
+                Assert.NotNull(actual.SessionId);
+            }
         }
 
         [Fact]
         public async Task SubmitDataDirectlyStartsNewSession()
         {
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var session = new SessionData { DataSetName = "Something", StartDate = DateTime.Parse("2017-03-26"), EndDate = DateTime.Parse("2017-04-25") };
-            var target = new ApiClient();
-            var actual = await target.ForecastFromDataAsync(session, dataSet, "instances");
+            var actual = await target.Sessions.CreateForecastSession(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
+            var actual = await target.CreateForecastSession(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
             Assert.NotNull(actual.SessionId);
         }
 
