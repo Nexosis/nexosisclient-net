@@ -103,13 +103,13 @@ namespace Nexosis.Api.Client
             }
         }
 
-        private Task<T> Get<T>(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        private async Task<T> Get<T>(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
             {
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                return MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken);
+                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -122,11 +122,10 @@ namespace Nexosis.Api.Client
                 // TODO: would it be better to do StreamContent with a MemoryStream?
                 requestMessage.Content = new ByteArrayContent(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(body)));
                 requestMessage.Content.Headers.Add("Content-Type", "application/json");
-                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken);
+                return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
             }
         }
 
-        // TODO: this one needs to be async and await `MakeRequest` or we get an object disposed exp on the streamcontent
         private async Task<T> Post<T>(string path, IDictionary<string, string> parameters, StreamReader body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var uri = PrepareUri(path, parameters);
@@ -221,8 +220,7 @@ namespace Nexosis.Api.Client
             return CreateForecastSession(input, targetColumn, startDate, endDate, null, null, CancellationToken.None);
         }
 
-        public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
-            string statusCallbackUrl)
+        public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl)
         {
             return CreateForecastSession(input, targetColumn, startDate, endDate, statusCallbackUrl, null, CancellationToken.None);
         }
