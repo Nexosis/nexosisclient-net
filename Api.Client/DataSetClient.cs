@@ -201,7 +201,7 @@ namespace Nexosis.Api.Client
             if ((options & DataSetDeleteOptions.CascadeForecast) != 0) parameters.Add(new KeyValuePair<string, string>("cascade", "forecast"));
             if ((options & DataSetDeleteOptions.CascadeSessions) != 0) parameters.Add(new KeyValuePair<string, string>("cascade", "sessions"));
 
-            await apiConnection.Delete($"data/{dataSetName}", parameters, httpMessageTransformer, cancellationToken) .ConfigureAwait(false);
+            await apiConnection.Delete($"data/{dataSetName}", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
         public Task<DataSetData> GetDataSetForecast(string dataSetName)
