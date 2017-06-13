@@ -4,7 +4,6 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Nexosis.Api.Client;
 using Nexosis.Api.Client.Model;
 using Xunit;
 
@@ -78,7 +77,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task ReqiresNotNullOrEmptyDataSetName()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateImpactSession((String) null, "event",  "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateImpactSession((string) null, "event",  "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
 
             Assert.Equal("dataSetName", exception.ParamName);
         }

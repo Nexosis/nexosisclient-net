@@ -77,7 +77,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task ReqiresNotNullOrEmptyDataSetName()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateForecastSession((String) null, "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateForecastSession((string) null, "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
 
             Assert.Equal("dataSetName", exception.ParamName);
         }

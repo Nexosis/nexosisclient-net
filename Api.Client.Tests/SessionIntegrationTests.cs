@@ -1,10 +1,10 @@
-using System.Linq;
-using Nexosis.Api.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Nexosis.Api.Client;
 using Nexosis.Api.Client.Model;
 using Xunit;
 

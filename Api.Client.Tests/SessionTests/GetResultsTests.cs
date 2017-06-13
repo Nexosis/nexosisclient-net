@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Nexosis.Api.Client;
-using Nexosis.Api.Client.Model;
 using Xunit;
 
 namespace Api.Client.Tests

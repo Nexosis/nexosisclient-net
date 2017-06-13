@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Nexosis.Api.Client;
 using Nexosis.Api.Client.Model;
 using Xunit;
 
