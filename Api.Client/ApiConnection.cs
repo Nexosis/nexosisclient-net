@@ -93,8 +93,18 @@ namespace Nexosis.Api.Client
 
         public async Task<T> Post<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, object body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            return await SendObjectContent<T>(path, parameters, HttpMethod.Post, body, httpMessageTransformer, cancellationToken);
+        }
+        public async Task<T> Put<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, object body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
+            return await SendObjectContent<T>(path, parameters, HttpMethod.Put, body, httpMessageTransformer, cancellationToken);
+        }
+
+        private async Task<T> SendObjectContent<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, HttpMethod method, object body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
+            CancellationToken cancellationToken)
+        {
             var uri = PrepareUri(path, parameters);
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri))
+            using (var requestMessage = new HttpRequestMessage(method, uri))
             {
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 // TODO: would it be better to do StreamContent with a MemoryStream?
@@ -106,8 +116,18 @@ namespace Nexosis.Api.Client
 
         public async Task<T> Post<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, StreamReader body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            return await SendStreamContent<T>(path, parameters, HttpMethod.Post, body, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<T> Put<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, StreamReader body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
+            return await SendStreamContent<T>(path, parameters, HttpMethod.Put, body, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
+        }
+
+        private async Task<T> SendStreamContent<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, HttpMethod method, StreamReader body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
             var uri = PrepareUri(path, parameters);
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri))
+            using (var requestMessage = new HttpRequestMessage(method, uri))
             {
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 requestMessage.Content = new StreamContent(body.BaseStream);
@@ -115,6 +135,7 @@ namespace Nexosis.Api.Client
                 return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
             }
         }
+
 
         public async Task Delete(string path, IEnumerable<KeyValuePair<string, string>> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
@@ -229,6 +250,7 @@ namespace Nexosis.Api.Client
             var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await errorResponseContent);
             throw new NexosisClientException($"API Error: {responseMessage.StatusCode}", errorResponse);
         }
+
     }
 
 }
