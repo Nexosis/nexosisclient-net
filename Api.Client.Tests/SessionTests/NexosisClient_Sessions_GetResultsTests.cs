@@ -9,23 +9,29 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class NexosisClient_Sessions_GetResultsTests
+    public class NexosisClient_Sessions_GetResultsTests : NexosisClient_TestsBase
     {
-        private NexosisClient target;
-        private FakeHttpMessageHandler handler;
-
-        public NexosisClient_Sessions_GetResultsTests()
+        public NexosisClient_Sessions_GetResultsTests() : base(new { session = new { } })
         {
-            var data = new { };
-
-            handler = new FakeHttpMessageHandler { ContentResult = new StringContent(JsonConvert.SerializeObject(data)) };
-            target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(handler));
         }
 
         [Fact]
-        public async Task CallingItWillDoSomething()
+        public async Task GetResultsReturnsThem()
         {
-            
+            var sessionId = Guid.NewGuid();
+            await target.Sessions.GetSessionResults(sessionId);
+
+            Assert.Equal(HttpMethod.Get, handler.Request.Method);
+            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/results"), handler.Request.RequestUri);
+        }
+
+        [Fact]
+        public async Task PassesTransformFunction()
+        {
+            bool called = false;
+            await target.Sessions.GetSessionResults(Guid.NewGuid(), (request, repsonse) => { called = true; });
+
+            Assert.True(called, "Transform function not called.");
         }
     }
 }

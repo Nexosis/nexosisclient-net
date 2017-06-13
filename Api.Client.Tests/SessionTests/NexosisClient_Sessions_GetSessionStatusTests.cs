@@ -9,23 +9,30 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class NexosisClient_Sessions_GetSessionStatusTests
+    public class NexosisClient_Sessions_GetSessionStatusTests : NexosisClient_TestsBase
     {
-        private NexosisClient target;
-        private FakeHttpMessageHandler handler;
-
-        public NexosisClient_Sessions_GetSessionStatusTests()
+        public NexosisClient_Sessions_GetSessionStatusTests() : base(new { })
         {
-            var data = new { };
-
-            handler = new FakeHttpMessageHandler { ContentResult = new StringContent(JsonConvert.SerializeObject(data)) };
-            target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(handler));
+            handler.ResponseHeaders.Add("Nexosis-Session-Status", new[] { "Started" }); 
         }
 
         [Fact]
-        public async Task CallingItWillDoSomething()
+        public async Task StatusHeaderIsAssignedToResult()
         {
-            
+            var sessionId = Guid.NewGuid();
+            var result = await target.Sessions.GetSessionStatus(sessionId);
+
+            Assert.Equal(sessionId, result.SessionId);
+            Assert.Equal(SessionStatus.Started, result.Status);
+        }
+
+        [Fact]
+        public async Task HttpTransformerIsWrappedAndCalled()
+        {
+            bool called = false;
+            var result = await target.Sessions.GetSessionStatus(Guid.NewGuid(), (request, response) => { called = true; });
+
+            Assert.True(called, "Http transform function not called");
         }
     }
 }

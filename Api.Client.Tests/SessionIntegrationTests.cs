@@ -114,15 +114,23 @@ namespace Api.Client.Tests
             var session = sessions.FirstOrDefault(s => s.Status == SessionStatus.Completed);
 
             var filename = Path.Combine(AppContext.BaseDirectory, $"test-ouput-{DateTime.UtcNow:yyyyMMddhhmmss}.csv");
-            using (var output = new StreamWriter(File.OpenWrite(filename)))
+            try
             {
-                await target.Sessions.GetSessionResults(session.SessionId, output);
+                using (var output = new StreamWriter(File.OpenWrite(filename)))
+                {
+                    await target.Sessions.GetSessionResults(session.SessionId, output);
+                }
+
+                var results = File.ReadAllText(filename);
+
+                Assert.True(results.Length > 0);
+                Assert.StartsWith("timestamp,", results);
             }
-
-            var results = File.ReadAllText(filename);
-
-            Assert.True(results.Length > 0);
-            Assert.StartsWith("timestamp,", results);
+            finally
+            {
+                if (File.Exists(filename))
+                    File.Delete(filename);
+            }
         }
 
         [Fact]
