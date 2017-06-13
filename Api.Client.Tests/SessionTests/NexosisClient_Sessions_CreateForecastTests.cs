@@ -66,5 +66,34 @@ namespace Api.Client.Tests
                     File.Delete(filename);
             }
         }
+
+        [Fact]
+        public async Task ReqiresNotNullDataSet()
+        {
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.CreateForecastSession((IEnumerable<DataSetRow>) null, "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+
+            Assert.Equal("data", exception.ParamName);
+        }
+        [Fact]
+        public async Task ReqiresNotNullOrEmptyDataSetName()
+        {
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateForecastSession((String) null, "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+
+            Assert.Equal("dataSetName", exception.ParamName);
+        }
+        [Fact]
+        public async Task ReqiresNotNullStreamReader()
+        {
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.CreateForecastSession((StreamReader) null, "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+
+            Assert.Equal("input", exception.ParamName);
+        }
+        [Fact]
+        public async Task ReqiresNotNullOrEmptyTargetColumn()
+        {
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateForecastSession("dataSet", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+
+            Assert.Equal("targetColumn", exception.ParamName);
+        }
     }
 }

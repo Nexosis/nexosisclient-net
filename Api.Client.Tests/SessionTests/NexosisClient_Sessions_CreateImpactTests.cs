@@ -68,5 +68,40 @@ namespace Api.Client.Tests
             }
         }
 
+        [Fact]
+        public async Task ReqiresNotNullDataSet()
+        {
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.CreateImpactSession((IEnumerable<DataSetRow>) null, "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+
+            Assert.Equal("data", exception.ParamName);
+        }
+        [Fact]
+        public async Task ReqiresNotNullOrEmptyDataSetName()
+        {
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateImpactSession((String) null, "event",  "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+
+            Assert.Equal("dataSetName", exception.ParamName);
+        }
+        [Fact]
+        public async Task ReqiresNotNullStreamReader()
+        {
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.CreateImpactSession((StreamReader) null, "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+
+            Assert.Equal("input", exception.ParamName);
+        }
+        [Fact]
+        public async Task ReqiresNotNullOrEmptyTargetColumn()
+        {
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateImpactSession("dataSet", "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+
+            Assert.Equal("targetColumn", exception.ParamName);
+        }
+        [Fact]
+        public async Task ReqiresNotNullOrEmptyEventName()
+        {
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateImpactSession("dataSet", "", "targetCol", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+
+            Assert.Equal("eventName", exception.ParamName);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -23,6 +24,15 @@ namespace Api.Client.Tests
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/results"), handler.Request.RequestUri);
+        }
+
+        [Fact]
+        public async Task GetResultToFileThrowsWithNullWriter()
+        {
+            var sessionId = Guid.NewGuid();
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.GetSessionResults(sessionId, (StreamWriter)null));
+
+            Assert.Equal("output", exception.ParamName);
         }
 
         [Fact]

@@ -38,6 +38,11 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "Input reader cannot be null.");
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column to forecast on.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/forecast", input, null /* eventName */, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
@@ -61,6 +66,11 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column to forecast on.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/forecast", data, null /* eventName */, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
@@ -84,6 +94,11 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> CreateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (String.IsNullOrEmpty(dataSetName))
+                throw new ArgumentException("Must specify a data set name to forecast on.", nameof(dataSetName));
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column to forecast on.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/forecast", dataSetName, null /* eventName */, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
@@ -108,6 +123,13 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> CreateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "Must give an input reader.");
+            if (String.IsNullOrEmpty(eventName))
+                throw new ArgumentException("Must specify an event name for this impact session.", nameof(eventName));
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column for impact.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/impact", input, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
@@ -133,6 +155,13 @@ namespace Nexosis.Api.Client
             DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data), "Must give data for impact session..");
+            if (String.IsNullOrEmpty(eventName))
+                throw new ArgumentException("Must specify an event name for this impact session.", nameof(eventName));
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column for impact.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/impact", data, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
@@ -156,6 +185,13 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> CreateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (String.IsNullOrEmpty(dataSetName))
+                throw new ArgumentException("Must specify a data set name for impact.", nameof(dataSetName));
+            if (String.IsNullOrEmpty(eventName))
+                throw new ArgumentException("Must specify an event name for impact.", nameof(eventName));
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column for impact.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/impact", dataSetName, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
@@ -173,6 +209,11 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> EstimateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "Input reader cannot be null.");
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column to forecast on.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/forecast", input, null /* eventName */, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
@@ -190,6 +231,11 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> EstimateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column to forecast on.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/forecast", data, null /* eventName */, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
@@ -207,6 +253,11 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> EstimateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (String.IsNullOrEmpty(dataSetName))
+                throw new ArgumentException("Must specify a data set name to forecast on.", nameof(dataSetName));
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column to forecast on.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/forecast", dataSetName, null /* eventName */, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
@@ -225,6 +276,13 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> EstimateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "Must give an input reader.");
+            if (String.IsNullOrEmpty(eventName))
+                throw new ArgumentException("Must specify an event name for this impact session.", nameof(eventName));
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column for impact.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/impact", input, eventName, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
@@ -243,6 +301,13 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> EstimateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data), "Must give data for impact session.");
+            if (String.IsNullOrEmpty(eventName))
+                throw new ArgumentException("Must specify an event name for this impact session.", nameof(eventName));
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column for impact.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/impact", data, eventName, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
@@ -260,6 +325,13 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> EstimateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (String.IsNullOrEmpty(dataSetName))
+                throw new ArgumentException("Must specify a data set name for impact.", nameof(dataSetName));
+            if (String.IsNullOrEmpty(eventName))
+                throw new ArgumentException("Must specify an event name for impact.", nameof(eventName));
+            if (String.IsNullOrEmpty(targetColumn))
+                throw new ArgumentException("Must specify a target column for impact.", nameof(targetColumn));
+
             return CreateSessionInternal("sessions/impact", dataSetName, eventName, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
@@ -547,6 +619,9 @@ namespace Nexosis.Api.Client
 
         public async Task GetSessionResults(Guid id, StreamWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            if (output == null)
+                throw new ArgumentNullException(nameof(output));
+
             await apiConnection.Get($"sessions/{id}/results", null, httpMessageTransformer, cancellationToken, output, "text/csv");
         }
     }
