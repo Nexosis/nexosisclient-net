@@ -12,7 +12,7 @@ namespace Nexosis.Api.Client
         /// <param name="uri">Original request Uri</param>
         /// <param name="parameters">Collection of key-value pairs</param>
         /// <returns>Updated request Uri</returns>
-        public static Uri AddParameters(this Uri uri, IDictionary<string, string> parameters)
+        public static Uri AddParameters(this Uri uri, IList<KeyValuePair<string,string>> parameters)
         {
             if (parameters == null || !parameters.Any()) return uri;
 
@@ -28,12 +28,11 @@ namespace Nexosis.Api.Client
 
                 foreach (var existing in existingParameters)
                 {
-                    if (!parameters.ContainsKey(existing.Key))
+                    if (!parameters.Contains(existing))
                     {
                         parameters.Add(existing);
                     }
                 }
-
             }
             else
             {

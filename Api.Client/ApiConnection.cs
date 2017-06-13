@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -60,7 +61,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public async Task<T> Get<T>(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, string acceptType = "appliction/json")
+        public async Task<T> Get<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, string acceptType = "appliction/json")
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
@@ -70,7 +71,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public async Task Get(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, StreamWriter output, string acceptType = "application/json")
+        public async Task Get(string path, IEnumerable<KeyValuePair<string, string>> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, StreamWriter output, string acceptType = "application/json")
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
@@ -80,7 +81,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public async Task<T> Head<T>(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<T> Head<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Head, uri))
@@ -90,7 +91,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public async Task<T> Post<T>(string path, IDictionary<string, string> parameters, object body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<T> Post<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, object body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri))
@@ -103,7 +104,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public async Task<T> Post<T>(string path, IDictionary<string, string> parameters, StreamReader body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<T> Post<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, StreamReader body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri))
@@ -115,7 +116,7 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public async Task Delete(string path, IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task Delete(string path, IEnumerable<KeyValuePair<string, string>> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var uri = PrepareUri(path, parameters);
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Delete, uri))
@@ -125,12 +126,12 @@ namespace Nexosis.Api.Client
             }
         }
 
-        public Uri PrepareUri(string path, IDictionary<string, string> parameters)
+        public Uri PrepareUri(string path, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             // ctor made sure endpoint ends with / and we don't want doubles
             if (path.StartsWith("/"))
                 path = path.Substring(1);
-            var uri = new Uri(endpoint + path).AddParameters(parameters);
+            var uri = new Uri(endpoint + path).AddParameters(parameters.ToList());
             return uri;
         }
 
