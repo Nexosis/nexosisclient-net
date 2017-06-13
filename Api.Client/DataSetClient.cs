@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace Nexosis.Api.Client
             throw new NotImplementedException();
         }
 
-        public async Task<DataSetSummary> CreateDataSet(string dataSetName, IEnumerable<DataSetRow> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<DataSetSummary> CreateDataSet(string dataSetName, IEnumerable<DataSetRow> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
             throw new NotImplementedException();
         }
@@ -33,52 +34,81 @@ namespace Nexosis.Api.Client
             throw new NotImplementedException();
         }
 
-        public async Task<List<DataSetSummary>> ListDataSets()
+        public Task<List<DataSetSummary>> ListDataSets()
         {
-            throw new NotImplementedException();
+            return ListDataSets(null);
         }
 
-        public async Task<List<DataSetSummary>> ListDataSets(string nameFilter)
+        public Task<List<DataSetSummary>> ListDataSets(string partialName)
         {
-            throw new NotImplementedException();
+            return ListDataSets(partialName, null);
         }
 
-        public async Task<List<DataSetSummary>> ListDataSets(string nameFilter, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<List<DataSetSummary>> ListDataSets(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            throw new NotImplementedException();
+            return ListDataSets(partialName, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task<List<DataSetSummary>> ListDataSets(string nameFilter, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        private class DataSetListResponse
         {
-            throw new NotImplementedException();
+            public List<DataSetSummary> DataSets { get; set; }
+        }
+        public async Task<List<DataSetSummary>> ListDataSets(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
+            Dictionary<string, string> parameters = null;
+            if (!String.IsNullOrEmpty(partialName))
+            {
+                parameters = new Dictionary<string, string> { { "partialName", partialName } };
+            }
+            var result = await apiConnection.Get<DataSetListResponse>("data", parameters, httpMessageTransformer, cancellationToken);
+            return result?.DataSets;
         }
 
-        public async Task<DataSetData> GetDataSet(string dataSetName)
+        public Task<DataSetData> GetDataSet(string dataSetName)
         {
-            throw new NotImplementedException();
+            return GetDataSet(dataSetName, 0, 100, null);
         }
 
         public async Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
         {
-            throw new NotImplementedException();
+            Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
+
+            var parameters = new Dictionary<string, string>
+            {
+                { "page", pageNumber.ToString() },
+                { "pageSize", pageSize.ToString() },
+            };
+
+            return await apiConnection.Get<DataSetData>("data/{dataSetName}", parameters, null, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public async Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
             IEnumerable<string> includeColumns)
         {
-            throw new NotImplementedException();
+            return GetDataSet(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns, null);
         }
 
-        public async Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
             IEnumerable<string> includeColumns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            throw new NotImplementedException();
+            return GetDataSet(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
             IEnumerable<string> includeColumns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
+
+            var parameters = new Dictionary<string, string>
+            {
+                { "page", pageNumber.ToString() },
+                { "pageSize", pageSize.ToString() },
+                { "startDate", startDate.ToString("O") },
+                { "endDate", endDate.ToString("O") },
+            };
+            var includes = includeColumns.Select(ic => new KeyValuePair<string, string>("include", ic));
+
+            return apiConnection.Get<DataSetData>("data/{dataSetName}", parameters.Union(includes).ToList(), httpMessageTransformer, cancellationToken);
         }
 
         public async Task GetDataSet(string dataSetName, TextWriter output)

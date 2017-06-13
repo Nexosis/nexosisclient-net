@@ -54,32 +54,32 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Gets the list of data sets that have been saved to the system, filtering by partial name match.
         /// </summary>
-        /// <param name="nameFilter">Limits results to only those datasets with names containing the specified value</param>
+        /// <param name="partialName">Limits results to only those datasets with names containing the specified value</param>
         /// <returns>A list of <see cref="DataSetSummary"/>.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data</remarks>
-        Task<List<DataSetSummary>> ListDataSets(string nameFilter);
+        Task<List<DataSetSummary>> ListDataSets(string partialName);
 
         /// <summary>
         /// Gets the list of data sets that have been saved to the system, filtering by partial name match.
         /// </summary>
-        /// <param name="nameFilter">Limits results to only those datasets with names containing the specified value</param>
+        /// <param name="partialName">Limits results to only those datasets with names containing the specified value</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns>A list of <see cref="DataSetSummary"/>.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data</remarks>
-        Task<List<DataSetSummary>> ListDataSets(string nameFilter, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<List<DataSetSummary>> ListDataSets(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
 
         /// <summary>
         /// Gets the list of data sets that have been saved to the system, filtering by partial name match.
         /// </summary>
-        /// <param name="nameFilter">Limits results to only those datasets with names containing the specified value</param>
+        /// <param name="partialName">Limits results to only those datasets with names containing the specified value</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A list of <see cref="DataSetSummary"/>.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data</remarks>
-        Task<List<DataSetSummary>> ListDataSets(string nameFilter, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<List<DataSetSummary>> ListDataSets(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>Get the data in the set.</summary>
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
