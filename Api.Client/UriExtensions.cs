@@ -12,6 +12,7 @@ namespace Nexosis.Api.Client
         /// <param name="uri">Original request Uri</param>
         /// <param name="parameters">Collection of key-value pairs</param>
         /// <returns>Updated request Uri</returns>
+        /// <remarks>Modified from https://github.com/octokit/octokit.net/blob/master/Octokit/Helpers/UriExtensions.cs</remarks>
         public static Uri AddParameters(this Uri uri, IDictionary<string, string> parameters)
         {
             if (parameters == null || !parameters.Any()) return uri;

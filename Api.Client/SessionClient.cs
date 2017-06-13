@@ -456,28 +456,28 @@ namespace Nexosis.Api.Client
         private async Task<List<SessionResponse>> ListSessionsInternal(IDictionary<string, string> parameters,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            var response = await apiConnection.Get<SessionResponseDto>("sessions", parameters, httpMessageTransformer, cancellationToken);
+            var response = await apiConnection.Get<SessionResponseDto>("sessions", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
             return response?.Results;
         }
 
         public async Task RemoveSessions()
         {
-            await RemoveSessions((string)null);
+            await RemoveSessions((string)null).ConfigureAwait(false);
         }
 
         public async Task RemoveSessions(string dataSetName)
         {
-            await RemoveSessions(dataSetName, null);
+            await RemoveSessions(dataSetName, null).ConfigureAwait(false);
         }
 
         public async Task RemoveSessions(SessionType? type)
         {
-            await RemoveSessions(null, null, type);
+            await RemoveSessions(null, null, type).ConfigureAwait(false);
         }
 
         public async Task RemoveSessions(string dataSetName, SessionType? type)
         {
-            await RemoveSessions(dataSetName, null, type);
+            await RemoveSessions(dataSetName, null, type).ConfigureAwait(false);
         }
 
         public async Task RemoveSessions(string dataSetName, string eventName, SessionType? type)
@@ -495,18 +495,18 @@ namespace Nexosis.Api.Client
             {
                 parameters.Add(nameof(type), type.Value.ToString());
             }
-            await RemoveSessionsInternal(parameters, null, CancellationToken.None);
+            await RemoveSessionsInternal(parameters, null, CancellationToken.None).ConfigureAwait(false);
         }
 
         public async Task RemoveSessions(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            await RemoveSessions(dataSetName, eventName, type, startDate, endDate, null);
+            await RemoveSessions(dataSetName, eventName, type, startDate, endDate, null).ConfigureAwait(false);
         }
 
         public async Task RemoveSessions(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            await RemoveSessions(dataSetName, eventName, type, startDate, endDate, httpMessageTransformer, CancellationToken.None);
+            await RemoveSessions(dataSetName, eventName, type, startDate, endDate, httpMessageTransformer, CancellationToken.None).ConfigureAwait(false);
         }
 
         public async Task RemoveSessions(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate,
@@ -529,12 +529,12 @@ namespace Nexosis.Api.Client
                 parameters.Add(nameof(type), type.Value.ToString());
             }
 
-            await RemoveSessionsInternal(parameters, httpMessageTransformer, cancellationToken);
+            await RemoveSessionsInternal(parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
         private async Task RemoveSessionsInternal(IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            await apiConnection.Delete("sessions", parameters, httpMessageTransformer, cancellationToken);
+            await apiConnection.Delete("sessions", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
         public Task<SessionResponse> GetSession(Guid id)
@@ -579,17 +579,17 @@ namespace Nexosis.Api.Client
 
         public async Task RemoveSession(Guid id)
         {
-            await RemoveSession(id, null);
+            await RemoveSession(id, null).ConfigureAwait(false);
         }
 
         public async Task RemoveSession(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            await RemoveSession(id, httpMessageTransformer, CancellationToken.None);
+            await RemoveSession(id, httpMessageTransformer, CancellationToken.None).ConfigureAwait(false);
         }
 
         public async Task RemoveSession(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            await apiConnection.Delete($"sessions/{id}", null, httpMessageTransformer, cancellationToken);
+            await apiConnection.Delete($"sessions/{id}", null, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
         public Task<SessionResult> GetSessionResults(Guid id)
@@ -609,12 +609,12 @@ namespace Nexosis.Api.Client
 
         public async Task GetSessionResults(Guid id, StreamWriter output)
         {
-            await GetSessionResults(id, output, null);
+            await GetSessionResults(id, output, null).ConfigureAwait(false);
         }
 
         public async Task GetSessionResults(Guid id, StreamWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            await GetSessionResults(id, output, httpMessageTransformer, CancellationToken.None);
+            await GetSessionResults(id, output, httpMessageTransformer, CancellationToken.None).ConfigureAwait(false);
         }
 
         public async Task GetSessionResults(Guid id, StreamWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
@@ -622,7 +622,7 @@ namespace Nexosis.Api.Client
             if (output == null)
                 throw new ArgumentNullException(nameof(output));
 
-            await apiConnection.Get($"sessions/{id}/results", null, httpMessageTransformer, cancellationToken, output, "text/csv");
+            await apiConnection.Get($"sessions/{id}/results", null, httpMessageTransformer, cancellationToken, output, "text/csv").ConfigureAwait(false);
         }
     }
 }
