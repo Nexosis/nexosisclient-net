@@ -6,9 +6,9 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class NexosisClient_Sessions_ListTests : NexosisClient_TestsBase
+    public class ListTests : NexosisClient_TestsBase
     {
-        public NexosisClient_Sessions_ListTests() : 
+        public ListTests() : 
             base(new
             {
                 results = new List<SessionResponse>

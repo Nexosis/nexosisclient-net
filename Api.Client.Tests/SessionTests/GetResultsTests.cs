@@ -10,9 +10,9 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class NexosisClient_Sessions_GetResultsTests : NexosisClient_TestsBase
+    public class GetResultsTests : NexosisClient_TestsBase
     {
-        public NexosisClient_Sessions_GetResultsTests() : base(new { session = new { } })
+        public GetResultsTests() : base(new { session = new { } })
         {
         }
 

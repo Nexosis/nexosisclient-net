@@ -7,9 +7,9 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class NexosisClient_Sessions_RemoveSessionsTests : NexosisClient_TestsBase
+    public class RemoveSessionsTests : NexosisClient_TestsBase
     {
-        public NexosisClient_Sessions_RemoveSessionsTests() : base(new {})
+        public RemoveSessionsTests() : base(new {})
         {
         }
 

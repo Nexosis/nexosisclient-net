@@ -9,9 +9,9 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class NexosisClient_Sessions_CreateForecastTests : NexosisClient_TestsBase
+    public class CreateForecastTests : NexosisClient_TestsBase
     {
-        public NexosisClient_Sessions_CreateForecastTests() : base(new { })
+        public CreateForecastTests() : base(new { })
         {
         }
 

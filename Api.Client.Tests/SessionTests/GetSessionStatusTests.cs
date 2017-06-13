@@ -9,9 +9,9 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class NexosisClient_Sessions_GetSessionStatusTests : NexosisClient_TestsBase
+    public class GetSessionStatusTests : NexosisClient_TestsBase
     {
-        public NexosisClient_Sessions_GetSessionStatusTests() : base(new { })
+        public GetSessionStatusTests() : base(new { })
         {
             handler.ResponseHeaders.Add("Nexosis-Session-Status", new[] { "Started" }); 
         }
