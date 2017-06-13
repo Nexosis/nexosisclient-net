@@ -38,10 +38,8 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "Input reader cannot be null.");
-            if (String.IsNullOrEmpty(targetColumn))
-                throw new ArgumentException("Must specify a target column to forecast on.", nameof(targetColumn));
+            Argument.IsNotNull(input, nameof(input));
+            Argument.IsNotNullOrEmpty(targetColumn, nameof(targetColumn));
 
             return CreateSessionInternal("sessions/forecast", input, null /* eventName */, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
