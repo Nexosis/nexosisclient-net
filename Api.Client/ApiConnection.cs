@@ -224,19 +224,9 @@ namespace Nexosis.Api.Client
 
         private static async Task ProcessFailureResponse(HttpResponseMessage responseMessage)
         {
-            try
-            {
-                var errorResponseContent = responseMessage.Content.ReadAsStringAsync();
-                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await errorResponseContent);
-                throw new NexosisClientException($"API Error: {responseMessage.StatusCode}", errorResponse);
-            }
-            catch
-            {
-                // don't care what as we are already in an error state.
-                throw new NexosisClientException(
-                    $"API Error: {responseMessage.StatusCode} - {await responseMessage.Content.ReadAsStringAsync()}",
-                    responseMessage.StatusCode);
-            }
+            var errorResponseContent = responseMessage.Content.ReadAsStringAsync();
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await errorResponseContent);
+            throw new NexosisClientException($"API Error: {responseMessage.StatusCode}", errorResponse);
         }
     }
 

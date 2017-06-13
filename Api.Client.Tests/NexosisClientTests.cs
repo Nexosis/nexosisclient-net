@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Nexosis.Api.Client;
@@ -11,37 +10,6 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class FakeHttpMessageHandler : HttpMessageHandler
-    {
-        public FakeHttpMessageHandler()
-        {
-            ResponseHeaders = new Dictionary<string, IEnumerable<string>>();
-        }
-
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            Request = request;
-
-            if (request.Content != null)
-                RequestBody = await request.Content.ReadAsStringAsync();
-
-            var response = new HttpResponseMessage { StatusCode = ReturnStatus, Content = ContentResult };
-            foreach (var item in ResponseHeaders)
-            {
-                response.Headers.Add(item.Key, item.Value);
-            }            
-            return await Task.FromResult(response);
-        }
-
-
-        public HttpRequestMessage Request { get; set; }
-        public string RequestBody { get; set; }
-        public HttpStatusCode ReturnStatus => HttpStatusCode.OK;
-        public HttpContent ContentResult { get; set; }
-        public IDictionary<string, IEnumerable<string>> ResponseHeaders { get; }
-    }
-
-
     public class NexosisClientTests
     {
         [Fact]
@@ -103,13 +71,24 @@ namespace Api.Client.Tests
         [Fact]
         public async Task CanHandleErrorResponse()
         {
-            
-        }
+            var data = new ErrorResponse
+            {
+                StatusCode = 500,
+                ErrorType = "SomethingWentWrong",
+                Message = "An error occurred",
+                ErrorDetails = new Dictionary<string, object> { { "error", "details" } }
+            };
+            var handler = new FakeHttpMessageHandler { ReturnStatus = HttpStatusCode.InternalServerError,  ContentResult = new StringContent(JsonConvert.SerializeObject(data)), };
 
-        [Fact]
-        public async Task WhenHandlingErrorAndThatErrorsWillStillThrowWithSomethingUseful()
-        {
-            
+            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(handler));
+
+            var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await target.GetAccountBalance());
+
+            Assert.Equal(HttpStatusCode.InternalServerError, exception.StatusCode);
+            Assert.NotNull(exception.ErrorResponse);
+            Assert.Equal(data.ErrorType, exception.ErrorResponse.ErrorType);
+            Assert.Equal(data.Message, exception.ErrorResponse.Message);
+            Assert.Equal(data.ErrorDetails, exception.ErrorResponse.ErrorDetails);
         }
     }
 }
