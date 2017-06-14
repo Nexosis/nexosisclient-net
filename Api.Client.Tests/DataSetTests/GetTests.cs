@@ -36,10 +36,10 @@ namespace Api.Client.Tests.DataSetTests
         [Fact]
         public async Task IncludesAllParametersWhenGiven()
         {
-            await target.DataSets.Get("test", 10, 10, DateTimeOffset.Parse("2017-01-01"), DateTimeOffset.Parse("2017-01-31"), new []{ "test1", "test2" });
+            await target.DataSets.Get("test", 10, 10, DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse("2017-01-31 0:00 -0:00"), new []{ "test1", "test2" });
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "data/test?page=10&pageSize=10&startDate=2017-01-01T00:00:00.0000000-05:00&endDate=2017-01-31T00:00:00.0000000-05:00&include=test1&include=test2"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "data/test?page=10&pageSize=10&startDate=2017-01-01T00:00:00.0000000%2B00:00&endDate=2017-01-31T00:00:00.0000000%2B00:00&include=test1&include=test2"), handler.Request.RequestUri);
         }
 
         [Fact]

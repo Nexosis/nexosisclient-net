@@ -22,10 +22,10 @@ namespace Api.Client.Tests.SessionTests
         [Fact]
         public async Task FormatsPropertiesForListSessions()
         {
-            var result = await target.Sessions.List("alpha", "zulu", DateTimeOffset.Parse("2017-01-01"), DateTimeOffset.Parse("2017-01-11"));
+            var result = await target.Sessions.List("alpha", "zulu", DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse("2017-01-11 0:00 -0:00"));
 
             Assert.NotNull(result);
-            Assert.Equal(handler.Request.RequestUri, new Uri(baseUri, $"sessions?dataSetName=alpha&eventName=zulu&startDate={DateTimeOffset.Parse("2017-01-01"):O}&endDate={DateTimeOffset.Parse("2017-01-11"):O}"));
+            Assert.Equal(new Uri(baseUri, "sessions?dataSetName=alpha&eventName=zulu&startDate=2017-01-01T00:00:00.0000000%2B00:00&endDate=2017-01-11T00:00:00.0000000%2B00:00"), handler.Request.RequestUri);
         }
 
         [Fact]
