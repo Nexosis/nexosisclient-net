@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -42,22 +41,21 @@ namespace Api.Client.Tests
         [Fact]
         public async Task CreateForecastWithDataDirectlyStartsNewSession()
         {
-            var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
+            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
             var actual = await target.Sessions.CreateForecast(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
             Assert.NotNull(actual.SessionId);
         }
 
-        // TODO: uncomment when data set save is implemented 
-        /* [Fact]
+        [Fact]
         public async Task ForcastFromSavedDataSetStartsNewSession()
         {
             var dataSetName = $"testDataSet-{DateTime.Now:s}";
-            var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
+            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
             await target.DataSets.Create(dataSetName, dataSet);
 
-            var actual = await target.Sessions.CreateForecastSession(dataSetName, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
+            var actual = await target.Sessions.CreateForecast(dataSetName, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
             Assert.NotNull(actual.SessionId);
-        } */
+        } 
 
         [Fact]
         public async Task StartImpactWithCsvStartsNewSession()
@@ -72,22 +70,21 @@ namespace Api.Client.Tests
         [Fact]
         public async Task StartImpactWithDataDirectlyStartsNewSession()
         {
-            var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
+            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
             var actual = await target.Sessions.AnalyzeImpact(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
             Assert.NotNull(actual.SessionId);
         }
 
-        // TODO: uncomment when data set save is implemented 
-        /* [Fact]
+        [Fact]
         public async Task StartImpactFromSavedDataSetStartsNewSession()
         {
             var dataSetName = $"testDataSet-{DateTime.UtcNow:s}";
-            var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
+            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
             await target.DataSets.Create(dataSetName, dataSet);
 
-            var actual = await target.Sessions.CreateForecastSession(dataSetName, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
+            var actual = await target.Sessions.CreateForecast(dataSetName, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
             Assert.NotNull(actual.SessionId);
-        } */
+        }
 
         [Fact]
         public async Task GetSessionListHasItems()
@@ -136,7 +133,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task DeletingSessionThenQueryingReturns404()
         {
-            var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
+            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
             var actual = await target.Sessions.AnalyzeImpact(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
 
             await target.Sessions.Remove(actual.SessionId);
@@ -148,7 +145,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task CheckingSessionStatusReturnsExpcetedValue()
         {
-            var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
+            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
             var actual = await target.Sessions.EstimateImpact(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
 
             var status = await target.Sessions.GetStatus(actual.SessionId);
@@ -159,7 +156,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task CanRemoveMultipleSessions()
         {
-            var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
+            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
             var first = await target.Sessions.AnalyzeImpact(dataSet, "juliet-juliet-echo-1", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
             var second = await target.Sessions.AnalyzeImpact(dataSet, "juliet-juliet-echo-2", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
 
@@ -170,18 +167,6 @@ namespace Api.Client.Tests
 
             Assert.Equal(exceptionTheFirst.StatusCode, HttpStatusCode.NotFound);
             Assert.Equal(exceptionTheSecond.StatusCode, HttpStatusCode.NotFound);
-        }
-
-        private List<DataSetRow> GenerateDataSet(DateTime startDate, DateTime endDate, string targetKey)
-        {
-            var rand = new Random();
-            var dates = Enumerable.Range(0, (endDate.Date - startDate.Date).Days).Select(i => startDate.Date.AddDays(i));
-
-            return dates.Select(d => new DataSetRow
-            {
-                Timestamp = d,
-                Values = new Dictionary<string, double> { { targetKey, rand.NextDouble() * 100 } }
-            }).ToList();
         }
 
     }

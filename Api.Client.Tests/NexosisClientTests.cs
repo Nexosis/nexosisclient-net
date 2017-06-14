@@ -21,6 +21,14 @@ namespace Api.Client.Tests
         }
 
         [Fact]
+        public void AddsTrailingSlashWhenNeeed()
+        {
+            var target = new NexosisClient("alpha-bravo-delta-charlie", "https://does.not.have.a.slash", new ApiConnection.HttpClientFactory()); 
+
+            Assert.Equal("https://does.not.have.a.slash/", target.ConfiguredUrl);
+        }
+
+        [Fact]
         public void CanGiveKeyWhenConstructing()
         {
             var target = new NexosisClient("asdfasdfasdf");

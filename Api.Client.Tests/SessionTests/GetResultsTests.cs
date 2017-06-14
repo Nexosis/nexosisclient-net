@@ -31,13 +31,5 @@ namespace Api.Client.Tests.SessionTests
             Assert.Equal("output", exception.ParamName);
         }
 
-        [Fact]
-        public async Task PassesTransformFunction()
-        {
-            bool called = false;
-            await target.Sessions.GetResults(Guid.NewGuid(), (request, repsonse) => { called = true; });
-
-            Assert.True(called, "Transform function not called.");
-        }
     }
 }

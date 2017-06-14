@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Nexosis.Api.Client.Model;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Api.Client.Tests")]
@@ -16,6 +11,7 @@ namespace Nexosis.Api.Client
     public class NexosisClient : INexosisClient
     {
         private readonly string key;
+        private readonly string configuredUrl;
         private readonly ApiConnection apiConnection;
 
         /// <summary>
@@ -37,6 +33,13 @@ namespace Nexosis.Api.Client
         /// The currently configured api key used by this instance of the client.
         /// </summary>
         public string ApiKey => key;
+
+        /// <summary>
+        /// The URL endpoint the client will connect to.
+        /// </summary>
+        public string ConfiguredUrl => configuredUrl ?? BaseUrl;
+
+        internal const int MaxPageSize = 100;
 
         /// <summary>
         /// Constructs a instance of the client with the api key read from an environement variable
@@ -65,7 +68,9 @@ namespace Nexosis.Api.Client
             if (!endpoint.EndsWith("/"))
                 endpoint = endpoint + "/";
 
-            this.apiConnection = new ApiConnection(endpoint, key, clientFactory);
+            configuredUrl = endpoint;
+
+            apiConnection = new ApiConnection(endpoint, key, clientFactory);
 
             Sessions = new SessionClient(apiConnection);
             DataSets = new DataSetClient(apiConnection);
@@ -86,9 +91,9 @@ namespace Nexosis.Api.Client
             return apiConnection.Get<AccountBalance>("/data", null, httpMessageTransformer, cancellationToken);
         }
 
-        public ISessionClient Sessions { get; private set; }
+        public ISessionClient Sessions { get; }
 
-        public IDataSetClient DataSets { get; private set; }
+        public IDataSetClient DataSets { get; }
 
     }
 }

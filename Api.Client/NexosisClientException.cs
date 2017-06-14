@@ -6,18 +6,12 @@ namespace Nexosis.Api.Client
 {
     public class NexosisClientException : Exception
     {
-        public NexosisClientException(string message) : base(message) { }
-
         public NexosisClientException(string message, Exception inner) : base(message, inner) { }
 
         public NexosisClientException(string message, ErrorResponse response) : base(message)
         {
             StatusCode = (HttpStatusCode)response.StatusCode;
             ErrorResponse = response;
-        }
-        public NexosisClientException(string message, HttpStatusCode status) : base(message)
-        {
-            StatusCode = status;
         }
 
         public HttpStatusCode StatusCode { get; set; }

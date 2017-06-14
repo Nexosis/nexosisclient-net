@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Nexosis.Api.Client.Model;
@@ -39,18 +40,10 @@ namespace Api.Client.Tests.SessionTests
         [Fact]
         public async Task SerializesCSVToBodyWhenGiven()
         {
-            var filename = Path.Combine(AppContext.BaseDirectory, $"test-impact-{DateTime.UtcNow:yyyyMMddhhmmss}.csv");
-            try
+            string fileContent = "timestamp,alpha,beta\r\n2017-01-01,10,14\r\n2017-01-02,11,13\r\n2017-01-03,12,12";
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(fileContent)))
             {
-                using (var file = File.AppendText(filename))
-                {
-                    file.WriteLine("timestamp,alpha,beta");
-                    file.WriteLine("2017-01-01,10,14");
-                    file.WriteLine("2017-01-02,11,13");
-                    file.WriteLine("2017-01-03,12,12");
-                    file.Flush();
-                }
-                using (var input = File.OpenText(filename))
+                using (var input = new StreamReader(stream, Encoding.UTF8))
                 {
                     await target.Sessions.AnalyzeImpact(input, "event-name", "beta", DateTimeOffset.Parse("2017-12-12 10:11:12 -0:00"), DateTimeOffset.Parse("2017-12-22 22:23:24 -0:00"), "http://this.is.a.callback.url"); 
                 }
@@ -58,12 +51,7 @@ namespace Api.Client.Tests.SessionTests
                 Assert.Equal(HttpMethod.Post, handler.Request.Method);
                 Assert.Equal(new Uri(baseUri, "sessions/impact?targetColumn=beta&startDate=2017-12-12T10:11:12.0000000%2B00:00&endDate=2017-12-22T22:23:24.0000000%2B00:00&isEstimate=false&eventName=event-name&callbackUrl=http:%2F%2Fthis.is.a.callback.url"),
                     handler.Request.RequestUri);
-                Assert.Equal(File.ReadAllText(filename), handler.RequestBody);
-            }
-            finally
-            {
-                if (File.Exists(filename))
-                    File.Delete(filename);
+                Assert.Equal(fileContent, handler.RequestBody);
             }
         }
 

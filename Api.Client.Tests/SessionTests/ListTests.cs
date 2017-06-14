@@ -37,16 +37,5 @@ namespace Api.Client.Tests.SessionTests
             Assert.Equal(handler.Request.RequestUri, new Uri(baseUri, "sessions"));
         }
 
-        [Fact]
-        public async Task PassesTransformFunction()
-        {
-            bool called = false;
-            await target.Sessions.List("beta", "charlie", DateTimeOffset.Parse("2017-02-02 20:20:12 -0:00"), DateTimeOffset.Parse("2017-02-22 21:12 -0:00"), (request, response) =>
-            {
-                called = true; 
-            });
-
-            Assert.True(called, "Transform function not called.");
-        }
     }
 }

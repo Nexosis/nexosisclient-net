@@ -31,6 +31,9 @@ namespace Nexosis.Api.Client
         public async Task<DataSetSummary> Create(string dataSetName, IEnumerable<DataSetRow> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
+            Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
+            Argument.IsNotNull(data, nameof(data));
+
             return await apiConnection.Put<DataSetSummary>($"data/{dataSetName}", null, new { data }, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
@@ -47,6 +50,9 @@ namespace Nexosis.Api.Client
         public async Task<DataSetSummary> Create(string dataSetName, StreamReader input, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
+            Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
+            Argument.IsNotNull(input, nameof(input));
+
             return await apiConnection.Put<DataSetSummary>($"data/{dataSetName}", null, input, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
@@ -82,7 +88,7 @@ namespace Nexosis.Api.Client
 
         public Task<DataSetData> Get(string dataSetName)
         {
-            return Get(dataSetName, 0, 100, new string[]{});
+            return Get(dataSetName, 0, NexosisClient.MaxPageSize, new string[]{});
         }
 
         public async Task<DataSetData> Get(string dataSetName, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
@@ -206,7 +212,7 @@ namespace Nexosis.Api.Client
 
         public Task<DataSetData> GetForecast(string dataSetName)
         {
-            return GetForecast(dataSetName, 0, 100, new string[] { });
+            return GetForecast(dataSetName, 0, NexosisClient.MaxPageSize, new string[] { });
         }
 
         public async Task<DataSetData> GetForecast(string dataSetName, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
@@ -247,7 +253,7 @@ namespace Nexosis.Api.Client
 
         public Task GetForecast(string dataSetName, StreamWriter output)
         {
-            return GetForecast(dataSetName, output, 0, 100, new string[] {});
+            return GetForecast(dataSetName, output, 0, NexosisClient.MaxPageSize, new string[] {});
         }
 
         public async Task GetForecast(string dataSetName, StreamWriter output, int pageNumber, int pageSize, IEnumerable<string> includeColumns)

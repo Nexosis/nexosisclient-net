@@ -20,14 +20,5 @@ namespace Api.Client.Tests.SessionTests
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}"), handler.Request.RequestUri);
         }
-
-        [Fact]
-        public async Task PassesTransformFunction()
-        {
-            bool called = false;
-            await target.Sessions.Get(Guid.NewGuid(), (request, response) => { called = true; }); 
-
-            Assert.True(called, "Transform function not called.");
-        }
     }
 }
