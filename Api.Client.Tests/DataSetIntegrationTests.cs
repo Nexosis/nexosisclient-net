@@ -8,7 +8,8 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class DataSetIntegrationTests : IClassFixture<IntegrationTestFixture>
+    [Collection("Integration")]
+    public class DataSetIntegrationTests
     {
         private readonly IntegrationTestFixture fixture;
 

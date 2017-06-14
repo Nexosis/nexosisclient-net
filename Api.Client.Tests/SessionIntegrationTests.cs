@@ -9,7 +9,8 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class SessionIntegrationTests : IClassFixture<IntegrationTestFixture>
+    [Collection("Integration")]
+    public class SessionIntegrationTests
     {
         private readonly IntegrationTestFixture fixture;
         private readonly string productFilePath = Path.Combine(new DirectoryInfo(AppContext.BaseDirectory).Parent.Parent.Parent.FullName, @"CsvFiles\producttest.csv");

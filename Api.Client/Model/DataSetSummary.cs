@@ -4,5 +4,4 @@ namespace Nexosis.Api.Client.Model
     {
         public string DataSetName { get; set; }
     }
-
 }

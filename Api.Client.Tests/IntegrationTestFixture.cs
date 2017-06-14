@@ -1,9 +1,13 @@
 using System;
 using Nexosis.Api.Client;
 using Nexosis.Api.Client.Model;
+using Xunit;
 
 namespace Api.Client.Tests
 {
+    [CollectionDefinition("Integration")]
+    public class IntegrationCollection : ICollectionFixture<IntegrationTestFixture> { }
+
     public class IntegrationTestFixture : IDisposable
     {
         public NexosisClient Client { get; set; }
