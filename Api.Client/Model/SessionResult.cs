@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Nexosis.Api.Client.Model
 {
-    public class SessionResult : ReturnsCost
+    public class SessionResult : SessionResponse
     {
         /// <summary>The session request that caused these results</summary>
         public SessionResponse Session { get; set; }

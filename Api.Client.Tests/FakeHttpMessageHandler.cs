@@ -23,9 +23,7 @@ namespace Api.Client.Tests
 
             var response = new HttpResponseMessage { StatusCode = ReturnStatus, Content = ContentResult };
             foreach (var item in ResponseHeaders)
-            {
                 response.Headers.Add((string) item.Key, (IEnumerable<string>) item.Value);
-            }            
             return await Task.FromResult(response);
         }
 
