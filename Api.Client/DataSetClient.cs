@@ -82,7 +82,7 @@ namespace Nexosis.Api.Client
             {
                 parameters = new Dictionary<string, string> { { "partialName", partialName } };
             }
-            var result = await apiConnection.Get<DataSetListResponse>("data", parameters, httpMessageTransformer, cancellationToken);
+            var result = await apiConnection.Get<DataSetListResponse>("data", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
             return result?.items;
         }
 
