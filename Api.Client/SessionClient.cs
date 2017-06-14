@@ -440,7 +440,7 @@ namespace Nexosis.Api.Client
             await Remove(dataSetName, null).ConfigureAwait(false);
         }
 
-        public async Task RemoveSessions(SessionType? type)
+        public async Task Remove(SessionType? type)
         {
             await Remove(null, null, type).ConfigureAwait(false);
         }
