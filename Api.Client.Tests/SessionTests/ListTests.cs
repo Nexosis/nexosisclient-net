@@ -11,7 +11,7 @@ namespace Api.Client.Tests.SessionTests
         public ListTests() : 
             base(new
             {
-                results = new List<SessionResponse>
+                items = new List<SessionResponse>
                 {
                     new SessionResponse { SessionId = Guid.NewGuid(), Type = SessionType.Forecast }
                 }

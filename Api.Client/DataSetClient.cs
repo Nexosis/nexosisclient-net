@@ -73,7 +73,7 @@ namespace Nexosis.Api.Client
 
         private class DataSetListResponse
         {
-            public List<DataSetSummary> DataSets { get; set; }
+            public List<DataSetSummary> items { get; set; }
         }
         public async Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
@@ -83,7 +83,7 @@ namespace Nexosis.Api.Client
                 parameters = new Dictionary<string, string> { { "partialName", partialName } };
             }
             var result = await apiConnection.Get<DataSetListResponse>("data", parameters, httpMessageTransformer, cancellationToken);
-            return result?.DataSets;
+            return result?.items;
         }
 
         public Task<DataSetData> Get(string dataSetName)

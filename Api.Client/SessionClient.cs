@@ -420,14 +420,14 @@ namespace Nexosis.Api.Client
         // we are returning just the list object, so we need a wrapper here and will then pull the results off of it.
         private class SessionResponseDto
         {
-            [JsonProperty("results", Required = Required.Always )]
-            public List<SessionResponse> Results { get; set; }
+            [JsonProperty("items", Required = Required.Always )]
+            public List<SessionResponse> items { get; set; }
         }
         private async Task<List<SessionResponse>> ListSessionsInternal(IDictionary<string, string> parameters,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var response = await apiConnection.Get<SessionResponseDto>("sessions", parameters, httpMessageTransformer, cancellationToken);
-            return response?.Results;
+            return response?.items;
         }
 
         public async Task Remove()

@@ -250,7 +250,10 @@ namespace Nexosis.Api.Client
         {
             var errorResponseContent = responseMessage.Content.ReadAsStringAsync();
             var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await errorResponseContent);
-            throw new NexosisClientException($"API Error: {responseMessage.StatusCode}", errorResponse);
+            if (errorResponse != null)
+                throw new NexosisClientException($"API Error: {responseMessage.StatusCode}", errorResponse);
+            else 
+                throw new NexosisClientException($"API Error: {responseMessage.StatusCode} - no details provided.", responseMessage.StatusCode);
         }
 
     }
