@@ -152,7 +152,11 @@ namespace Nexosis.Api.Client
             // ctor made sure endpoint ends with / and we don't want doubles
             if (path.StartsWith("/"))
                 path = path.Substring(1);
-            var uri = new Uri(endpoint + path).AddParameters(parameters.ToList());
+
+            var uri = new Uri(endpoint + path);
+            if (parameters != null)
+                uri = uri.AddParameters(parameters.ToList());
+
             return uri;
         }
 
