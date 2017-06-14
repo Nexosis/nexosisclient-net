@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http;
 
 namespace Nexosis.Api.Client
 {
@@ -13,7 +12,7 @@ namespace Nexosis.Api.Client
 
         public static void IsNotNullOrEmpty(string value, string name)
         {
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
                 throw new ArgumentException("Value cannot be null or empty.", name);
         }
 

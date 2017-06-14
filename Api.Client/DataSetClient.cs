@@ -78,7 +78,7 @@ namespace Nexosis.Api.Client
         public async Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Dictionary<string, string> parameters = null;
-            if (!String.IsNullOrEmpty(partialName))
+            if (!string.IsNullOrEmpty(partialName))
             {
                 parameters = new Dictionary<string, string> { { "partialName", partialName } };
             }
