@@ -18,8 +18,6 @@ namespace Nexosis.Api.Client
         private string key;
         private IHttpClientFactory httpClientFactory;
 
-        public ApiConnection(string endpoint, string key) : this(endpoint, key, new HttpClientFactory()) { }
-
         internal ApiConnection(string endpoint, string key, IHttpClientFactory httpClientFactory)
         {
             this.endpoint = endpoint;

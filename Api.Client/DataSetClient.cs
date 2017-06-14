@@ -319,13 +319,7 @@ namespace Nexosis.Api.Client
 
         public async Task RemoveForecast(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
-            var parameters = new Dictionary<string, string>
-            {
-                { "startDate", startDate.ToString("O") },
-                { "endDate", endDate.ToString("O") },
-            };
-            await apiConnection.Delete($"data/{dataSetName}", parameters, null, CancellationToken.None).ConfigureAwait(false);
+            await RemoveForecast(dataSetName, startDate, endDate, null, CancellationToken.None).ConfigureAwait(false);
         }
 
         public async Task RemoveForecast(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate,
