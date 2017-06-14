@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Nexosis.Api.Client.Model;
 using Xunit;
 
-namespace Api.Client.Tests
+namespace Api.Client.Tests.SessionTests
 {
     public class GetSessionStatusTests : NexosisClient_TestsBase
     {
@@ -16,7 +16,7 @@ namespace Api.Client.Tests
         public async Task StatusHeaderIsAssignedToResult()
         {
             var sessionId = Guid.NewGuid();
-            var result = await target.Sessions.GetSessionStatus(sessionId);
+            var result = await target.Sessions.GetStatus(sessionId);
 
             Assert.Equal(sessionId, result.SessionId);
             Assert.Equal(SessionStatus.Started, result.Status);
@@ -26,7 +26,7 @@ namespace Api.Client.Tests
         public async Task HttpTransformerIsWrappedAndCalled()
         {
             bool called = false;
-            var result = await target.Sessions.GetSessionStatus(Guid.NewGuid(), (request, response) => { called = true; });
+            var result = await target.Sessions.GetStatus(Guid.NewGuid(), (request, response) => { called = true; });
 
             Assert.True(called, "Http transform function not called");
         }

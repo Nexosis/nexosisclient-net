@@ -18,58 +18,58 @@ namespace Nexosis.Api.Client
             this.apiConnection = apiConnection;
         }
 
-        public Task<DataSetSummary> CreateDataSet(string dataSetName, IEnumerable<DataSetRow> data)
+        public Task<DataSetSummary> Create(string dataSetName, IEnumerable<DataSetRow> data)
         {
-            return CreateDataSet(dataSetName, data, null);
+            return Create(dataSetName, data, null);
         }
 
-        public Task<DataSetSummary> CreateDataSet(string dataSetName, IEnumerable<DataSetRow> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<DataSetSummary> Create(string dataSetName, IEnumerable<DataSetRow> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return CreateDataSet(dataSetName, data, httpMessageTransformer, CancellationToken.None);
+            return Create(dataSetName, data, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task<DataSetSummary> CreateDataSet(string dataSetName, IEnumerable<DataSetRow> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
+        public async Task<DataSetSummary> Create(string dataSetName, IEnumerable<DataSetRow> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
             return await apiConnection.Put<DataSetSummary>($"data/{dataSetName}", null, new { data }, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task<DataSetSummary> CreateDataSet(string dataSetName, StreamReader input)
+        public Task<DataSetSummary> Create(string dataSetName, StreamReader input)
         {
-            return CreateDataSet(dataSetName, input, null);
+            return Create(dataSetName, input, null);
         }
 
-        public Task<DataSetSummary> CreateDataSet(string dataSetName, StreamReader input, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<DataSetSummary> Create(string dataSetName, StreamReader input, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return CreateDataSet(dataSetName, input, httpMessageTransformer, CancellationToken.None);
+            return Create(dataSetName, input, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task<DataSetSummary> CreateDataSet(string dataSetName, StreamReader input, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
+        public async Task<DataSetSummary> Create(string dataSetName, StreamReader input, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
             return await apiConnection.Put<DataSetSummary>($"data/{dataSetName}", null, input, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task<List<DataSetSummary>> ListDataSets()
+        public Task<List<DataSetSummary>> List()
         {
-            return ListDataSets(null);
+            return List(null);
         }
 
-        public Task<List<DataSetSummary>> ListDataSets(string partialName)
+        public Task<List<DataSetSummary>> List(string partialName)
         {
-            return ListDataSets(partialName, null);
+            return List(partialName, null);
         }
 
-        public Task<List<DataSetSummary>> ListDataSets(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return ListDataSets(partialName, httpMessageTransformer, CancellationToken.None);
+            return List(partialName, httpMessageTransformer, CancellationToken.None);
         }
 
         private class DataSetListResponse
         {
             public List<DataSetSummary> DataSets { get; set; }
         }
-        public async Task<List<DataSetSummary>> ListDataSets(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Dictionary<string, string> parameters = null;
             if (!String.IsNullOrEmpty(partialName))
@@ -80,12 +80,12 @@ namespace Nexosis.Api.Client
             return result?.DataSets;
         }
 
-        public Task<DataSetData> GetDataSet(string dataSetName)
+        public Task<DataSetData> Get(string dataSetName)
         {
-            return GetDataSet(dataSetName, 0, 100, new string[]{});
+            return Get(dataSetName, 0, 100, new string[]{});
         }
 
-        public async Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
+        public async Task<DataSetData> Get(string dataSetName, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
             Argument.IsNotNull(includeColumns, nameof(includeColumns));
@@ -99,19 +99,19 @@ namespace Nexosis.Api.Client
             return await apiConnection.Get<DataSetData>($"data/{dataSetName}", parameters, null, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<DataSetData> Get(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
             IEnumerable<string> includeColumns)
         {
-            return GetDataSet(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns, null);
+            return Get(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns, null);
         }
 
-        public Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<DataSetData> Get(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
             IEnumerable<string> includeColumns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return GetDataSet(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns, httpMessageTransformer, CancellationToken.None);
+            return Get(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<DataSetData> GetDataSet(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<DataSetData> Get(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
             IEnumerable<string> includeColumns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var parameters = ProcessDataSetGetParameters(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns);
@@ -119,7 +119,7 @@ namespace Nexosis.Api.Client
             return apiConnection.Get<DataSetData>($"data/{dataSetName}", parameters, httpMessageTransformer, cancellationToken);
         }
 
-        public async Task GetDataSet(string dataSetName, StreamWriter output)
+        public async Task Get(string dataSetName, StreamWriter output)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
             Argument.IsNotNull(output, nameof(output));
@@ -127,7 +127,7 @@ namespace Nexosis.Api.Client
             await apiConnection.Get($"data/{dataSetName}", null, null, CancellationToken.None, output, "text/csv").ConfigureAwait(false);
         }
 
-        public async Task GetDataSet(string dataSetName, StreamWriter output, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
+        public async Task Get(string dataSetName, StreamWriter output, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
             Argument.IsNotNull(includeColumns, nameof(includeColumns));
@@ -143,19 +143,19 @@ namespace Nexosis.Api.Client
             await apiConnection.Get($"data/{dataSetName}", parameters.Union(includes), null, CancellationToken.None, output, "text/csv").ConfigureAwait(false);
         }
 
-        public async Task GetDataSet(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
+        public async Task Get(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
             DateTimeOffset endDate, IEnumerable<string> includeColumns)
         {
-            await GetDataSet(dataSetName, output, pageNumber, pageSize, startDate, endDate, includeColumns, null).ConfigureAwait(false);
+            await Get(dataSetName, output, pageNumber, pageSize, startDate, endDate, includeColumns, null).ConfigureAwait(false);
         }
 
-        public async Task GetDataSet(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
+        public async Task Get(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
             DateTimeOffset endDate, IEnumerable<string> includeColumns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            await GetDataSet(dataSetName, output, pageNumber, pageSize, startDate, endDate, includeColumns, httpMessageTransformer, CancellationToken.None).ConfigureAwait(false);
+            await Get(dataSetName, output, pageNumber, pageSize, startDate, endDate, includeColumns, httpMessageTransformer, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public async Task GetDataSet(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
+        public async Task Get(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
             DateTimeOffset endDate, IEnumerable<string> includeColumns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
@@ -166,7 +166,7 @@ namespace Nexosis.Api.Client
             await apiConnection.Get($"data/{dataSetName}", parameters, httpMessageTransformer, cancellationToken, output, "text/csv").ConfigureAwait(false);
         }
 
-        public async Task RemoveDataSet(string dataSetName, DataSetDeleteOptions options)
+        public async Task Remove(string dataSetName, DataSetDeleteOptions options)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
 
@@ -177,18 +177,18 @@ namespace Nexosis.Api.Client
             await apiConnection.Delete($"data/{dataSetName}", parameters, null, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public async Task RemoveDataSet(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate, DataSetDeleteOptions options)
+        public async Task Remove(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate, DataSetDeleteOptions options)
         {
-            await RemoveDataSet(dataSetName, startDate, endDate, options, null).ConfigureAwait(false);
+            await Remove(dataSetName, startDate, endDate, options, null).ConfigureAwait(false);
         }
 
-        public async Task RemoveDataSet(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate, DataSetDeleteOptions options,
+        public async Task Remove(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate, DataSetDeleteOptions options,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            await RemoveDataSet(dataSetName, startDate, endDate, options, httpMessageTransformer, CancellationToken.None).ConfigureAwait(false);
+            await Remove(dataSetName, startDate, endDate, options, httpMessageTransformer, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public async Task RemoveDataSet(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate, DataSetDeleteOptions options,
+        public async Task Remove(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate, DataSetDeleteOptions options,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
@@ -204,12 +204,12 @@ namespace Nexosis.Api.Client
             await apiConnection.Delete($"data/{dataSetName}", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task<DataSetData> GetDataSetForecast(string dataSetName)
+        public Task<DataSetData> GetForecast(string dataSetName)
         {
-            return GetDataSetForecast(dataSetName, 0, 100, new string[] { });
+            return GetForecast(dataSetName, 0, 100, new string[] { });
         }
 
-        public async Task<DataSetData> GetDataSetForecast(string dataSetName, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
+        public async Task<DataSetData> GetForecast(string dataSetName, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
             Argument.IsNotNull(includeColumns, nameof(includeColumns));
@@ -224,19 +224,19 @@ namespace Nexosis.Api.Client
             return await apiConnection.Get<DataSetData>($"data/{dataSetName}/forecast", parameters.Union(includes), null, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public Task<DataSetData> GetDataSetForecast(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate, int pageNumber,
+        public Task<DataSetData> GetForecast(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate, int pageNumber,
             int pageSize, IEnumerable<string> includeColumns)
         {
-            return GetDataSetForecast(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns, null);
+            return GetForecast(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns, null);
         }
 
-        public Task<DataSetData> GetDataSetForecast(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate,
+        public Task<DataSetData> GetForecast(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate,
             DateTimeOffset endDate, IEnumerable<string> includeColumns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return GetDataSetForecast(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns, httpMessageTransformer, CancellationToken.None);
+            return GetForecast(dataSetName, pageNumber, pageSize, startDate, endDate, includeColumns, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task<DataSetData> GetDataSetForecast(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate,
+        public async Task<DataSetData> GetForecast(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate,
             DateTimeOffset endDate, IEnumerable<string> includeColumns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
@@ -245,12 +245,12 @@ namespace Nexosis.Api.Client
             return await apiConnection.Get<DataSetData>($"data/{dataSetName}/forecast", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task GetDataSetForecast(string dataSetName, StreamWriter output)
+        public Task GetForecast(string dataSetName, StreamWriter output)
         {
-            return GetDataSetForecast(dataSetName, output, 0, 100, new string[] {});
+            return GetForecast(dataSetName, output, 0, 100, new string[] {});
         }
 
-        public async Task GetDataSetForecast(string dataSetName, StreamWriter output, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
+        public async Task GetForecast(string dataSetName, StreamWriter output, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
             Argument.IsNotNull(includeColumns, nameof(includeColumns));
@@ -265,19 +265,19 @@ namespace Nexosis.Api.Client
             await apiConnection.Get($"data/{dataSetName}/forecast", parameters.Union(includes), null, CancellationToken.None, output, "text/csv").ConfigureAwait(false);
         }
 
-        public Task GetDataSetForecast(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
+        public Task GetForecast(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
             DateTimeOffset endDate, IEnumerable<string> includeColumns)
         {
-            return GetDataSetForecast(dataSetName, output, pageNumber, pageSize, startDate, endDate, includeColumns, null);
+            return GetForecast(dataSetName, output, pageNumber, pageSize, startDate, endDate, includeColumns, null);
         }
 
-        public Task GetDataSetForecast(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
+        public Task GetForecast(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
             DateTimeOffset endDate, IEnumerable<string> includeColumns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return GetDataSetForecast(dataSetName, output, pageNumber, pageSize, startDate, endDate, includeColumns, httpMessageTransformer, CancellationToken.None);
+            return GetForecast(dataSetName, output, pageNumber, pageSize, startDate, endDate, includeColumns, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task GetDataSetForecast(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
+        public async Task GetForecast(string dataSetName, StreamWriter output, int pageNumber, int pageSize, DateTimeOffset startDate,
             DateTimeOffset endDate, IEnumerable<string> includeColumns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
@@ -305,13 +305,13 @@ namespace Nexosis.Api.Client
             return parameters.Union(includes);
         }
 
-        public async Task RemoveDataSetForecast(string dataSetName)
+        public async Task RemoveForecast(string dataSetName)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
             await apiConnection.Delete($"data/{dataSetName}", null, null, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public async Task RemoveDataSetForecast(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate)
+        public async Task RemoveForecast(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
             var parameters = new Dictionary<string, string>
@@ -322,7 +322,7 @@ namespace Nexosis.Api.Client
             await apiConnection.Delete($"data/{dataSetName}", parameters, null, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public async Task RemoveDataSetForecast(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate,
+        public async Task RemoveForecast(string dataSetName, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
@@ -334,21 +334,21 @@ namespace Nexosis.Api.Client
             await apiConnection.Delete($"data/{dataSetName}", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task<List<ForecastModel>> ListDataSetForecastModels(string dataSetName)
+        public Task<List<ForecastModel>> ListForecastModels(string dataSetName)
         {
-            return ListDataSetForecastModels(dataSetName, null);
+            return ListForecastModels(dataSetName, null);
         }
 
-        public Task<List<ForecastModel>> ListDataSetForecastModels(string dataSetName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<List<ForecastModel>> ListForecastModels(string dataSetName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return ListDataSetForecastModels(dataSetName, httpMessageTransformer, CancellationToken.None);
+            return ListForecastModels(dataSetName, httpMessageTransformer, CancellationToken.None);
         }
 
         private class ForecastModelList
         {
             public List<ForecastModel> Items { get; set; }
         }
-        public async Task<List<ForecastModel>> ListDataSetForecastModels(string dataSetName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<List<ForecastModel>> ListForecastModels(string dataSetName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
 
@@ -358,17 +358,17 @@ namespace Nexosis.Api.Client
             return result?.Items;
         }
 
-        public Task<ForecastModel> GetDataSetForecastModel(string dataSetName, string targetColumn)
+        public Task<ForecastModel> GetForecastModel(string dataSetName, string targetColumn)
         {
-            return GetDataSetForecastModel(dataSetName, targetColumn, null);
+            return GetForecastModel(dataSetName, targetColumn, null);
         }
 
-        public Task<ForecastModel> GetDataSetForecastModel(string dataSetName, string targetColumn, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<ForecastModel> GetForecastModel(string dataSetName, string targetColumn, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return GetDataSetForecastModel(dataSetName, targetColumn, httpMessageTransformer, CancellationToken.None);
+            return GetForecastModel(dataSetName, targetColumn, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task<ForecastModel> GetDataSetForecastModel(string dataSetName, string targetColumn, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
+        public async Task<ForecastModel> GetForecastModel(string dataSetName, string targetColumn, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));

@@ -19,23 +19,23 @@ namespace Nexosis.Api.Client
             this.apiConnection = apiConnection;
         }
 
-        public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<SessionResponse> CreateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            return CreateForecastSession(input, targetColumn, startDate, endDate, null);
+            return CreateForecast(input, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl)
+        public Task<SessionResponse> CreateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, string statusCallbackUrl)
         {
-            return CreateForecastSession(input, targetColumn, startDate, endDate, statusCallbackUrl, null);
+            return CreateForecast(input, targetColumn, startDate, endDate, statusCallbackUrl, null);
         }
 
-        public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return CreateForecastSession(input, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
+            return CreateForecast(input, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> CreateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(input, nameof(input));
@@ -44,24 +44,24 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/forecast", input, null /* eventName */, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
-        public Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<SessionResponse> CreateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            return CreateForecastSession(data, targetColumn, startDate, endDate, null);
+            return CreateForecast(data, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl)
         {
-            return CreateForecastSession(data, targetColumn, startDate, endDate, statusCallbackUrl, null);
+            return CreateForecast(data, targetColumn, startDate, endDate, statusCallbackUrl, null);
         }
 
-        public Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return CreateForecastSession(data, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
+            return CreateForecast(data, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> CreateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(data, nameof(data));
@@ -70,24 +70,24 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/forecast", data, null /* eventName */, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
-        public Task<SessionResponse> CreateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<SessionResponse> CreateForecast(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            return CreateForecastSession(dataSetName, targetColumn, startDate, endDate, null);
+            return CreateForecast(dataSetName, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> CreateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecast(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl)
         {
-            return CreateForecastSession(dataSetName, targetColumn, startDate, endDate, statusCallbackUrl, null);
+            return CreateForecast(dataSetName, targetColumn, startDate, endDate, statusCallbackUrl, null);
         }
 
-        public Task<SessionResponse> CreateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecast(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return CreateForecastSession(dataSetName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
+            return CreateForecast(dataSetName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> CreateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> CreateForecast(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
@@ -96,25 +96,25 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/forecast", dataSetName, null /* eventName */, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
-        public Task<SessionResponse> CreateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate)
         {
-            return CreateImpactSession(input, eventName, targetColumn, startDate, endDate, null);
+            return AnalyzeImpact(input, eventName, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> CreateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl)
         {
-            return CreateImpactSession(input, eventName, targetColumn, startDate, endDate, statusCallbackUrl, null);
+            return AnalyzeImpact(input, eventName, targetColumn, startDate, endDate, statusCallbackUrl, null);
         }
 
-        public Task<SessionResponse> CreateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return CreateImpactSession(input, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
+            return AnalyzeImpact(input, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> CreateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(input, nameof(input));
@@ -124,25 +124,25 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/impact", input, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
-        public Task<SessionResponse> CreateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate)
         {
-            return CreateImpactSession(data, eventName, targetColumn, startDate, endDate, null);
+            return AnalyzeImpact(data, eventName, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> CreateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl)
         {
-            return CreateImpactSession(data, eventName, targetColumn, startDate, endDate, statusCallbackUrl, null);
+            return AnalyzeImpact(data, eventName, targetColumn, startDate, endDate, statusCallbackUrl, null);
         }
 
-        public Task<SessionResponse> CreateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return CreateImpactSession(data, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
+            return AnalyzeImpact(data, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> CreateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
@@ -153,24 +153,24 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/impact", data, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
-        public Task<SessionResponse> CreateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<SessionResponse> AnalyzeImpact(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            return CreateImpactSession(dataSetName, eventName, targetColumn, startDate, endDate, null);
+            return AnalyzeImpact(dataSetName, eventName, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> CreateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl)
         {
-            return CreateImpactSession(dataSetName, eventName, targetColumn, startDate, endDate, statusCallbackUrl, null);
+            return AnalyzeImpact(dataSetName, eventName, targetColumn, startDate, endDate, statusCallbackUrl, null);
         }
 
-        public Task<SessionResponse> CreateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return CreateImpactSession(dataSetName, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
+            return AnalyzeImpact(dataSetName, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> CreateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
@@ -180,18 +180,18 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/impact", dataSetName, eventName, targetColumn, startDate, endDate, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
-        public Task<SessionResponse> EstimateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<SessionResponse> EstimateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            return EstimateForecastSession(input, targetColumn, startDate, endDate, null);
+            return EstimateForecast(input, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> EstimateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> EstimateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return EstimateForecastSession(input, targetColumn, startDate, endDate, httpMessageTransformer);
+            return EstimateForecast(input, targetColumn, startDate, endDate, httpMessageTransformer);
         }
 
-        public Task<SessionResponse> EstimateForecastSession(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> EstimateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(input, nameof(input));
@@ -200,18 +200,18 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/forecast", input, null /* eventName */, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
-        public Task<SessionResponse> EstimateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<SessionResponse> EstimateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            return EstimateForecastSession(data, targetColumn, startDate, endDate, null);
+            return EstimateForecast(data, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> EstimateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> EstimateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return EstimateForecastSession(data, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
+            return EstimateForecast(data, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> EstimateForecastSession(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> EstimateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(data, nameof(data));
@@ -220,18 +220,18 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/forecast", data, null /* eventName */, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
-        public Task<SessionResponse> EstimateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<SessionResponse> EstimateForecast(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            return EstimateForecastSession(dataSetName, targetColumn, startDate, endDate, null);
+            return EstimateForecast(dataSetName, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> EstimateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> EstimateForecast(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return EstimateForecastSession(dataSetName, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
+            return EstimateForecast(dataSetName, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> EstimateForecastSession(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> EstimateForecast(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
@@ -240,19 +240,19 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/forecast", dataSetName, null /* eventName */, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
-        public Task<SessionResponse> EstimateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> EstimateImpact(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate)
         {
-            return EstimateImpactSession(input, eventName, targetColumn, startDate, endDate, null);
+            return EstimateImpact(input, eventName, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> EstimateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> EstimateImpact(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return EstimateImpactSession(input, eventName, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
+            return EstimateImpact(input, eventName, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> EstimateImpactSession(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> EstimateImpact(StreamReader input, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(input, nameof(input));
@@ -262,19 +262,19 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/impact", input, eventName, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
-        public Task<SessionResponse> EstimateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> EstimateImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate)
         {
-            return EstimateImpactSession(data, eventName, targetColumn, startDate, endDate, null);
+            return EstimateImpact(data, eventName, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> EstimateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> EstimateImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return EstimateImpactSession(data, eventName, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
+            return EstimateImpact(data, eventName, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> EstimateImpactSession(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> EstimateImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(data, nameof(data));
@@ -284,18 +284,18 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/impact", data, eventName, targetColumn, startDate, endDate, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
-        public Task<SessionResponse> EstimateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<SessionResponse> EstimateImpact(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            return EstimateImpactSession(dataSetName, eventName, targetColumn, startDate, endDate, null);
+            return EstimateImpact(dataSetName, eventName, targetColumn, startDate, endDate, null);
         }
 
-        public Task<SessionResponse> EstimateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> EstimateImpact(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return EstimateImpactSession(dataSetName, eventName, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
+            return EstimateImpact(dataSetName, eventName, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> EstimateImpactSession(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> EstimateImpact(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate,
             DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
@@ -369,12 +369,12 @@ namespace Nexosis.Api.Client
             return apiConnection.Post<SessionResponse>(path, parameters, (object)null, httpMessageTransformer, cancellationToken);
         }
 
-        public Task<List<SessionResponse>> ListSessions()
+        public Task<List<SessionResponse>> List()
         {
             return ListSessionsInternal(new Dictionary<string, string>(), null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> ListSessions(string dataSetName)
+        public Task<List<SessionResponse>> List(string dataSetName)
         {
             var parameters = new Dictionary<string, string>
             {
@@ -383,7 +383,7 @@ namespace Nexosis.Api.Client
             return ListSessionsInternal(parameters, null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> ListSessions(string dataSetName, string eventName)
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName)
         {
             var parameters = new Dictionary<string, string>
             {
@@ -393,18 +393,18 @@ namespace Nexosis.Api.Client
             return ListSessionsInternal(parameters, null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> ListSessions(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            return ListSessions(dataSetName, eventName, startDate, endDate, null, CancellationToken.None);
+            return List(dataSetName, eventName, startDate, endDate, null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> ListSessions(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return ListSessions(dataSetName, eventName, startDate, endDate, httpMessageTransformer, CancellationToken.None);
+            return List(dataSetName, eventName, startDate, endDate, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> ListSessions(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var parameters = new Dictionary<string, string> {
@@ -430,27 +430,27 @@ namespace Nexosis.Api.Client
             return response?.Results;
         }
 
-        public async Task RemoveSessions()
+        public async Task Remove()
         {
-            await RemoveSessions((string)null);
+            await Remove((string)null);
         }
 
-        public async Task RemoveSessions(string dataSetName)
+        public async Task Remove(string dataSetName)
         {
-            await RemoveSessions(dataSetName, null);
+            await Remove(dataSetName, null);
         }
 
-        public async Task RemoveSessions(SessionType? type)
+        public async Task Remove(SessionType? type)
         {
-            await RemoveSessions(null, null, type);
+            await Remove(null, null, type);
         }
 
-        public async Task RemoveSessions(string dataSetName, SessionType? type)
+        public async Task Remove(string dataSetName, SessionType? type)
         {
-            await RemoveSessions(dataSetName, null, type);
+            await Remove(dataSetName, null, type);
         }
 
-        public async Task RemoveSessions(string dataSetName, string eventName, SessionType? type)
+        public async Task Remove(string dataSetName, string eventName, SessionType? type)
         {
             var parameters = new Dictionary<string, string>();
             if (!String.IsNullOrEmpty(dataSetName))
@@ -468,18 +468,18 @@ namespace Nexosis.Api.Client
             await RemoveSessionsInternal(parameters, null, CancellationToken.None);
         }
 
-        public async Task RemoveSessions(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate)
+        public async Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            await RemoveSessions(dataSetName, eventName, type, startDate, endDate, null);
+            await Remove(dataSetName, eventName, type, startDate, endDate, null);
         }
 
-        public async Task RemoveSessions(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate,
+        public async Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            await RemoveSessions(dataSetName, eventName, type, startDate, endDate, httpMessageTransformer, CancellationToken.None);
+            await Remove(dataSetName, eventName, type, startDate, endDate, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task RemoveSessions(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate,
+        public async Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var parameters = new Dictionary<string, string> {
@@ -507,32 +507,32 @@ namespace Nexosis.Api.Client
             await apiConnection.Delete("sessions", parameters, httpMessageTransformer, cancellationToken);
         }
 
-        public Task<SessionResponse> GetSession(Guid id)
+        public Task<SessionResponse> Get(Guid id)
         {
-            return GetSession(id, null);
+            return Get(id, null);
         }
 
-        public Task<SessionResponse> GetSession(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<SessionResponse> Get(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return GetSession(id, httpMessageTransformer, CancellationToken.None);
+            return Get(id, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> GetSession(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public Task<SessionResponse> Get(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             return apiConnection.Get<SessionResponse>($"sessions/{id}", null, httpMessageTransformer, cancellationToken);
         }
 
-        public Task<SessionResultStatus> GetSessionStatus(Guid id)
+        public Task<SessionResultStatus> GetStatus(Guid id)
         {
-            return GetSessionStatus(id, null);
+            return GetStatus(id, null);
         }
 
-        public Task<SessionResultStatus> GetSessionStatus(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<SessionResultStatus> GetStatus(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return GetSessionStatus(id, httpMessageTransformer, CancellationToken.None);
+            return GetStatus(id, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResultStatus> GetSessionStatus(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public Task<SessionResultStatus> GetStatus(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Action<HttpRequestMessage, HttpResponseMessage> localTransform = (HttpRequestMessage request, HttpResponseMessage response) =>
             {
@@ -547,47 +547,47 @@ namespace Nexosis.Api.Client
             return apiConnection.Head<SessionResultStatus>($"sessions/{id}", null, localTransform, cancellationToken);
         }
 
-        public async Task RemoveSession(Guid id)
+        public async Task Remove(Guid id)
         {
-            await RemoveSession(id, null);
+            await Remove(id, null);
         }
 
-        public async Task RemoveSession(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public async Task Remove(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            await RemoveSession(id, httpMessageTransformer, CancellationToken.None);
+            await Remove(id, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task RemoveSession(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task Remove(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             await apiConnection.Delete($"sessions/{id}", null, httpMessageTransformer, cancellationToken);
         }
 
-        public Task<SessionResult> GetSessionResults(Guid id)
+        public Task<SessionResult> GetResults(Guid id)
         {
-            return GetSessionResults(id, (Action<HttpRequestMessage, HttpResponseMessage>)null);
+            return GetResults(id, (Action<HttpRequestMessage, HttpResponseMessage>)null);
         }
 
-        public Task<SessionResult> GetSessionResults(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<SessionResult> GetResults(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return GetSessionResults(id, httpMessageTransformer, CancellationToken.None);
+            return GetResults(id, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResult> GetSessionResults(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public Task<SessionResult> GetResults(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             return apiConnection.Get<SessionResult>($"sessions/{id}/results", null, httpMessageTransformer, cancellationToken);
         }
 
-        public async Task GetSessionResults(Guid id, StreamWriter output)
+        public async Task GetResults(Guid id, StreamWriter output)
         {
-            await GetSessionResults(id, output, null);
+            await GetResults(id, output, null);
         }
 
-        public async Task GetSessionResults(Guid id, StreamWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public async Task GetResults(Guid id, StreamWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            await GetSessionResults(id, output, httpMessageTransformer, CancellationToken.None);
+            await GetResults(id, output, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task GetSessionResults(Guid id, StreamWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task GetResults(Guid id, StreamWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(output, nameof(output));
             await apiConnection.Get($"sessions/{id}/results", null, httpMessageTransformer, cancellationToken, output, "text/csv");

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Api.Client.Tests
+namespace Api.Client.Tests.SessionTests
 {
     public class RemoveSessionTests : NexosisClient_TestsBase
     {
@@ -15,7 +15,7 @@ namespace Api.Client.Tests
         public async Task IdIsUsedInUrl()
         {
             var sessionId = Guid.NewGuid(); 
-            await target.Sessions.RemoveSession(sessionId);
+            await target.Sessions.Remove(sessionId);
 
             Assert.Equal(HttpMethod.Delete, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}"), handler.Request.RequestUri);
@@ -25,7 +25,7 @@ namespace Api.Client.Tests
         public async Task PassesTransformFunction()
         {
             bool called = false;
-            await target.Sessions.RemoveSession(Guid.NewGuid(), (request, repsonse) => { called = true; });
+            await target.Sessions.Remove(Guid.NewGuid(), (request, repsonse) => { called = true; });
 
             Assert.True(called, "Transform function not called.");
         }

@@ -34,7 +34,7 @@ namespace Api.Client.Tests
         {  
             using (var file = File.OpenText(productFilePath))
             {
-                var actual = await target.Sessions.CreateForecastSession(file, "sales", DateTimeOffset.Parse("2017-03-25 -0:00"), DateTimeOffset.Parse("2017-04-25 -0:00"));
+                var actual = await target.Sessions.CreateForecast(file, "sales", DateTimeOffset.Parse("2017-03-25 -0:00"), DateTimeOffset.Parse("2017-04-25 -0:00"));
                 Assert.NotNull(actual.SessionId);
             }
         }
@@ -43,7 +43,7 @@ namespace Api.Client.Tests
         public async Task CreateForecastWithDataDirectlyStartsNewSession()
         {
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var actual = await target.Sessions.CreateForecastSession(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
+            var actual = await target.Sessions.CreateForecast(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
             Assert.NotNull(actual.SessionId);
         }
 
@@ -53,7 +53,7 @@ namespace Api.Client.Tests
         {
             var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            await target.DataSets.CreateDataSet(dataSetName, dataSet);
+            await target.DataSets.Create(dataSetName, dataSet);
 
             var actual = await target.Sessions.CreateForecastSession(dataSetName, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
             Assert.NotNull(actual.SessionId);
@@ -64,7 +64,7 @@ namespace Api.Client.Tests
         {  
             using (var file = File.OpenText(productFilePath))
             {
-                var actual = await target.Sessions.CreateImpactSession(file, "super-duper-sale", "sales", DateTimeOffset.Parse("2016-11-25 -0:00"), DateTimeOffset.Parse("2016-12-25 -0:00"));
+                var actual = await target.Sessions.AnalyzeImpact(file, "super-duper-sale", "sales", DateTimeOffset.Parse("2016-11-25 -0:00"), DateTimeOffset.Parse("2016-12-25 -0:00"));
                 Assert.NotNull(actual.SessionId);
             }
         }
@@ -73,7 +73,7 @@ namespace Api.Client.Tests
         public async Task StartImpactWithDataDirectlyStartsNewSession()
         {
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var actual = await target.Sessions.CreateImpactSession(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
+            var actual = await target.Sessions.AnalyzeImpact(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
             Assert.NotNull(actual.SessionId);
         }
 
@@ -83,7 +83,7 @@ namespace Api.Client.Tests
         {
             var dataSetName = $"testDataSet-{DateTime.UtcNow:s}";
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            await target.DataSets.CreateDataSet(dataSetName, dataSet);
+            await target.DataSets.Create(dataSetName, dataSet);
 
             var actual = await target.Sessions.CreateForecastSession(dataSetName, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
             Assert.NotNull(actual.SessionId);
@@ -92,16 +92,16 @@ namespace Api.Client.Tests
         [Fact]
         public async Task GetSessionListHasItems()
         {
-            var sessions = await target.Sessions.ListSessions();
+            var sessions = await target.Sessions.List();
             Assert.True(sessions.Count > 0);
         }
 
         [Fact]
         public async Task GetSessionResultsHasResults()
         {
-            var sessions = await target.Sessions.ListSessions();
+            var sessions = await target.Sessions.List();
             var session = sessions.FirstOrDefault(s => s.Status == SessionStatus.Completed);
-            var results = await target.Sessions.GetSessionResults(session.SessionId);
+            var results = await target.Sessions.GetResults(session.SessionId);
 
             Assert.NotNull(results);
             Assert.True(results.Data.Count > 0);
@@ -110,7 +110,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task GetSessionResultsWillWriteFile()
         {
-            var sessions = await target.Sessions.ListSessions();
+            var sessions = await target.Sessions.List();
             var session = sessions.FirstOrDefault(s => s.Status == SessionStatus.Completed);
 
             var filename = Path.Combine(AppContext.BaseDirectory, $"test-ouput-{DateTime.UtcNow:yyyyMMddhhmmss}.csv");
@@ -118,7 +118,7 @@ namespace Api.Client.Tests
             {
                 using (var output = new StreamWriter(File.OpenWrite(filename)))
                 {
-                    await target.Sessions.GetSessionResults(session.SessionId, output);
+                    await target.Sessions.GetResults(session.SessionId, output);
                 }
 
                 var results = File.ReadAllText(filename);
@@ -137,10 +137,10 @@ namespace Api.Client.Tests
         public async Task DeletingSessionThenQueryingReturns404()
         {
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var actual = await target.Sessions.CreateImpactSession(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
+            var actual = await target.Sessions.AnalyzeImpact(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
 
-            await target.Sessions.RemoveSession(actual.SessionId);
-            var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await target.Sessions.GetSession(actual.SessionId));
+            await target.Sessions.Remove(actual.SessionId);
+            var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await target.Sessions.Get(actual.SessionId));
 
             Assert.Equal(exception.StatusCode, HttpStatusCode.NotFound);
         }
@@ -149,9 +149,9 @@ namespace Api.Client.Tests
         public async Task CheckingSessionStatusReturnsExpcetedValue()
         {
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var actual = await target.Sessions.EstimateImpactSession(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
+            var actual = await target.Sessions.EstimateImpact(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
 
-            var status = await target.Sessions.GetSessionStatus(actual.SessionId);
+            var status = await target.Sessions.GetStatus(actual.SessionId);
 
             Assert.Equal(actual.Status, status.Status);
         }
@@ -160,13 +160,13 @@ namespace Api.Client.Tests
         public async Task CanRemoveMultipleSessions()
         {
             var dataSet = GenerateDataSet(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var first = await target.Sessions.CreateImpactSession(dataSet, "juliet-juliet-echo-1", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
-            var second = await target.Sessions.CreateImpactSession(dataSet, "juliet-juliet-echo-2", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
+            var first = await target.Sessions.AnalyzeImpact(dataSet, "juliet-juliet-echo-1", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
+            var second = await target.Sessions.AnalyzeImpact(dataSet, "juliet-juliet-echo-2", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25") );
 
-            await target.Sessions.RemoveSessions(null, "juliet-juliet-echo-", SessionType.Impact);
+            await target.Sessions.Remove(null, "juliet-juliet-echo-", SessionType.Impact);
 
-            var exceptionTheFirst = await Assert.ThrowsAsync<NexosisClientException>(async () => await target.Sessions.GetSession(first.SessionId));
-            var exceptionTheSecond = await Assert.ThrowsAsync<NexosisClientException>(async () => await target.Sessions.GetSession(second.SessionId));
+            var exceptionTheFirst = await Assert.ThrowsAsync<NexosisClientException>(async () => await target.Sessions.Get(first.SessionId));
+            var exceptionTheSecond = await Assert.ThrowsAsync<NexosisClientException>(async () => await target.Sessions.Get(second.SessionId));
 
             Assert.Equal(exceptionTheFirst.StatusCode, HttpStatusCode.NotFound);
             Assert.Equal(exceptionTheSecond.StatusCode, HttpStatusCode.NotFound);

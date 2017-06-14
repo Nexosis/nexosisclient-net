@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Nexosis.Api.Client.Model;
 using Xunit;
 
-namespace Api.Client.Tests
+namespace Api.Client.Tests.SessionTests
 {
     public class ListTests : NexosisClient_TestsBase
     {
@@ -22,7 +22,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task FormatsPropertiesForListSessions()
         {
-            var result = await target.Sessions.ListSessions("alpha", "zulu", DateTimeOffset.Parse("2017-01-01"), DateTimeOffset.Parse("2017-01-11"));
+            var result = await target.Sessions.List("alpha", "zulu", DateTimeOffset.Parse("2017-01-01"), DateTimeOffset.Parse("2017-01-11"));
 
             Assert.NotNull(result);
             Assert.Equal(handler.Request.RequestUri, new Uri(baseUri, $"sessions?dataSetName=alpha&eventName=zulu&startDate={DateTimeOffset.Parse("2017-01-01"):O}&endDate={DateTimeOffset.Parse("2017-01-11"):O}"));
@@ -31,7 +31,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task ExcludesPropertiesWhenNoneGiven()
         {
-            var result = await target.Sessions.ListSessions();
+            var result = await target.Sessions.List();
 
             Assert.NotNull(result);
             Assert.Equal(handler.Request.RequestUri, new Uri(baseUri, "sessions"));
@@ -41,7 +41,7 @@ namespace Api.Client.Tests
         public async Task PassesTransformFunction()
         {
             bool called = false;
-            await target.Sessions.ListSessions("beta", "charlie", DateTimeOffset.Parse("2017-02-02 20:20:12 -0:00"), DateTimeOffset.Parse("2017-02-22 21:12 -0:00"), (request, response) =>
+            await target.Sessions.List("beta", "charlie", DateTimeOffset.Parse("2017-02-02 20:20:12 -0:00"), DateTimeOffset.Parse("2017-02-22 21:12 -0:00"), (request, response) =>
             {
                 called = true; 
             });

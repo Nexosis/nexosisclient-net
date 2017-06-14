@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Nexosis.Api.Client.Model;
 using Xunit;
 
-namespace Api.Client.Tests
+namespace Api.Client.Tests.SessionTests
 {
     public class CreateImpactTests : NexosisClient_TestsBase
     {
@@ -18,7 +18,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task SetsDataSetNameWhenGiven()
         {
-            await target.Sessions.CreateImpactSession("data-set-name", "event-name", "target-column", DateTimeOffset.Parse("2017-12-12 10:11:12 -0:00"), DateTimeOffset.Parse("2017-12-22 22:23:24 -0:00"), "http://this.is.a.callback.url");
+            await target.Sessions.AnalyzeImpact("data-set-name", "event-name", "target-column", DateTimeOffset.Parse("2017-12-12 10:11:12 -0:00"), DateTimeOffset.Parse("2017-12-22 22:23:24 -0:00"), "http://this.is.a.callback.url");
 
             Assert.Equal(HttpMethod.Post, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, "sessions/impact?dataSetName=data-set-name&targetColumn=target-column&startDate=2017-12-12T10:11:12.0000000%2B00:00&endDate=2017-12-22T22:23:24.0000000%2B00:00&isEstimate=false&eventName=event-name&callbackUrl=http:%2F%2Fthis.is.a.callback.url"), handler.Request.RequestUri);
@@ -29,7 +29,7 @@ namespace Api.Client.Tests
         {
             var data = new List<DataSetRow> { new DataSetRow { Timestamp = DateTime.Today, Values = new Dictionary<string, double> { { "delta", 0.23 }, { "bravo", 123.23 } } } };
 
-            await target.Sessions.CreateImpactSession(data, "event-name", "target-column", DateTimeOffset.Parse("2017-12-12 10:11:12 -0:00"), DateTimeOffset.Parse("2017-12-22 22:23:24 -0:00"), "http://this.is.a.callback.url");
+            await target.Sessions.AnalyzeImpact(data, "event-name", "target-column", DateTimeOffset.Parse("2017-12-12 10:11:12 -0:00"), DateTimeOffset.Parse("2017-12-22 22:23:24 -0:00"), "http://this.is.a.callback.url");
 
             Assert.Equal(HttpMethod.Post, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, "sessions/impact?targetColumn=target-column&startDate=2017-12-12T10:11:12.0000000%2B00:00&endDate=2017-12-22T22:23:24.0000000%2B00:00&isEstimate=false&eventName=event-name&callbackUrl=http:%2F%2Fthis.is.a.callback.url"), handler.Request.RequestUri);
@@ -52,7 +52,7 @@ namespace Api.Client.Tests
                 }
                 using (var input = File.OpenText(filename))
                 {
-                    await target.Sessions.CreateImpactSession(input, "event-name", "beta", DateTimeOffset.Parse("2017-12-12 10:11:12 -0:00"), DateTimeOffset.Parse("2017-12-22 22:23:24 -0:00"), "http://this.is.a.callback.url"); 
+                    await target.Sessions.AnalyzeImpact(input, "event-name", "beta", DateTimeOffset.Parse("2017-12-12 10:11:12 -0:00"), DateTimeOffset.Parse("2017-12-22 22:23:24 -0:00"), "http://this.is.a.callback.url"); 
                 }
 
                 Assert.Equal(HttpMethod.Post, handler.Request.Method);
@@ -70,35 +70,35 @@ namespace Api.Client.Tests
         [Fact]
         public async Task ReqiresNotNullDataSet()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.CreateImpactSession((IEnumerable<DataSetRow>) null, "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.AnalyzeImpact((IEnumerable<DataSetRow>) null, "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
 
             Assert.Equal("data", exception.ParamName);
         }
         [Fact]
         public async Task ReqiresNotNullOrEmptyDataSetName()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateImpactSession((string) null, "event",  "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.AnalyzeImpact((string) null, "event",  "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
 
             Assert.Equal("dataSetName", exception.ParamName);
         }
         [Fact]
         public async Task ReqiresNotNullStreamReader()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.CreateImpactSession((StreamReader) null, "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.AnalyzeImpact((StreamReader) null, "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
 
             Assert.Equal("input", exception.ParamName);
         }
         [Fact]
         public async Task ReqiresNotNullOrEmptyTargetColumn()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateImpactSession("dataSet", "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.AnalyzeImpact("dataSet", "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
 
             Assert.Equal("targetColumn", exception.ParamName);
         }
         [Fact]
         public async Task ReqiresNotNullOrEmptyEventName()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateImpactSession("dataSet", "", "targetCol", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.AnalyzeImpact("dataSet", "", "targetCol", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
 
             Assert.Equal("eventName", exception.ParamName);
         }
