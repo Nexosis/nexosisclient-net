@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 namespace Nexosis.Api.Client.Model
 {
     public class DataSetSummary : ReturnsCost

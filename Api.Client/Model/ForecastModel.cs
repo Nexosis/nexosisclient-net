@@ -4,6 +4,6 @@
     {
         public string DataSetName { get; set; }
         public string TargetColumn { get; set; }
-        public ChampionInfo WinningAlgorithm { get; set; }
+        public ChampionInfo ChampionContest { get; set; }
     }
 }
