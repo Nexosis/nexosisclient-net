@@ -14,7 +14,7 @@ namespace Api.Client.Tests
         public NexosisClient Client { get; set; }
 
         public string SavedDataSet =>  "alpha.persistent";
-        public Guid SavedSessionId => Guid.Parse("015cac09-6ff6-4f41-967f-4def3269c763");
+        public Guid SavedSessionId => Guid.Parse("015cac3c-2579-408e-83ed-f8351f627ff8");
 
         public IntegrationTestFixture()
         {
@@ -25,25 +25,6 @@ namespace Api.Client.Tests
         {
             if (disposing)
             {
-                var dataSets = Client.DataSets.List().GetAwaiter().GetResult();
-                if (dataSets != null)
-                {
-                    foreach (var dataSet in dataSets)
-                    {
-                        if (string.Equals(dataSet.DataSetName, SavedDataSet)) continue;
-                        Client.DataSets.Remove(dataSet.DataSetName, DataSetDeleteOptions.CascadeBoth).GetAwaiter().GetResult();
-                    }
-                }
-
-                var sessions = Client.Sessions.List().GetAwaiter().GetResult();
-                if (sessions != null)
-                {
-                    foreach (var session in sessions)
-                    {
-                        if (session.SessionId.Equals(SavedSessionId)) continue;
-                        Client.Sessions.Remove(session.SessionId).GetAwaiter().GetResult();
-                    }
-                }
             }
         }
 

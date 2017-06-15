@@ -4,9 +4,6 @@ namespace Nexosis.Api.Client.Model
 {
     public class SessionResult : SessionResponse
     {
-        /// <summary>The session request that caused these results</summary>
-        public SessionResponse Session { get; set; }
-    
         /// <summary>Continuous results from all forecast sessions executed on the dataset</summary>
         public List<DataSetRow> Data { get; set; } = new List<DataSetRow>();
 

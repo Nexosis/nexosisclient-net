@@ -100,7 +100,8 @@ namespace Api.Client.Tests
             var results = await fixture.Client.Sessions.GetResults(fixture.SavedSessionId);
 
             Assert.NotNull(results);
-            Assert.True(results.Data.Count > 0);
+            Assert.Equal(fixture.SavedSessionId, results.SessionId);
+            Assert.Equal(SessionStatus.Completed, results.Status);
         }
 
         [Fact]
