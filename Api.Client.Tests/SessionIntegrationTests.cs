@@ -105,6 +105,19 @@ namespace Api.Client.Tests
         }
 
         [Fact]
+        public async Task GetSessionResultsHasLinks()
+        {
+            var result = await fixture.Client.Sessions.GetResults(fixture.SavedSessionId);
+
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Links.Count);
+            Assert.Equal(new [] { "results", "model", "data"}, result.Links.Select(l => l.Rel));
+            Assert.Equal($"https://api.dev.nexosisdev.com/api/sessions/{fixture.SavedSessionId}/results", result.Links[0].Href);
+            Assert.Equal("https://api.dev.nexosisdev.com/api/data/alpha.persistent/forecast/model/sales", result.Links[1].Href);
+            Assert.Equal("https://api.dev.nexosisdev.com/api/data/alpha.persistent", result.Links[2].Href);
+        }
+
+        [Fact]
         public async Task GetSessionResultsWillWriteFile()
         {
             var filename = Path.Combine(AppContext.BaseDirectory, $"test-ouput-{DateTime.UtcNow:yyyyMMddhhmmss}.csv");
