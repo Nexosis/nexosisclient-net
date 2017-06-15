@@ -30,6 +30,18 @@ namespace Api.Client.Tests
         }
 
         [Fact]
+        public async Task GettingDataSetGivesBackLinks()
+        {
+            var result = await fixture.Client.DataSets.Get("whiskey");
+
+            Assert.Equal(3, result.Links.Count);
+            Assert.Equal(new [] { "forecast", "model", "sessions"}, result.Links.Select(l => l.Rel));
+            Assert.Equal("https://api.dev.nexosisdev.com/api/data/whiskey/forecast", result.Links[0].Href);
+            Assert.Equal("https://api.dev.nexosisdev.com/api/data/whiskey/forecast/model", result.Links[1].Href);
+            Assert.Equal("https://api.dev.nexosisdev.com/api/sessions?dataSetName=whiskey", result.Links[2].Href);
+        }
+
+        [Fact]
         public async Task CanGetDataSetThatHasBeenSaved()
         {
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "hotel");

@@ -8,7 +8,7 @@ namespace Nexosis.Api.Client.Model
         public Algorithm Algorithm { get; set; }
         public List<JobMetric> Metrics { get; set; }
 
-        public List<Uri> Links { get; set; }
+        public List<Link> Links { get; set; }
     }
 
     public class JobMetric

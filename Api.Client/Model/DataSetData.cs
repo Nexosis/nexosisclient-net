@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Nexosis.Api.Client.Model
@@ -6,6 +7,7 @@ namespace Nexosis.Api.Client.Model
     {
         /// <summary>The data</summary>
         public List<DataSetRow> Data { get; set; } = new List<DataSetRow>();
-    }
 
+        public List<Link> Links { get; set; }
+    }
 }

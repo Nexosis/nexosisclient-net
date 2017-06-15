@@ -28,6 +28,8 @@ namespace Nexosis.Api.Client.Model
         public DateTimeOffset StartDate { get; set; }
     
         public DateTimeOffset EndDate { get; set; }
+
+        public List<Link> Links { get; set; }
     }
 
 }
