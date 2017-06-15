@@ -9,7 +9,8 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
-    public class SessionIntegrationTests : IClassFixture<IntegrationTestFixture>
+    [Collection("Integration")]
+    public class SessionIntegrationTests
     {
         private readonly IntegrationTestFixture fixture;
         private readonly string productFilePath = Path.Combine(new DirectoryInfo(AppContext.BaseDirectory).Parent.Parent.Parent.FullName, @"CsvFiles\producttest.csv");
@@ -92,40 +93,26 @@ namespace Api.Client.Tests
             var sessions = await fixture.Client.Sessions.List();
             Assert.True(sessions.Count > 0);
         }
-/*
+
         [Fact]
         public async Task GetSessionResultsHasResults()
         {
-            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var session = await fixture.Client.Sessions.CreateForecast(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
-
-            var totalDelay = 0;
-            while (session.Status != SessionStatus.Completed || session.Status != SessionStatus.Failed || totalDelay > 30_000)
-            {
-                await Task.Delay(5000);
-                totalDelay += 5000;
-
-                session = await fixture.Client.Sessions.Get(session.SessionId);
-            }
-
-            var results = await fixture.Client.Sessions.GetResults(session.SessionId);
+            var results = await fixture.Client.Sessions.GetResults(fixture.SavedSessionId);
 
             Assert.NotNull(results);
-            Assert.True(results.Data.Count > 0);
+            Assert.Equal(fixture.SavedSessionId, results.SessionId);
+            Assert.Equal(SessionStatus.Completed, results.Status);
         }
 
         [Fact]
         public async Task GetSessionResultsWillWriteFile()
         {
-            var sessions = await fixture.Client.Sessions.List();
-            var session = sessions.FirstOrDefault(s => s.Status == SessionStatus.Completed);
-
             var filename = Path.Combine(AppContext.BaseDirectory, $"test-ouput-{DateTime.UtcNow:yyyyMMddhhmmss}.csv");
             try
             {
                 using (var output = new StreamWriter(File.OpenWrite(filename)))
                 {
-                    await fixture.Client.Sessions.GetResults(session.SessionId, output);
+                    await fixture.Client.Sessions.GetResults(fixture.SavedSessionId, output);
                 }
 
                 var results = File.ReadAllText(filename);
@@ -139,7 +126,6 @@ namespace Api.Client.Tests
                     File.Delete(filename);
             }
         }
-        */
 
         [Fact]
         public async Task DeletingSessionThenQueryingReturns404()
@@ -178,6 +164,14 @@ namespace Api.Client.Tests
 
             Assert.Equal(exceptionTheFirst.StatusCode, HttpStatusCode.NotFound);
             Assert.Equal(exceptionTheSecond.StatusCode, HttpStatusCode.NotFound);
+        }
+
+        [Fact(Skip = "Only run if changing the API key used.")]
+        public async Task PopulateDataForTesting()
+        {
+            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
+            var session = await fixture.Client.Sessions.CreateForecast(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25") );
+            Console.WriteLine($"{session.SessionId}, {session.DataSetName}");
         }
 
     }

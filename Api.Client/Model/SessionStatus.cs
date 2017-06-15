@@ -1,23 +1,25 @@
+using System.Runtime.Serialization;
+
 namespace Nexosis.Api.Client.Model
 {
     public enum SessionStatus
     {
-        [System.Runtime.Serialization.EnumMember(Value = "requested")]
+        [EnumMember(Value = "requested")]
         Requested = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = "started")]
+        [EnumMember(Value = "started")]
         Started = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = "completed")]
+        [EnumMember(Value = "completed")]
         Completed = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = "cancelled")]
+        [EnumMember(Value = "cancelled")]
         Cancelled = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = "failed")]
+        [EnumMember(Value = "failed")]
         Failed = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = "estimated")]
+        [EnumMember(Value = "estimated")]
         Estimated = 5,
     
     }

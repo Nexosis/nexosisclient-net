@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Nexosis.Api.Client
 {
-    static class UriExtensions
+    internal static class UriExtensions
     {
         /// <summary>
         /// Merge a dictionary of values with an existing <see cref="Uri"/>

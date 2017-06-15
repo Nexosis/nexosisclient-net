@@ -1,10 +1,11 @@
 using System;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Nexosis.Api.Client.Model;
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Api.Client.Tests")]
+[assembly: InternalsVisibleTo("Api.Client.Tests")]
 
 namespace Nexosis.Api.Client
 {

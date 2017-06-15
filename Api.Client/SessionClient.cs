@@ -315,11 +315,11 @@ namespace Nexosis.Api.Client
                 { nameof(endDate), endDate.ToString("O") },
                 { nameof(isEstimate), isEstimate.ToString().ToLowerInvariant() }
             };
-            if (!String.IsNullOrEmpty(eventName))
+            if (!string.IsNullOrEmpty(eventName))
             {
                 parameters.Add(nameof(eventName), eventName);
             }
-            if (!String.IsNullOrEmpty(statusCallbackUrl))
+            if (!string.IsNullOrEmpty(statusCallbackUrl))
             {
                 parameters.Add("callbackUrl", statusCallbackUrl);
             }
@@ -336,11 +336,11 @@ namespace Nexosis.Api.Client
                 { nameof(endDate), endDate.ToString("O") },
                 { nameof(isEstimate), isEstimate.ToString().ToLowerInvariant() }
             };
-            if (!String.IsNullOrEmpty(eventName))
+            if (!string.IsNullOrEmpty(eventName))
             {
                 parameters.Add(nameof(eventName), eventName);
             }
-            if (!String.IsNullOrEmpty(statusCallbackUrl))
+            if (!string.IsNullOrEmpty(statusCallbackUrl))
             {
                 parameters.Add("callbackUrl", statusCallbackUrl);
             }
@@ -358,11 +358,11 @@ namespace Nexosis.Api.Client
                 { nameof(endDate), endDate.ToString("O") },
                 { nameof(isEstimate), isEstimate.ToString().ToLowerInvariant() }
             };
-            if (!String.IsNullOrEmpty(eventName))
+            if (!string.IsNullOrEmpty(eventName))
             {
                 parameters.Add(nameof(eventName), eventName);
             }
-            if (!String.IsNullOrEmpty(statusCallbackUrl))
+            if (!string.IsNullOrEmpty(statusCallbackUrl))
             {
                 parameters.Add("callbackUrl", statusCallbackUrl);
             }
@@ -453,11 +453,11 @@ namespace Nexosis.Api.Client
         public async Task Remove(string dataSetName, string eventName, SessionType? type)
         {
             var parameters = new Dictionary<string, string>();
-            if (!String.IsNullOrEmpty(dataSetName))
+            if (!string.IsNullOrEmpty(dataSetName))
             {
                 parameters.Add(nameof(dataSetName), dataSetName); 
             }
-            if (!String.IsNullOrEmpty(eventName))
+            if (!string.IsNullOrEmpty(eventName))
             {
                 parameters.Add(nameof(eventName), eventName); 
             }
@@ -486,11 +486,11 @@ namespace Nexosis.Api.Client
                 { nameof(startDate), startDate.ToString("O") },
                 { nameof(endDate), endDate.ToString("O") }
             };
-            if (!String.IsNullOrEmpty(dataSetName))
+            if (!string.IsNullOrEmpty(dataSetName))
             {
                 parameters.Add(nameof(dataSetName), dataSetName); 
             }
-            if (!String.IsNullOrEmpty(eventName))
+            if (!string.IsNullOrEmpty(eventName))
             {
                 parameters.Add(nameof(eventName), eventName); 
             }

@@ -1,38 +1,33 @@
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Nexosis.Api.Client.Model
 {
     public class SessionResponse : ReturnsCost
     {
-        [JsonProperty("sessionId")]
-        public System.Guid SessionId { get; set; }
+        public Guid SessionId { get; set; }
     
-        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public SessionType Type { get; set; }
     
-        [JsonProperty("status", NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public SessionStatus Status { get; set; }
+
+        public List<StatusChange> StatusHistory { get; set; } = new List<StatusChange>();
     
-        [JsonProperty("extraParameters", NullValueHandling = NullValueHandling.Ignore)]
         public Dictionary<string, string> ExtraParameters { get; set; }
     
-        [JsonProperty("dataSetName", NullValueHandling = NullValueHandling.Ignore)]
         public string DataSetName { get; set; }
     
-        [JsonProperty("targetColumn", NullValueHandling = NullValueHandling.Ignore)]
         public string TargetColumn { get; set; }
     
-        [JsonProperty("eventName", NullValueHandling = NullValueHandling.Ignore)]
         public string EventName { get; set; }
 
-        [JsonProperty("startDate", NullValueHandling = NullValueHandling.Ignore)]
-        public System.DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
     
-        [JsonProperty("endDate", NullValueHandling = NullValueHandling.Ignore)]
-        public System.DateTimeOffset EndDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
     }
 
 }

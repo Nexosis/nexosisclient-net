@@ -5,14 +5,12 @@ namespace Nexosis.Api.Client.Model
 {
     public class ChampionInfo
     {
-        public DateTime SelectedOn { get; set; }
+        public DateTime Date { get; set; }
 
-        public Guid SelectedBySessionId { get; set; }
+        public Guid SessionId { get; set; }
 
-        //there'll be some duplication here
         public Contestant Champion { get; set; }
 
         public List<Contestant> Contestants { get; set; }
-
     }
 }
