@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -79,6 +80,47 @@ namespace Api.Client.Tests
 
             Assert.Equal(HttpStatusCode.NotFound, exception.StatusCode);
         }
+
+        [Fact]
+        public async Task QueryingForecastWithPredictionRunsCanGetForecastData()
+        {
+            var result = await fixture.Client.DataSets.GetForecast(fixture.SavedDataSet);
+
+            Assert.Equal(30, result.Data.Count);
+        }
+
+        [Fact]
+        public async Task QueryingForecastCanGetListOfAlgorithmsUsed()
+        {
+            var result = await fixture.Client.DataSets.ListForecastModels(fixture.SavedDataSet);
+
+            Assert.Equal(1, result.Count);
+        }
+
+        [Fact]
+        public async Task QueryingForecastCanGetListSingleModel()
+        {
+            var result = await fixture.Client.DataSets.GetForecastModel(fixture.SavedDataSet, "sales");
+
+            Assert.Equal("Seasonal Median, Weekly", result.ChampionContest.Champion.Algorithm.Name);
+        }
+
+        [Fact(Skip = "Only run if changing the API key used.")]
+        public async Task PopulateDataForTesting()
+        {
+            // loads a data set and creates a forecast so we can query it when running the tests
+            string dataSet = fixture.SavedDataSet;
+
+            using (var file = File.OpenText("..\\..\\..\\CsvFiles\\producttest.csv"))
+            {
+                await fixture.Client.DataSets.Create(dataSet, file);
+            }
+            await fixture.Client.Sessions.CreateForecast(dataSet, "sales", DateTimeOffset.Parse("2017-03-25 0:00:00 -0:00"), DateTimeOffset.Parse("2017-04-24 0:00:00 -0:00"));
+
+            var names = String.Join(", ", fixture.Client.DataSets.List(dataSet).GetAwaiter().GetResult().Select(ds => ds.DataSetName));
+            Console.WriteLine(names);
+        }
+
 
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Nexosis.Api.Client;
 using Nexosis.Api.Client.Model;
 using Xunit;
@@ -11,6 +12,9 @@ namespace Api.Client.Tests
     public class IntegrationTestFixture : IDisposable
     {
         public NexosisClient Client { get; set; }
+
+        public string SavedDataSet =>  "alpha.persistent";
+        public Guid SavedSessionId => Guid.Parse("015cac09-6ff6-4f41-967f-4def3269c763");
 
         public IntegrationTestFixture()
         {
@@ -26,8 +30,8 @@ namespace Api.Client.Tests
                 {
                     foreach (var dataSet in dataSets)
                     {
-                        Client.DataSets.Remove(dataSet.DataSetName, DataSetDeleteOptions.CascadeBoth).GetAwaiter()
-                            .GetResult();
+                        if (string.Equals(dataSet.DataSetName, SavedDataSet)) continue;
+                        Client.DataSets.Remove(dataSet.DataSetName, DataSetDeleteOptions.CascadeBoth).GetAwaiter().GetResult();
                     }
                 }
 
@@ -36,6 +40,7 @@ namespace Api.Client.Tests
                 {
                     foreach (var session in sessions)
                     {
+                        if (session.SessionId.Equals(SavedSessionId)) continue;
                         Client.Sessions.Remove(session.SessionId).GetAwaiter().GetResult();
                     }
                 }
