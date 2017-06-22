@@ -188,7 +188,7 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> EstimateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return EstimateForecast(input, targetColumn, startDate, endDate, httpMessageTransformer);
+            return EstimateForecast(input, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
         }
 
         public Task<SessionResponse> EstimateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
