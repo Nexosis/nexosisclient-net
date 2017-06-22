@@ -25,7 +25,7 @@ namespace Api.Client.Tests.SessionTests
             var result = await target.Sessions.List("alpha", "zulu", DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse("2017-01-11 0:00 -0:00"));
 
             Assert.NotNull(result);
-            Assert.Equal(new Uri(baseUri, "sessions?dataSetName=alpha&eventName=zulu&startDate=2017-01-01T00:00:00.0000000%2B00:00&endDate=2017-01-11T00:00:00.0000000%2B00:00"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "sessions?dataSetName=alpha&eventName=zulu&requestedAfterDate=2017-01-01T00:00:00.0000000%2B00:00&requestedBeforeDate=2017-01-11T00:00:00.0000000%2B00:00"), handler.Request.RequestUri);
         }
 
         [Fact]
