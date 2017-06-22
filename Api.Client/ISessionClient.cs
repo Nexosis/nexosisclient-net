@@ -621,39 +621,39 @@ namespace Nexosis.Api.Client
         /// </summary>
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
-        /// <param name="startDate">Limits sessions to those created on or after the specified date.</param>
-        /// <param name="endDate">Limits sessions to those created on or before the specified date.</param>
+        /// <param name="requestedAfterDate">Limits sessions to those requested on or after the specified date.</param>
+        /// <param name="requestedBeforeDate">Limits sessions to those requested on or before the specified date.</param>
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate);
         
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
         /// </summary>
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
-        /// <param name="startDate">Limits sessions to those created on or after the specified date.</param>
-        /// <param name="endDate">Limits sessions to those created on or before the specified date.</param>
+        /// <param name="requestedAfterDate">Limits sessions to those requested on or after the specified date.</param>
+        /// <param name="requestedBeforeDate">Limits sessions to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
         /// </summary>
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
-        /// <param name="startDate">Limits sessions to those created on or after the specified date.</param>
-        /// <param name="endDate">Limits sessions to those created on or before the specified date.</param>
+        /// <param name="requestedAfterDate">Limits sessions to those requested on or after the specified date.</param>
+        /// <param name="requestedBeforeDate">Limits sessions to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
         /// <summary>
         /// Remove sessions that have been run.
@@ -703,11 +703,11 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
         /// <param name="type">Limits sessions to those of the specified type - can be null or if given a value it Impact or Forecast.</param>
-        /// <param name="startDate">Limits sessions to those created on or after the specified date.</param>
-        /// <param name="endDate">Limits sessions to those created on or before the specified date.</param>
+        /// <param name="requestedAfterDate">Limits sessions to those requested on or after the specified date.</param>
+        /// <param name="requestedBeforeDate">Limits sessions to those requested on or before the specified date.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
-        Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate);
+        Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate);
         
         /// <summary>
         /// Remove sessions that have been run. All parameters are optional and will be used to limit the sessions removed.
@@ -715,12 +715,12 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
         /// <param name="type">Limits sessions to those of the specified type - can be null or if given a value it Impact or Forecast.</param>
-        /// <param name="startDate">Limits sessions to those created on or after the specified date.</param>
-        /// <param name="endDate">Limits sessions to those created on or before the specified date.</param>
+        /// <param name="requestedAfterDate">Limits sessions to those requested on or after the specified date.</param>
+        /// <param name="requestedBeforeDate">Limits sessions to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
-        Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// Remove sessions that have been run. All parameters are optional and will be used to limit the sessions removed.
@@ -728,13 +728,13 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
         /// <param name="type">Limits sessions to those of the specified type - can be null or if given a value it Impact or Forecast.</param>
-        /// <param name="startDate">Limits sessions to those created on or after the specified date.</param>
-        /// <param name="endDate">Limits sessions to those created on or before the specified date.</param>
+        /// <param name="requestedAfterDate">Limits sessions to those requested on or after the specified date.</param>
+        /// <param name="requestedBeforeDate">Limits sessions to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>DELETE to https://ml.nexosis.com/api/sessions</remarks>
-        Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
         /// <summary>
         /// Get a specific session by id.

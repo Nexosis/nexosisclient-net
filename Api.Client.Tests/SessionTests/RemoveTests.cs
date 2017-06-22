@@ -36,7 +36,7 @@ namespace Api.Client.Tests.SessionTests
             await target.Sessions.Remove(null, null, null, DateTimeOffset.Parse("2017-02-02 20:20:12 -0:00"), DateTimeOffset.Parse("2017-02-22 21:12 -0:00"));
 
             Assert.Equal(HttpMethod.Delete, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "sessions?startDate=2017-02-02T20:20:12.0000000%2B00:00&endDate=2017-02-22T21:12:00.0000000%2B00:00"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "sessions?requestedAfterDate=2017-02-02T20:20:12.0000000%2B00:00&requestedBeforeDate=2017-02-22T21:12:00.0000000%2B00:00"), handler.Request.RequestUri);
         }
 
         [Fact]

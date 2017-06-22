@@ -188,7 +188,7 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> EstimateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return EstimateForecast(input, targetColumn, startDate, endDate, httpMessageTransformer);
+            return EstimateForecast(input, targetColumn, startDate, endDate, httpMessageTransformer, CancellationToken.None);
         }
 
         public Task<SessionResponse> EstimateForecast(StreamReader input, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
@@ -393,25 +393,25 @@ namespace Nexosis.Api.Client
             return ListSessionsInternal(parameters, null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate)
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate)
         {
-            return List(dataSetName, eventName, startDate, endDate, null, CancellationToken.None);
+            return List(dataSetName, eventName, requestedAfterDate, requestedBeforeDate, null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return List(dataSetName, eventName, startDate, endDate, httpMessageTransformer, CancellationToken.None);
+            return List(dataSetName, eventName, requestedAfterDate, requestedBeforeDate, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var parameters = new Dictionary<string, string> {
                 { nameof(dataSetName), dataSetName },
                 { nameof(eventName), eventName },
-                { nameof(startDate), startDate.ToString("O") },
-                { nameof(endDate), endDate.ToString("O") }
+                { nameof(requestedAfterDate), requestedAfterDate.ToString("O") },
+                { nameof(requestedBeforeDate), requestedBeforeDate.ToString("O") }
             };
 
             return ListSessionsInternal(parameters, httpMessageTransformer, cancellationToken);
@@ -468,23 +468,23 @@ namespace Nexosis.Api.Client
             await RemoveSessionsInternal(parameters, null, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public async Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate)
+        public async Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate)
         {
-            await Remove(dataSetName, eventName, type, startDate, endDate, null).ConfigureAwait(false);
+            await Remove(dataSetName, eventName, type, requestedAfterDate, requestedBeforeDate, null).ConfigureAwait(false);
         }
 
-        public async Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate,
+        public async Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            await Remove(dataSetName, eventName, type, startDate, endDate, httpMessageTransformer, CancellationToken.None).ConfigureAwait(false);
+            await Remove(dataSetName, eventName, type, requestedAfterDate, requestedBeforeDate, httpMessageTransformer, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public async Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset startDate, DateTimeOffset endDate,
+        public async Task Remove(string dataSetName, string eventName, SessionType? type, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var parameters = new Dictionary<string, string> {
-                { nameof(startDate), startDate.ToString("O") },
-                { nameof(endDate), endDate.ToString("O") }
+                { nameof(requestedAfterDate), requestedAfterDate.ToString("O") },
+                { nameof(requestedBeforeDate), requestedBeforeDate.ToString("O") }
             };
             if (!string.IsNullOrEmpty(dataSetName))
             {

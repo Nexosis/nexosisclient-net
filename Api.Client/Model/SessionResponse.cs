@@ -25,6 +25,8 @@ namespace Nexosis.Api.Client.Model
     
         public string EventName { get; set; }
 
+        public DateTimeOffset RequestedDate { get; set; }
+
         public DateTimeOffset StartDate { get; set; }
     
         public DateTimeOffset EndDate { get; set; }
