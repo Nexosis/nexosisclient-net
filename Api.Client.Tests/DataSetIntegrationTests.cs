@@ -93,30 +93,6 @@ namespace Api.Client.Tests
             Assert.Equal(HttpStatusCode.NotFound, exception.StatusCode);
         }
 
-        [Fact]
-        public async Task QueryingForecastWithPredictionRunsCanGetForecastData()
-        {
-            var result = await fixture.Client.DataSets.GetForecast(fixture.SavedDataSet);
-
-            Assert.Equal(30, result.Data.Count);
-        }
-
-        [Fact]
-        public async Task QueryingForecastCanGetListOfAlgorithmsUsed()
-        {
-            var result = await fixture.Client.DataSets.ListForecastModels(fixture.SavedDataSet);
-
-            Assert.Equal(1, result.Count);
-        }
-
-        [Fact]
-        public async Task QueryingForecastCanGetListSingleModel()
-        {
-            var result = await fixture.Client.DataSets.GetForecastModel(fixture.SavedDataSet, "sales");
-
-            Assert.Equal("Seasonal Median, Weekly", result.ChampionContest.Champion.Algorithm.Name);
-        }
-
         [Fact(Skip = "Only run if changing the API key used.")]
         public async Task PopulateDataForTesting()
         {
