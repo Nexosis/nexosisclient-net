@@ -28,6 +28,16 @@ namespace Api.Client.Tests
 
             Assert.Equal("whiskey", result.DataSetName);
         }
+        
+        [Fact]
+        public async Task CanSaveDataSetWithAssumedTimestampColumn()
+        {
+            var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "foxtrot", implicitTimestamp: true);
+
+            var result = await fixture.Client.DataSets.Create("whiskey", data);
+
+            Assert.Equal("whiskey", result.DataSetName);
+        }
 
         [Fact]
         public async Task GettingDataSetGivesBackLinks()
