@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Api.Client.Tests.DataSetTests
 {
     public class GetTests : NexosisClient_TestsBase
     {
-        public GetTests() : base(new { data = new DataSetRow[] {} })
+        public GetTests() : base(new DataSet { Data = new List<Dictionary<string, string>>(), Columns = new Dictionary<string, ColumnMetadata>()})
         {
         }
 

@@ -18,7 +18,7 @@ namespace Api.Client.Tests
 
         public IntegrationTestFixture()
         {
-            Client = new NexosisClient(Environment.GetEnvironmentVariable(NexosisClient.NexosisApiKeyEnvironmentVariable), "https://api.dev.nexosisdev.com/api/", new ApiConnection.HttpClientFactory()); 
+            Client = new NexosisClient(Environment.GetEnvironmentVariable(NexosisClient.NexosisApiKeyEnvironmentVariable) ?? "ad9fc8698b7146c78bdf5246d6576368", "https://api.dev.nexosisdev.com/api/", new ApiConnection.HttpClientFactory()); 
         }
 
         protected virtual void Dispose(bool disposing)

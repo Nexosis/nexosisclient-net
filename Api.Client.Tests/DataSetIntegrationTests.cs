@@ -44,30 +44,30 @@ namespace Api.Client.Tests
         [Fact]
         public async Task CanGetDataSetThatHasBeenSaved()
         {
-            var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "hotel");
+            var data = DataSetGenerator.Run(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse("2017-03-31 0:00 -0:00"), "india juliet");
 
             await fixture.Client.DataSets.Create("india", data);
 
             var result = await fixture.Client.DataSets.Get("india");
 
-            Assert.Equal(DateTime.Parse("2017-01-01").ToLocalTime(), result.Data.First().Timestamp);
-            Assert.True(result.Data.First().Values.ContainsKey("hotel"));
+            Assert.Equal(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse(result.Data.First()["time"]));
+            Assert.True(result.Data.First().ContainsKey("india juliet"));
         }
 
         [Fact]
         public async Task CanPutMoreDataToSameDataSet()
         {
-            var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-01-31"), "hotel");
-            await fixture.Client.DataSets.Create("charlie", data);
+            var data = DataSetGenerator.Run(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse("2017-01-31 0:00 -0:00"), "golf hotel");
+            await fixture.Client.DataSets.Create("alpha bravo", data);
 
-            var moreData = DataSetGenerator.Run(DateTime.Parse("2017-02-01"), DateTime.Parse("2017-03-01"), "hotel");
-            await fixture.Client.DataSets.Create("charlie", moreData);
+            var moreData = DataSetGenerator.Run(DateTimeOffset.Parse("2017-02-01 0:00 -0:00"), DateTimeOffset.Parse("2017-03-01 0:00 -0:00"), "golf hotel");
+            await fixture.Client.DataSets.Create("alpha bravo", moreData);
 
             var result = await fixture.Client.DataSets.Get("charlie");
 
-            var orderedData = result.Data.OrderBy(d => d.Timestamp);
-            Assert.Equal(DateTime.Parse("2017-01-01").ToLocalTime(), orderedData.First().Timestamp);
-            Assert.Equal(DateTime.Parse("2017-02-28").ToLocalTime(), orderedData.Last().Timestamp);
+            var orderedData = result.Data.Select(d => DateTimeOffset.Parse(d["time"])).OrderBy(it => it);
+            Assert.Equal(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), orderedData.First());
+            Assert.Equal(DateTimeOffset.Parse("2017-02-28 0:00 -0:00"), orderedData.Last());
         }
 
         [Fact]
@@ -108,7 +108,6 @@ namespace Api.Client.Tests
             var names = String.Join(", ", fixture.Client.DataSets.List(dataSet).GetAwaiter().GetResult().Select(ds => ds.DataSetName));
             Console.WriteLine(names);
         }
-
 
     }
 }

@@ -18,23 +18,23 @@ namespace Nexosis.Api.Client
             this.apiConnection = apiConnection;
         }
 
-        public Task<DataSetSummary> Create(string dataSetName, IEnumerable<DataSetRow> data)
+        public Task<DataSetSummary> Create(string dataSetName, DataSet data)
         {
             return Create(dataSetName, data, null);
         }
 
-        public Task<DataSetSummary> Create(string dataSetName, IEnumerable<DataSetRow> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<DataSetSummary> Create(string dataSetName, DataSet data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
             return Create(dataSetName, data, httpMessageTransformer, CancellationToken.None);
         }
 
-        public async Task<DataSetSummary> Create(string dataSetName, IEnumerable<DataSetRow> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
+        public async Task<DataSetSummary> Create(string dataSetName, DataSet data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
             Argument.IsNotNull(data, nameof(data));
 
-            return await apiConnection.Put<DataSetSummary>($"data/{dataSetName}", null, new { data }, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
+            return await apiConnection.Put<DataSetSummary>($"data/{dataSetName}", null, data, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
         public Task<DataSetSummary> Create(string dataSetName, StreamReader input)

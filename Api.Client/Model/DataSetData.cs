@@ -3,11 +3,9 @@ using System.Collections.Generic;
 
 namespace Nexosis.Api.Client.Model
 {
-    public class DataSetData
+    public class DataSetData : DataSet
     {
-        /// <summary>The data</summary>
-        public List<DataSetRow> Data { get; set; } = new List<DataSetRow>();
-
+        /// <summary> Hypermedia links to related content </summary>
         public List<Link> Links { get; set; }
     }
 }

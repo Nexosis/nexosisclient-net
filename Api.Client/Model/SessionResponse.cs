@@ -31,6 +31,8 @@ namespace Nexosis.Api.Client.Model
     
         public DateTimeOffset EndDate { get; set; }
 
+        public List<ColumnMetadata> Columns { get; set; } = new List<ColumnMetadata>();
+
         public List<Link> Links { get; set; }
     }
 

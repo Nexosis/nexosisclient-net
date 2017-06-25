@@ -28,13 +28,13 @@ namespace Api.Client.Tests.SessionTests
         [Fact]
         public async Task SetsDataOnRequestWhenGiven()
         {
-            var data = new List<DataSetRow> { new DataSetRow { Timestamp = DateTime.Today, Values = new Dictionary<string, double> { { "delta", 0.23 }, { "bravo", 123.23 } } } };
+            var data = new DataSet { Data = new List<Dictionary<string,string>> { new Dictionary<string, string> { { "timestamp", DateTimeOffset.Now.ToString("O") }, { "delta", "0.23" }, { "bravo", "123.23" } } } };
 
             await target.Sessions.AnalyzeImpact(data, "event-name", "target-column", DateTimeOffset.Parse("2017-12-12 10:11:12 -0:00"), DateTimeOffset.Parse("2017-12-22 22:23:24 -0:00"), "http://this.is.a.callback.url");
 
             Assert.Equal(HttpMethod.Post, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, "sessions/impact?targetColumn=target-column&startDate=2017-12-12T10:11:12.0000000%2B00:00&endDate=2017-12-22T22:23:24.0000000%2B00:00&isEstimate=false&eventName=event-name&callbackUrl=http:%2F%2Fthis.is.a.callback.url"), handler.Request.RequestUri);
-            Assert.Equal(JsonConvert.SerializeObject(new { data }), handler.RequestBody);
+            Assert.Equal(JsonConvert.SerializeObject(data), handler.RequestBody);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace Api.Client.Tests.SessionTests
         [Fact]
         public async Task ReqiresNotNullDataSet()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.AnalyzeImpact((IEnumerable<DataSetRow>) null, "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.AnalyzeImpact((DataSet) null, "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
 
             Assert.Equal("data", exception.ParamName);
         }
