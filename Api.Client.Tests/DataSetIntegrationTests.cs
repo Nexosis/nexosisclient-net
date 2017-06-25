@@ -22,11 +22,11 @@ namespace Api.Client.Tests
         [Fact]
         public async Task CanSaveDataSet()
         {
-            var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "foxtrot");
+            var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
 
-            var result = await fixture.Client.DataSets.Create("whiskey", data);
+            var result = await fixture.Client.DataSets.Create("mike", data);
 
-            Assert.Equal("whiskey", result.DataSetName);
+            Assert.Equal("mike", result.DataSetName);
         }
         
         [Fact]
@@ -73,7 +73,7 @@ namespace Api.Client.Tests
             var moreData = DataSetGenerator.Run(DateTimeOffset.Parse("2017-02-01 0:00 -0:00"), DateTimeOffset.Parse("2017-03-01 0:00 -0:00"), "golf hotel");
             await fixture.Client.DataSets.Create("alpha bravo", moreData);
 
-            var result = await fixture.Client.DataSets.Get("charlie");
+            var result = await fixture.Client.DataSets.Get("alpha bravo");
 
             var orderedData = result.Data.Select(d => DateTimeOffset.Parse(d["time"])).OrderBy(it => it);
             Assert.Equal(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), orderedData.First());

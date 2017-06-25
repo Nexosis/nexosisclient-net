@@ -11,7 +11,7 @@ namespace Api.Client.Tests
         {
             var tscol = implicitTimestamp ? "timeStamp" : "time";
             var rand = new Random();
-            var dates = Enumerable.Range(0, (endDate.Date - startDate.Date).Days).Select(i => startDate.Date.AddDays(i));
+            var dates = Enumerable.Range(0, (endDate.Date - startDate.Date).Days).Select(i => startDate.UtcDateTime.Date.AddDays(i));
 
             var ds = new DataSet
             {
