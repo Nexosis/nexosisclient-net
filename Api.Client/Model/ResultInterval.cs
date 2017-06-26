@@ -1,5 +1,8 @@
-﻿namespace Nexosis.Api.Client.Model
+namespace Nexosis.Api.Client.Model
 {
+    /// <summary>
+    /// The interval at which predictions should be generated
+    /// </summary>
     public enum ResultInterval
     {
         Hour,

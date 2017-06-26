@@ -14,11 +14,12 @@ namespace Api.Client.Tests
         public NexosisClient Client { get; set; }
 
         public string SavedDataSet =>  "alpha.persistent";
-        public Guid SavedSessionId => Guid.Parse("015ce0d8-1443-41aa-a85e-eb2f5536684b");
+        public Guid SavedSessionId => Guid.Parse("015ce5b0-8d68-495c-b7e3-1d4293cdeb5a");
+        public string ForecastDataSetName => "forecast.015ce5b0-8d68-495c-b7e3-1d4293cdeb5a";
 
         public IntegrationTestFixture()
         {
-            Client = new NexosisClient("de5831dbb5e349709e05d76cf5bbbc9f", "https://api.dev.nexosisdev.com/api/", new ApiConnection.HttpClientFactory()); 
+            Client = new NexosisClient(Environment.GetEnvironmentVariable(NexosisClient.NexosisApiKeyEnvironmentVariable), "https://api.dev.nexosisdev.com/v1/", new ApiConnection.HttpClientFactory()); 
         }
 
         protected virtual void Dispose(bool disposing)

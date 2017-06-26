@@ -44,11 +44,9 @@ namespace Api.Client.Tests
         {
             var result = await fixture.Client.DataSets.Get("whiskey");
 
-            Assert.Equal(3, result.Links.Count);
-            Assert.Equal(new [] { "forecast", "model", "sessions"}, result.Links.Select(l => l.Rel));
-            Assert.Equal("https://api.dev.nexosisdev.com/api/data/whiskey/forecast", result.Links[0].Href);
-            Assert.Equal("https://api.dev.nexosisdev.com/api/data/whiskey/forecast/model", result.Links[1].Href);
-            Assert.Equal("https://api.dev.nexosisdev.com/api/sessions?dataSetName=whiskey", result.Links[2].Href);
+            Assert.Equal(1, result.Links.Count);
+            Assert.Equal(new [] { "sessions"}, result.Links.Select(l => l.Rel));
+            Assert.Equal("https://api.dev.nexosisdev.com/api/sessions?dataSetName=whiskey", result.Links[0].Href);
         }
 
         [Fact]
@@ -56,9 +54,9 @@ namespace Api.Client.Tests
         {
             var data = DataSetGenerator.Run(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse("2017-03-31 0:00 -0:00"), "india juliet");
 
-            await fixture.Client.DataSets.Create("india", data);
+            await fixture.Client.DataSets.Create("zulu yankee", data);
 
-            var result = await fixture.Client.DataSets.Get("india");
+            var result = await fixture.Client.DataSets.Get("zulu yankee");
 
             Assert.Equal(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse(result.Data.First()["time"]));
             Assert.True(result.Data.First().ContainsKey("india juliet"));
@@ -113,7 +111,7 @@ namespace Api.Client.Tests
             {
                 await fixture.Client.DataSets.Create(dataSet, file);
             }
-            await fixture.Client.Sessions.CreateForecast(dataSet, "sales", DateTimeOffset.Parse("2017-03-25 0:00:00 -0:00"), DateTimeOffset.Parse("2017-04-24 0:00:00 -0:00"));
+            await fixture.Client.Sessions.CreateForecast(dataSet, "sales", DateTimeOffset.Parse("2017-03-25 0:00:00 -0:00"), DateTimeOffset.Parse("2017-04-24 0:00:00 -0:00"), ResultInterval.Day);
 
             var names = String.Join(", ", fixture.Client.DataSets.List(dataSet).GetAwaiter().GetResult().Select(ds => ds.DataSetName));
             Console.WriteLine(names);
