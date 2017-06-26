@@ -20,7 +20,7 @@ namespace Api.Client.Tests.DataSetTests
         [Fact]
         public async Task RequiresDataSetNameToBeGiven()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.DataSets.Create((string)null, (IEnumerable<DataSetRow>)null));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.DataSets.Create((string)null, (DataSetDetail)null));
 
             Assert.Equal(exception.ParamName, "dataSetName");
         }
@@ -28,7 +28,7 @@ namespace Api.Client.Tests.DataSetTests
         [Fact]
         public async Task RequiresDataSetListToBeGiven()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.DataSets.Create("foxtrot", (IEnumerable<DataSetRow>)null));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.DataSets.Create("foxtrot", (DataSetDetail)null));
 
             Assert.Equal(exception.ParamName, "data");
         }
@@ -44,7 +44,7 @@ namespace Api.Client.Tests.DataSetTests
         [Fact]
         public async Task WillUploadDataGivenAsFile()
         {
-            string fileContent = "timestamp,alpha,beta\r\n2017-01-01,10,14\r\n2017-01-02,11,13\r\n2017-01-03,12,12";
+            string fileContent = "timeStamp,alpha,beta\r\n2017-01-01,10,14\r\n2017-01-02,11,13\r\n2017-01-03,12,12";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(fileContent)))
             {
@@ -68,7 +68,7 @@ namespace Api.Client.Tests.DataSetTests
 
             Assert.Equal(HttpMethod.Put, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, "data/yankee"), handler.Request.RequestUri);
-            Assert.Equal(JsonConvert.SerializeObject(new { data }), handler.RequestBody);
+            Assert.Equal(JsonConvert.SerializeObject(data), handler.RequestBody);
         }
 
     }

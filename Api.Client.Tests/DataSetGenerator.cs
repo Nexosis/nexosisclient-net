@@ -7,16 +7,31 @@ namespace Api.Client.Tests
 {
     public static class DataSetGenerator
     {
-        public static List<DataSetRow> Run(DateTime startDate, DateTime endDate, string targetKey)
+        public static DataSetDetail Run(DateTimeOffset startDate, DateTimeOffset endDate, string targetKey, bool implicitTimestamp = false)
         {
+            var tscol = implicitTimestamp ? "timeStamp" : "time";
             var rand = new Random();
-            var dates = Enumerable.Range(0, (endDate.Date - startDate.Date).Days).Select(i => startDate.Date.AddDays(i));
+            var dates = Enumerable.Range(0, (endDate.Date - startDate.Date).Days).Select(i => startDate.UtcDateTime.Date.AddDays(i));
 
-            return dates.Select(d => new DataSetRow
+            var ds = new DataSetDetail
             {
-                Timestamp = d,
-                Values = new Dictionary<string, double> { { targetKey, rand.NextDouble() * 100 } }
-            }).ToList();
+                Data = dates.Select(d => new Dictionary<string, string>
+                {
+                    { tscol, d.ToString("O") },
+                    { targetKey, (rand.NextDouble() * 100).ToString() }
+                }).ToList(),
+                Columns = new Dictionary<string, ColumnMetadata>
+                {
+                    { targetKey, new ColumnMetadata { DataType = ColumnType.Numeric, Role = ColumnRole.Target } }
+                }
+            };
+            
+            if (!implicitTimestamp)
+                ds.Columns.Add(tscol, new ColumnMetadata { DataType = ColumnType.Date, Role = ColumnRole.Timestamp });
+            
+            return ds;
         }
+        
+        
     }
 }
