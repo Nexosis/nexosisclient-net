@@ -23,7 +23,7 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// The default URL of the api endpoint.
         /// </summary>
-        public const string BaseUrl = "https://ml.nexosis.com/api/";
+        public const string BaseUrl = "https://ml.nexosis.com/v1/";
 
         /// <summary>
         /// The client id and version sent as the User-Agent header

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Nexosis.Api.Client;
 using Nexosis.Api.Client.Model;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Api.Client.Tests
 {
@@ -14,6 +15,7 @@ namespace Api.Client.Tests
     {
         private readonly IntegrationTestFixture fixture;
         private readonly string productFilePath = Path.Combine(new DirectoryInfo(AppContext.BaseDirectory).Parent.Parent.Parent.FullName, @"CsvFiles\producttest.csv");
+        private readonly string sensorFilePath = Path.Combine(new DirectoryInfo(AppContext.BaseDirectory).Parent.Parent.Parent.FullName, @"CsvFiles\sensor2.csv");
 
         public SessionIntegrationTests(IntegrationTestFixture fixture)
         {
@@ -67,6 +69,26 @@ namespace Api.Client.Tests
                 Assert.NotNull(actual.SessionId);
             }
         }
+
+        [Fact]
+        public async Task GivesBackForecastMatchingRequestedInterval()
+        {
+           /* using (var file = File.OpenText(sensorFilePath))
+            {
+                var actual = await fixture.Client.Sessions.CreateForecast(file, "value", DateTimeOffset.Parse("2017-01-10 -0:00"), DateTimeOffset.Parse("2017-01-17 -0:00"), ResultInterval.Hour);
+                Assert.NotNull(actual.SessionId);
+                Console.WriteLine(actual.SessionId);
+            }*/
+            var sessionId = Guid.Parse("015ce58b-e32f-45b7-aba3-030f119392ce");
+
+            var results = await fixture.Client.Sessions.GetResults(sessionId);
+            
+            Assert.NotNull(results);
+            var date1 = DateTimeOffset.Parse(results.Data[0]["timeStamp"]);
+            var date2 = DateTimeOffset.Parse(results.Data[1]["timeStamp"]);
+            Assert.Equal("", r);
+        }
+
 
         [Fact]
         public async Task StartImpactWithDataDirectlyStartsNewSession()

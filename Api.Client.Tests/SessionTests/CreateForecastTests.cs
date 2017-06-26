@@ -55,7 +55,7 @@ namespace Api.Client.Tests.SessionTests
                 Assert.Equal(fileContent, handler.RequestBody);
             }
         }
-
+        
         [Fact]
         public async Task ReqiresNotNullDataSet()
         {
