@@ -86,7 +86,7 @@ namespace Api.Client.Tests
             Assert.NotNull(results);
             var date1 = DateTimeOffset.Parse(results.Data[0]["timeStamp"]);
             var date2 = DateTimeOffset.Parse(results.Data[1]["timeStamp"]);
-            Assert.Equal("", r);
+            Assert.Equal(1, (date2 - date1).Hours);
         }
 
 
@@ -153,7 +153,7 @@ namespace Api.Client.Tests
                 var results = File.ReadAllText(filename);
 
                 Assert.True(results.Length > 0);
-                Assert.StartsWith("timestamp,", results);
+                Assert.StartsWith("timeStamp,", results);
             }
             finally
             {
@@ -201,7 +201,7 @@ namespace Api.Client.Tests
             Assert.Equal(exceptionTheSecond.StatusCode, HttpStatusCode.NotFound);
         }
 
-        [Fact(Skip = "Only run if changing the API key used.")]
+        [Fact]//(Skip = "Only run if changing the API key used.")]
         public async Task PopulateDataForTesting()
         {
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");

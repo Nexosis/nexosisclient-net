@@ -79,7 +79,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
+        Task<SessionResponse> CreateForecast(DataSetDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
         
         /// <summary>
         /// Forecast from data posted in the request.
@@ -93,7 +93,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl);
+        Task<SessionResponse> CreateForecast(DataSetDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl);
         
         /// <summary>
         /// Forecast from data posted in the request.
@@ -108,7 +108,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> CreateForecast(DataSetDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// Forecast from data posted in the request.
@@ -124,7 +124,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> CreateForecast(DataSetDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
         /// <summary>
         /// Forecast from data already saved to the API.
@@ -258,7 +258,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> AnalyzeImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
+        Task<SessionResponse> AnalyzeImpact(DataSetDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
         
         /// <summary>
         /// Analyze impact for an event with data in the request.
@@ -273,7 +273,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> AnalyzeImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl);
+        Task<SessionResponse> AnalyzeImpact(DataSetDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl);
         
         /// <summary>
         /// Analyze impact for an event with data in the request.
@@ -289,7 +289,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> AnalyzeImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> AnalyzeImpact(DataSetDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// Analyze impact for an event with data in the request.
@@ -306,7 +306,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> AnalyzeImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> AnalyzeImpact(DataSetDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
         /// <summary>
         /// Analyze impact for an event with data already saved to the API.
@@ -423,7 +423,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
+        Task<SessionResponse> EstimateForecast(DataSetDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
         
         /// <summary>
         /// Estimate the cost of a forecast from data posted in the request.
@@ -437,7 +437,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> EstimateForecast(DataSetDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// Estimate the cost of a forecast from data posted in the request.
@@ -452,7 +452,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecast(IEnumerable<DataSetRow> data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> EstimateForecast(DataSetDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
         /// <summary>
         /// Estimate the cost of a forecast from data already saved to the API.
@@ -553,7 +553,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
+        Task<SessionResponse> EstimateImpact(DataSetDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
         
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data in the request.
@@ -568,7 +568,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> EstimateImpact(DataSetDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
         
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data in the request.
@@ -584,7 +584,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpact(IEnumerable<DataSetRow> data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> EstimateImpact(DataSetDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
         
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data already saved to the API.
@@ -927,6 +927,5 @@ namespace Nexosis.Api.Client
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions/{id}/results</remarks>
         Task GetResults(Guid id, StreamWriter output, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
-        
     }
 }
