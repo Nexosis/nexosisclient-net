@@ -19,6 +19,6 @@
         None,
         Timestamp,
         Target,
-        Regressor
+        Feature
     }
 }

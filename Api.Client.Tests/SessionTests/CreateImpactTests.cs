@@ -28,7 +28,7 @@ namespace Api.Client.Tests.SessionTests
         [Fact]
         public async Task SetsDataOnRequestWhenGiven()
         {
-            var data = new DataSet { Data = new List<Dictionary<string,string>> { new Dictionary<string, string> { { "timestamp", DateTimeOffset.Now.ToString("O") }, { "delta", "0.23" }, { "bravo", "123.23" } } } };
+            var data = new DataSetDetail { Data = new List<Dictionary<string,string>> { new Dictionary<string, string> { { "timestamp", DateTimeOffset.Now.ToString("O") }, { "delta", "0.23" }, { "bravo", "123.23" } } } };
 
             await target.Sessions.AnalyzeImpact(data, "event-name", "target-column", DateTimeOffset.Parse("2017-12-12 10:11:12 -0:00"), DateTimeOffset.Parse("2017-12-22 22:23:24 -0:00"), "http://this.is.a.callback.url");
 
@@ -58,7 +58,7 @@ namespace Api.Client.Tests.SessionTests
         [Fact]
         public async Task ReqiresNotNullDataSet()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.AnalyzeImpact((DataSet) null, "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.AnalyzeImpact((DataSetDetail) null, "event", "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
 
             Assert.Equal("data", exception.ParamName);
         }

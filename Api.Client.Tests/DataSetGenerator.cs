@@ -7,13 +7,13 @@ namespace Api.Client.Tests
 {
     public static class DataSetGenerator
     {
-        public static DataSet Run(DateTimeOffset startDate, DateTimeOffset endDate, string targetKey, bool implicitTimestamp = false)
+        public static DataSetDetail Run(DateTimeOffset startDate, DateTimeOffset endDate, string targetKey, bool implicitTimestamp = false)
         {
             var tscol = implicitTimestamp ? "timeStamp" : "time";
             var rand = new Random();
             var dates = Enumerable.Range(0, (endDate.Date - startDate.Date).Days).Select(i => startDate.UtcDateTime.Date.AddDays(i));
 
-            var ds = new DataSet
+            var ds = new DataSetDetail
             {
                 Data = dates.Select(d => new Dictionary<string, string>
                 {

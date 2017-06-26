@@ -14,34 +14,34 @@ namespace Nexosis.Api.Client
         /// Save data in a data set.
         /// </summary>
         /// <param name="dataSetName">Name of the dataset to which to add data.</param>
-        /// <param name="data">A DataSet containing the data.</param>
+        /// <param name="data">A DataSetDetail containing the data.</param>
         /// <returns>A <see cref="DataSetSummary"/> for the data set created.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>PUT to https://ml.nexosis.com/api/data/{dataSetName}</remarks>
-        Task<DataSetSummary> Create(string dataSetName, DataSet data);
+        Task<DataSetSummary> Create(string dataSetName, DataSetDetail data);
 
         /// <summary>
         /// Save data in a data set.
         /// </summary>
         /// <param name="dataSetName">Name of the dataset to which to add data.</param>
-        /// <param name="data">A DataSet containing the data.</param>
+        /// <param name="data">A DataSetDetail containing the data.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns>A <see cref="DataSetSummary"/> for the data set created.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>PUT to https://ml.nexosis.com/api/data/{dataSetName}</remarks>
-        Task<DataSetSummary> Create(string dataSetName, DataSet data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<DataSetSummary> Create(string dataSetName, DataSetDetail data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
 
         /// <summary>
         /// Save data in a data set.
         /// </summary>
         /// <param name="dataSetName">Name of the dataset to which to add data.</param>
-        /// <param name="data">A DataSet containing the data.</param>
+        /// <param name="data">A DataSetDetail containing the data.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A <see cref="DataSetSummary"/> for the data set created.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>PUT to https://ml.nexosis.com/api/data/{dataSetName}</remarks>
-        Task<DataSetSummary> Create(string dataSetName, DataSet data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
+        Task<DataSetSummary> Create(string dataSetName, DataSetDetail data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken);
 
         /// <summary>

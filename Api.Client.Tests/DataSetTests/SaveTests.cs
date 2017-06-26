@@ -20,7 +20,7 @@ namespace Api.Client.Tests.DataSetTests
         [Fact]
         public async Task RequiresDataSetNameToBeGiven()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.DataSets.Create((string)null, (DataSet)null));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.DataSets.Create((string)null, (DataSetDetail)null));
 
             Assert.Equal(exception.ParamName, "dataSetName");
         }
@@ -28,7 +28,7 @@ namespace Api.Client.Tests.DataSetTests
         [Fact]
         public async Task RequiresDataSetListToBeGiven()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.DataSets.Create("foxtrot", (DataSet)null));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.DataSets.Create("foxtrot", (DataSetDetail)null));
 
             Assert.Equal(exception.ParamName, "data");
         }

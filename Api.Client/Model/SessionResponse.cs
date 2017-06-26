@@ -31,7 +31,7 @@ namespace Nexosis.Api.Client.Model
     
         public DateTimeOffset EndDate { get; set; }
 
-        public Dictionary<string, ColumnMetadata> Columns { get; set; } = new Dictionary<string, ColumnMetadata>();
+        public Dictionary<string, ColumnMetadata> Columns { get; set; } = new Dictionary<string, ColumnMetadata>(StringComparer.OrdinalIgnoreCase);
 
         public List<Link> Links { get; set; }
     }
