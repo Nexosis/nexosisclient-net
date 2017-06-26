@@ -33,7 +33,7 @@ namespace Api.Client.Tests.SessionTests
             await target.Sessions.CreateForecast(data, "target-column", DateTimeOffset.Parse("2017-12-12 10:11:12 -0:00"), DateTimeOffset.Parse("2017-12-22 22:23:24 -0:00"), ResultInterval.Day, "http://this.is.a.callback.url");
 
             Assert.Equal(HttpMethod.Post, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "sessions/forecast?targetColumn=target-column&startDate=2017-12-12T10:11:12.0000000%2B00:00&endDate=2017-12-22T22:23:24.0000000%2B00:00&isEstimate=false&callbackUrl=http:%2F%2Fthis.is.a.callback.url"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "sessions/forecast?targetColumn=target-column&startDate=2017-12-12T10:11:12.0000000%2B00:00&endDate=2017-12-22T22:23:24.0000000%2B00:00&isEstimate=false&resultInterval=day&callbackUrl=http:%2F%2Fthis.is.a.callback.url"), handler.Request.RequestUri);
             Assert.Equal(JsonConvert.SerializeObject(data), handler.RequestBody);
         }
 
