@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -17,7 +17,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
-        /// <param name="resultInterval"></param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
@@ -30,8 +30,8 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
-        /// <param name="resultInterval"></param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
@@ -44,7 +44,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
-        /// <param name="resultInterval"></param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -59,7 +59,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
-        /// <param name="resultInterval"></param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -75,6 +75,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
@@ -87,6 +88,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -100,6 +102,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -114,6 +117,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -129,6 +133,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
@@ -141,6 +146,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -154,6 +160,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -168,6 +175,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -184,6 +192,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
@@ -197,6 +206,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -211,6 +221,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -226,6 +237,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -242,6 +254,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
@@ -255,6 +268,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -269,6 +283,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -284,6 +299,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -300,6 +316,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
@@ -313,6 +330,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -327,6 +345,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -342,6 +361,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="statusCallbackUrl">An optional url used for callbacks when the forecast session status changes.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -357,6 +377,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
@@ -369,6 +390,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -382,6 +404,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -396,6 +419,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
@@ -408,6 +432,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -421,6 +446,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -435,6 +461,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
@@ -447,6 +474,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -460,6 +488,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -475,6 +504,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
@@ -488,6 +518,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -502,6 +533,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -517,6 +549,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
@@ -530,6 +563,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -544,6 +578,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
@@ -559,6 +594,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
@@ -572,6 +608,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -586,6 +623,7 @@ namespace Nexosis.Api.Client
         /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
+        /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
