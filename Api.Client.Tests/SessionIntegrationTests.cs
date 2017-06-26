@@ -146,7 +146,7 @@ namespace Api.Client.Tests
                 var results = File.ReadAllText(filename);
 
                 Assert.True(results.Length > 0);
-                Assert.StartsWith("timeStamp,", results);
+                Assert.StartsWith("time,instances", results);
             }
             finally
             {
