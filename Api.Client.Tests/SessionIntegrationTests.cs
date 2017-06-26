@@ -34,7 +34,7 @@ namespace Api.Client.Tests
         {  
             using (var file = File.OpenText(productFilePath))
             {
-                var actual = await fixture.Client.Sessions.CreateForecast(file, (string) "sales", DateTimeOffset.Parse("2017-03-25 -0:00"), DateTimeOffset.Parse("2017-04-25 -0:00"),  ResultInterval.Day);
+                var actual = await fixture.Client.Sessions.CreateForecast(file, "sales", DateTimeOffset.Parse("2017-03-25 -0:00"), DateTimeOffset.Parse("2017-04-25 -0:00"),  ResultInterval.Day);
                 Assert.NotNull(actual.SessionId);
             }
         }

@@ -73,7 +73,7 @@ namespace Api.Client.Tests.SessionTests
         [Fact]
         public async Task ReqiresNotNullStreamReader()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.CreateForecast((StreamReader) (StreamReader) null, (string) "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue, ResultInterval.Day));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.CreateForecast((StreamReader) null, "", DateTimeOffset.MinValue, DateTimeOffset.MaxValue, ResultInterval.Day));
 
             Assert.Equal("input", exception.ParamName);
         }
