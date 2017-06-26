@@ -14,7 +14,8 @@ namespace Api.Client.Tests
         public NexosisClient Client { get; set; }
 
         public string SavedDataSet =>  "alpha.persistent";
-        public Guid SavedSessionId => Guid.Parse("015cacc9-19bc-4e27-a2a5-6cd83c26ce92");
+        public Guid SavedSessionId => Guid.Parse("015ce5b0-8d68-495c-b7e3-1d4293cdeb5a");
+        public string ForecastDataSetName => "forecast.015ce5b0-8d68-495c-b7e3-1d4293cdeb5a";
 
         public IntegrationTestFixture()
         {

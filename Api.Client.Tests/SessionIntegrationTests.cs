@@ -73,12 +73,6 @@ namespace Api.Client.Tests
         [Fact]
         public async Task GivesBackForecastMatchingRequestedInterval()
         {
-           /* using (var file = File.OpenText(sensorFilePath))
-            {
-                var actual = await fixture.Client.Sessions.CreateForecast(file, "value", DateTimeOffset.Parse("2017-01-10 -0:00"), DateTimeOffset.Parse("2017-01-17 -0:00"), ResultInterval.Hour);
-                Assert.NotNull(actual.SessionId);
-                Console.WriteLine(actual.SessionId);
-            }*/
             var sessionId = Guid.Parse("015ce58b-e32f-45b7-aba3-030f119392ce");
 
             var results = await fixture.Client.Sessions.GetResults(sessionId);
@@ -132,11 +126,10 @@ namespace Api.Client.Tests
             var result = await fixture.Client.Sessions.GetResults(fixture.SavedSessionId);
 
             Assert.NotNull(result);
-            Assert.Equal(3, result.Links.Count);
-            Assert.Equal(new [] { "results", "model", "data"}, result.Links.Select(l => l.Rel));
+            Assert.Equal(2, result.Links.Count);
+            Assert.Equal(new [] { "results", "data"}, result.Links.Select(l => l.Rel));
             Assert.Equal($"https://api.dev.nexosisdev.com/api/sessions/{fixture.SavedSessionId}/results", result.Links[0].Href);
-            Assert.Equal("https://api.dev.nexosisdev.com/api/data/alpha.persistent/forecast/model/sales", result.Links[1].Href);
-            Assert.Equal("https://api.dev.nexosisdev.com/api/data/alpha.persistent", result.Links[2].Href);
+            Assert.Equal($"https://api.dev.nexosisdev.com/api/data/{fixture.ForecastDataSetName}", result.Links[1].Href);
         }
 
         [Fact]
@@ -201,12 +194,20 @@ namespace Api.Client.Tests
             Assert.Equal(exceptionTheSecond.StatusCode, HttpStatusCode.NotFound);
         }
 
-        [Fact]//(Skip = "Only run if changing the API key used.")]
+        [Fact(Skip = "Only run if changing the API key used.")]
         public async Task PopulateDataForTesting()
         {
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
             var session = await fixture.Client.Sessions.CreateForecast(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
             Console.WriteLine($"{session.SessionId}, {session.DataSetName}");
+           /* 
+            using (var file = File.OpenText(sensorFilePath))
+            {
+                var actual = await fixture.Client.Sessions.CreateForecast(file, "value", DateTimeOffset.Parse("2017-01-10 -0:00"), DateTimeOffset.Parse("2017-01-17 -0:00"), ResultInterval.Hour);
+                Assert.NotNull(actual.SessionId);
+                Console.WriteLine($"Hourly session: {actual.SessionId}");
+            }
+            */
         }
 
     }
