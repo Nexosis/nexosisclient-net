@@ -2,6 +2,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='AppVeyor|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;NETCOREAPP1_1;SKIP_INTEGRATION</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="ClientTests.cs" />
     <Compile Remove="ConstructionTests.cs" />
