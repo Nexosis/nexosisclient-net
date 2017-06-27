@@ -73,7 +73,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task GivesBackForecastMatchingRequestedInterval()
         {
-            var sessionId = Guid.Parse("015ce58b-e32f-45b7-aba3-030f119392ce");
+            var sessionId = fixture.SavedHourlySessionId;
 
             var results = await fixture.Client.Sessions.GetResults(sessionId);
             
