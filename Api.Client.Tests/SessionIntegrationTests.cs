@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Nexosis.Api.Client;
 using Nexosis.Api.Client.Model;
 using Xunit;
-using Xunit.Sdk;
 
 namespace Api.Client.Tests
 {
@@ -128,8 +127,8 @@ namespace Api.Client.Tests
             Assert.NotNull(result);
             Assert.Equal(2, result.Links.Count);
             Assert.Equal(new [] { "results", "data"}, result.Links.Select(l => l.Rel));
-            Assert.Equal($"https://api.dev.nexosisdev.com/v1/sessions/{fixture.SavedSessionId}/results", result.Links[0].Href);
-            Assert.Equal($"https://api.dev.nexosisdev.com/v1/data/{fixture.ForecastDataSetName}", result.Links[1].Href);
+            Assert.Equal($"{fixture.Client.ConfiguredUrl}sessions/{fixture.SavedSessionId}/results", result.Links[0].Href);
+            Assert.Equal($"{fixture.Client.ConfiguredUrl}data/{fixture.ForecastDataSetName}", result.Links[1].Href);
         }
 
         [Fact]
