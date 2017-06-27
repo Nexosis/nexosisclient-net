@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Api.Client.Tests
 {
+#if !SKIP_INTEGRATION // integration tests will charge your account and require an API key in environment variables
     [Collection("Integration")]
     public class DataSetIntegrationTests
     {
@@ -119,4 +120,5 @@ namespace Api.Client.Tests
         }
 
     }
+#endif
 }
