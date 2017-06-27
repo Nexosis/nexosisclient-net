@@ -128,8 +128,8 @@ namespace Api.Client.Tests
             Assert.NotNull(result);
             Assert.Equal(2, result.Links.Count);
             Assert.Equal(new [] { "results", "data"}, result.Links.Select(l => l.Rel));
-            Assert.Equal($"https://api.dev.nexosisdev.com/api/sessions/{fixture.SavedSessionId}/results", result.Links[0].Href);
-            Assert.Equal($"https://api.dev.nexosisdev.com/api/data/{fixture.ForecastDataSetName}", result.Links[1].Href);
+            Assert.Equal($"https://api.dev.nexosisdev.com/v1/sessions/{fixture.SavedSessionId}/results", result.Links[0].Href);
+            Assert.Equal($"https://api.dev.nexosisdev.com/v1/data/{fixture.ForecastDataSetName}", result.Links[1].Href);
         }
 
         [Fact]
@@ -200,14 +200,12 @@ namespace Api.Client.Tests
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
             var session = await fixture.Client.Sessions.CreateForecast(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
             Console.WriteLine($"{session.SessionId}, {session.DataSetName}");
-           /* 
             using (var file = File.OpenText(sensorFilePath))
             {
                 var actual = await fixture.Client.Sessions.CreateForecast(file, "value", DateTimeOffset.Parse("2017-01-10 -0:00"), DateTimeOffset.Parse("2017-01-17 -0:00"), ResultInterval.Hour);
                 Assert.NotNull(actual.SessionId);
                 Console.WriteLine($"Hourly session: {actual.SessionId}");
             }
-            */
         }
 
     }
