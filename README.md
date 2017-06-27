@@ -15,7 +15,7 @@ The most basic thing you can do with the API is submit some data and ask for pre
     using (var file = File.OpenText("C:\\path\\to\\file.csv"))
     {
         var session = await client.Sessions.CreateForecast(file, "sales", DateTimeOffset.Parse("2017-03-25 -0:00"), DateTimeOffset.Parse("2017-04-25 -0:00"));
-        Console.Log($"{session.Id}");
+        Console.WriteLine($"{session.Id}");
     }
  ```
     

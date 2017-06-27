@@ -5,7 +5,7 @@
     <RootNamespace>Nexosis.Api.Client</RootNamespace>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-    <Version>1.1.0</Version>
+    <Version>1.0.5</Version>
     <Description>Client library for Nexosis Machine Learning API.</Description>
     <PackageTags>machinelearning timeseries nexosis</PackageTags>
     <RepositoryUrl>https://github.com/Nexosis</RepositoryUrl>
