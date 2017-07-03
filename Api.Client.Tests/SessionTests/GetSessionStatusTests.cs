@@ -19,7 +19,7 @@ namespace Api.Client.Tests.SessionTests
             var result = await target.Sessions.GetStatus(sessionId);
 
             Assert.Equal(sessionId, result.SessionId);
-            Assert.Equal(SessionStatus.Started, result.Status);
+            Assert.Equal(Status.Started, result.Status);
         }
 
         [Fact]

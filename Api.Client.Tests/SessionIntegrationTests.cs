@@ -117,7 +117,7 @@ namespace Api.Client.Tests
 
             Assert.NotNull(results);
             Assert.Equal(fixture.SavedSessionId, results.SessionId);
-            Assert.Equal(SessionStatus.Completed, results.Status);
+            Assert.Equal(Status.Completed, results.Status);
         }
 
         [Fact]
