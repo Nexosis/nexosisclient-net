@@ -100,6 +100,21 @@ namespace Nexosis.Api.Client
         /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
         Task<ImportDetail> ImportFromS3(string dataSetName, string bucket, string path, string region);
 
+
+        /// <summary>
+        /// Import data into the Nexosis Api from a file on AWS S3
+        /// </summary>
+        /// <param name="dataSetName">The dataset into which the data should be imported</param>
+        /// <param name="bucket">The AWS S3 bucket containing the file to be imported</param>
+        /// <param name="path">The path inside the bucket to the file. The Nexosis API can import a single file at a time.  The file can be in either csv or json format, and optionally with gzip compression.</param>
+        /// <param name="region">The AWS region where the bucket is located.  Defaults to us-east-1</param>
+        /// <param name="columns">Metadata about each column in the dataset</param>     
+        /// <remarks>POST of https://ml.nexosis.com/api/imports</remarks>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
+        Task<ImportDetail> ImportFromS3(string dataSetName, string bucket, string path, string region,
+            Dictionary<string, ColumnMetadata> columns);
+
         /// <summary>
         /// Import data into the Nexosis Api from a file on AWS S3
         /// </summary>
