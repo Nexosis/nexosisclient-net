@@ -9,6 +9,6 @@ namespace Nexosis.Api.Client.Model
         public DateTimeOffset Date { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public SessionStatus Status { get; set; }
+        public Status Status { get; set; }
     }
 }

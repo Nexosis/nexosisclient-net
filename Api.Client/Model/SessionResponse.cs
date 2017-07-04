@@ -13,9 +13,9 @@ namespace Nexosis.Api.Client.Model
         [JsonConverter(typeof(StringEnumConverter))]
         public SessionType Type { get; set; }
     
-        /// <summary>The current <see cref="SessionStatus">status</see> of the session.</summary>
+        /// <summary>The current <see cref="Model.Status">status</see> of the session.</summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public SessionStatus Status { get; set; }
+        public Status Status { get; set; }
 
         /// <summary>The values of session status over time.</summary>
         public List<StatusChange> StatusHistory { get; set; } = new List<StatusChange>();
@@ -45,5 +45,4 @@ namespace Nexosis.Api.Client.Model
         
         public List<Link> Links { get; set; }
     }
-
 }

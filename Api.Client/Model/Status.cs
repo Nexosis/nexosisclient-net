@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 
 namespace Nexosis.Api.Client.Model
 {
-    public enum SessionStatus
+    public enum Status
     {
         [EnumMember(Value = "requested")]
         Requested = 0,
