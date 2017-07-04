@@ -34,21 +34,4 @@ namespace Api.Client.Tests.ImportTests
             Assert.Equal(new Uri(@"https://nada.nexosis.com/imports?dataSetName=foo&requestedAfterDate=2017-01-01T00:00:00.0000000%2B00:00&requestedBeforeDate=2017-01-02T00:00:00.0000000%2B00:00"), handler.Request.RequestUri);
         }
     }
-
-    public class GetTests : NexosisClient_TestsBase
-    {
-
-        public GetTests() : base(new { }) { }
-
-        [Fact]
-        public async Task GetsFromCorrectUrl()
-        {
-            var id = Guid.NewGuid();
-            var result = await target.Imports.Get(id);
-            Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri($"https://nada.nexosis.com/imports/{id}"), handler.Request.RequestUri);
-        }
-
-        
-    }
 }
