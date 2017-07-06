@@ -12,7 +12,7 @@ namespace Api.Client.Tests.ImportTests
     public class ListTests : NexosisClient_TestsBase
     {
 
-        public ListTests() : base(new {})
+        public ListTests() : base(new {Items = new object[] {}})
         {
             
         }
