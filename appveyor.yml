@@ -1,0 +1,23 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+install:
+- ps: >-
+    dotnet restore .\Api.Client\Api.Client.csproj
+
+    dotnet restore .\Api.Client.Tests\Api.Client.Tests.csproj
+build_script:
+- ps: >-
+    dotnet build -c Release Api.Client.sln
+
+    cd Api.Client\
+
+    dotnet pack -c Release --no-build /p:Title="Nexosis API Client" /p:Version=$env:APPVEYOR_BUILD_VERSION
+
+    cd ..
+test_script:
+- ps: >-
+    cd Api.Client.Tests\
+
+    dotnet xunit -configuration AppVeyor -xml ApiClientTestResults.xml
+artifacts:
+- path: '**/*.nupkg'
