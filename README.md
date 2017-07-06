@@ -1,4 +1,6 @@
-﻿# Nexosis .NET API Client
+﻿	# Nexosis .NET API Client
+
+[![Build status](https://ci.appveyor.com/api/projects/status/cl1fac1a0ylggn72?svg=true)](https://ci.appveyor.com/project/Nexosis/nexosisclient-net)
 
 ## Installation
 
