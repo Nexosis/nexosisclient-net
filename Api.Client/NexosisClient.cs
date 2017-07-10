@@ -60,6 +60,16 @@ namespace Nexosis.Api.Client
         }
 
         /// <summary>
+        /// Constructs a instance of the client with the api key and uri as parameters.
+        /// </summary>
+        /// <param name="key">The api key from your account.</param>
+        /// <param name="uri">The uri endpoint to run against. Not particularly useful except for internal testsing.</param>
+        public NexosisClient(string key, string uri) : this(key, uri, new ApiConnection.HttpClientFactory())
+        {
+
+        }
+
+        /// <summary>
         /// Internal provided for testing use only 
         /// </summary>
         internal NexosisClient(string key, string endpoint, ApiConnection.HttpClientFactory clientFactory)
