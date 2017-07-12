@@ -22,7 +22,7 @@ namespace Nexosis.Api.Client.Model
     
         public Dictionary<string, string> ExtraParameters { get; set; }
     
-        /// <summary>The name of the saved data set that has the data to forecast on.</summary>
+        /// <summary>The name of the dataset that has the data to forecast on.</summary>
         public string DataSetName { get; set; }
     
         /// <summary>The name of the column for which you want predictions.</summary>

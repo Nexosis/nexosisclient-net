@@ -106,7 +106,7 @@ namespace Api.Client.Tests
         [Fact(Skip = "Only run if changing the API key used.")]
         public async Task PopulateDataForTesting()
         {
-            // loads a data set and creates a forecast so we can query it when running the tests
+            // loads a dataset and creates a forecast so we can query it when running the tests
             string dataSet = fixture.SavedDataSet;
 
             using (var file = File.OpenText("..\\..\\..\\CsvFiles\\producttest.csv"))

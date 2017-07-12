@@ -14,7 +14,6 @@ namespace Api.Client.Tests
     public class SessionIntegrationTests
     {
         private readonly IntegrationTestFixture fixture;
-        private readonly string productFilePath = Path.Combine(new DirectoryInfo(AppContext.BaseDirectory).Parent.Parent.Parent.FullName, @"CsvFiles\producttest.csv");
         private readonly string sensorFilePath = Path.Combine(new DirectoryInfo(AppContext.BaseDirectory).Parent.Parent.Parent.FullName, @"CsvFiles\sensor2.csv");
 
         public SessionIntegrationTests(IntegrationTestFixture fixture)
@@ -32,25 +31,7 @@ namespace Api.Client.Tests
         }
 
         [Fact]
-        public async Task CreateForecastWithCsvStartsNewSession()
-        {  
-            using (var file = File.OpenText(productFilePath))
-            {
-                var actual = await fixture.Client.Sessions.CreateForecast(file, "sales", DateTimeOffset.Parse("2017-03-25 -0:00"), DateTimeOffset.Parse("2017-04-25 -0:00"),  ResultInterval.Day);
-                Assert.NotNull(actual.SessionId);
-            }
-        }
-
-        [Fact]
-        public async Task CreateForecastWithDataDirectlyStartsNewSession()
-        {
-            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var actual = await fixture.Client.Sessions.CreateForecast(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
-            Assert.NotNull(actual.SessionId);
-        }
-
-        [Fact]
-        public async Task ForcastFromSavedDataSetStartsNewSession()
+        public async Task ForcastStartsNewSession()
         {
             var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
@@ -58,16 +39,6 @@ namespace Api.Client.Tests
 
             var actual = await fixture.Client.Sessions.CreateForecast(dataSetName, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
             Assert.NotNull(actual.SessionId);
-        } 
-
-        [Fact]
-        public async Task StartImpactWithCsvStartsNewSession()
-        {  
-            using (var file = File.OpenText(productFilePath))
-            {
-                var actual = await fixture.Client.Sessions.AnalyzeImpact(file, "super-duper-sale", "sales", DateTimeOffset.Parse("2016-11-25 -0:00"), DateTimeOffset.Parse("2016-12-25 -0:00"), ResultInterval.Day);
-                Assert.NotNull(actual.SessionId);
-            }
         }
 
         [Fact]
@@ -76,24 +47,15 @@ namespace Api.Client.Tests
             var sessionId = fixture.SavedHourlySessionId;
 
             var results = await fixture.Client.Sessions.GetResults(sessionId);
-            
+
             Assert.NotNull(results);
             var date1 = DateTimeOffset.Parse(results.Data[0]["timeStamp"]);
             var date2 = DateTimeOffset.Parse(results.Data[1]["timeStamp"]);
             Assert.Equal(1, (date2 - date1).Hours);
         }
 
-
         [Fact]
-        public async Task StartImpactWithDataDirectlyStartsNewSession()
-        {
-            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var actual = await fixture.Client.Sessions.AnalyzeImpact(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
-            Assert.NotNull(actual.SessionId);
-        }
-
-        [Fact]
-        public async Task StartImpactFromSavedDataSetStartsNewSession()
+        public async Task StartImpactStartsNewSession()
         {
             var dataSetName = $"testDataSet-{DateTime.UtcNow:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
@@ -127,7 +89,7 @@ namespace Api.Client.Tests
 
             Assert.NotNull(result);
             Assert.Equal(2, result.Links.Count);
-            Assert.Equal(new [] { "results", "data"}, result.Links.Select(l => l.Rel));
+            Assert.Equal(new[] { "results", "data" }, result.Links.Select(l => l.Rel));
             Assert.Equal($"{fixture.Client.ConfiguredUrl}sessions/{fixture.SavedSessionId}/results", result.Links[0].Href);
             Assert.Equal($"{fixture.Client.ConfiguredUrl}data/{fixture.ForecastDataSetName}", result.Links[1].Href);
         }
@@ -158,8 +120,12 @@ namespace Api.Client.Tests
         [Fact]
         public async Task DeletingSessionThenQueryingReturns404()
         {
+            var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var actual = await fixture.Client.Sessions.AnalyzeImpact(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
+
+            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+
+            var actual = await fixture.Client.Sessions.AnalyzeImpact(dataSetName, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
 
             await fixture.Client.Sessions.Remove(actual.SessionId);
             var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await fixture.Client.Sessions.Get(actual.SessionId));
@@ -170,8 +136,12 @@ namespace Api.Client.Tests
         [Fact]
         public async Task CheckingSessionStatusReturnsExpcetedValue()
         {
+            var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var actual = await fixture.Client.Sessions.EstimateImpact(dataSet, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
+
+            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+
+            var actual = await fixture.Client.Sessions.EstimateImpact(dataSetName, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
 
             var status = await fixture.Client.Sessions.GetStatus(actual.SessionId);
 
@@ -181,9 +151,13 @@ namespace Api.Client.Tests
         [Fact]
         public async Task CanRemoveMultipleSessions()
         {
+            var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var first = await fixture.Client.Sessions.AnalyzeImpact(dataSet, "juliet-juliet-echo-1", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
-            var second = await fixture.Client.Sessions.AnalyzeImpact(dataSet, "juliet-juliet-echo-2", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
+
+            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+
+            var first = await fixture.Client.Sessions.AnalyzeImpact(dataSetName, "juliet-juliet-echo-1", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
+            var second = await fixture.Client.Sessions.AnalyzeImpact(dataSetName, "juliet-juliet-echo-2", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
 
             await fixture.Client.Sessions.Remove(null, "juliet-juliet-echo-", SessionType.Impact);
 
@@ -197,12 +171,18 @@ namespace Api.Client.Tests
         [Fact(Skip = "Only run if changing the API key used.")]
         public async Task PopulateDataForTesting()
         {
+            var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            var session = await fixture.Client.Sessions.CreateForecast(dataSet, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
+
+            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+            var session = await fixture.Client.Sessions.CreateForecast(dataSetName, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
+
             Console.WriteLine($"{session.SessionId}, {session.DataSetName}");
             using (var file = File.OpenText(sensorFilePath))
             {
-                var actual = await fixture.Client.Sessions.CreateForecast(file, "value", DateTimeOffset.Parse("2017-01-10 -0:00"), DateTimeOffset.Parse("2017-01-17 -0:00"), ResultInterval.Hour);
+                var fileDataSetName = $"fileDataSet-{DateTime.Now:s}";
+                await fixture.Client.DataSets.Create(fileDataSetName, file);
+                var actual = await fixture.Client.Sessions.CreateForecast(fileDataSetName, "value", DateTimeOffset.Parse("2017-01-10 -0:00"), DateTimeOffset.Parse("2017-01-17 -0:00"), ResultInterval.Hour);
                 Assert.NotNull(actual.SessionId);
                 Console.WriteLine($"Hourly session: {actual.SessionId}");
             }

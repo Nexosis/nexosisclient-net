@@ -11,7 +11,7 @@ namespace Nexosis.Api.Client.Model
         CascadeForecast = 1,
         /// <summary>Also deletes sessions associated with the dataset.  If start and/or end date are supplied, sessions requested in that date range are deleted.</summary>
         CascadeSessions = 2,
-        /// <summary>Deletes the forcasts and sessions associated with the data set.</summary>
+        /// <summary>Deletes the forcasts and sessions associated with the dataset.</summary>
         CascadeBoth = CascadeForecast | CascadeSessions
     }
 }

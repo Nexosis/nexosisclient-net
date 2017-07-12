@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using Nexosis.Api.Client;
-using Nexosis.Api.Client.Model;
 using Xunit;
 
 namespace Api.Client.Tests
@@ -22,7 +20,7 @@ namespace Api.Client.Tests
                 ForecastDataSetName = "forecast.015ce681-ca24-449d-a673-699aff25a0cc";
             }
 
-            Client = new NexosisClient(Environment.GetEnvironmentVariable(NexosisClient.NexosisApiKeyEnvironmentVariable), url, new ApiConnection.HttpClientFactory()); 
+            Client = new NexosisClient(Environment.GetEnvironmentVariable(NexosisClient.NexosisApiKeyEnvironmentVariable), url, new ApiConnection.HttpClientFactory());
         }
 
         public NexosisClient Client { get; set; }
@@ -31,7 +29,7 @@ namespace Api.Client.Tests
         public string SavedDataSet { get; set; } = "alpha.persistent";
         public Guid SavedSessionId { get; set; } = Guid.Parse("015ce5b0-8d68-495c-b7e3-1d4293cdeb5a");
         public Guid SavedHourlySessionId { get; set; } = Guid.Parse("015ce58b-e32f-45b7-aba3-030f119392ce");
-        public string ForecastDataSetName { get; set; }  = "forecast.015ce5b0-8d68-495c-b7e3-1d4293cdeb5a";
+        public string ForecastDataSetName { get; set; } = "forecast.015ce5b0-8d68-495c-b7e3-1d4293cdeb5a";
 
 
         protected virtual void Dispose(bool disposing)
