@@ -15,6 +15,5 @@ namespace Nexosis.Api.Client
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentException("Value cannot be null or empty.", name);
         }
-
     }
 }

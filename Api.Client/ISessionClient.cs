@@ -14,20 +14,18 @@ namespace Nexosis.Api.Client
         /// Forecast from data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the forecast.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
+        Task<SessionResponse> CreateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
 
         /// <summary>
         /// Forecast from data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the forecast.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -35,13 +33,12 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl);
+        Task<SessionResponse> CreateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl);
 
         /// <summary>
         /// Forecast from data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the forecast.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -50,13 +47,12 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> CreateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
 
         /// <summary>
         /// Forecast from data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the forecast.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -66,7 +62,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> CreateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> CreateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Forecast from data already saved to the API.
@@ -131,21 +127,19 @@ namespace Nexosis.Api.Client
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the impact analysis.</param>
         /// <param name="eventName">The name of the event.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
+        Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
 
         /// <summary>
         /// Analyze impact for an event with data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the impact analysis.</param>
         /// <param name="eventName">The name of the event.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -153,14 +147,13 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl);
+        Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl);
 
         /// <summary>
         /// Analyze impact for an event with data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the impact analysis.</param>
         /// <param name="eventName">The name of the event.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -169,14 +162,13 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
 
         /// <summary>
         /// Analyze impact for an event with data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the impact analysis.</param>
         /// <param name="eventName">The name of the event.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -186,7 +178,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Analyze impact for an event with data already saved to the API.
@@ -254,20 +246,18 @@ namespace Nexosis.Api.Client
         /// Estimate the cost of a forecast from data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the forecast.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
+        Task<SessionResponse> EstimateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
 
         /// <summary>
         /// Estimate the cost of a forecast from data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the forecast.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -275,13 +265,12 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> EstimateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
 
         /// <summary>
         /// Estimate the cost of a forecast from data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the forecast.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the forecast period.</param>
         /// <param name="endDate">The ending date of the forecast period.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -290,7 +279,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/forecast</remarks>
-        Task<SessionResponse> EstimateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> EstimateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Estimate the cost of a forecast from data already saved to the API.
@@ -339,21 +328,19 @@ namespace Nexosis.Api.Client
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the impact analysis.</param>
         /// <param name="eventName">The name of the event.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
+        Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval);
 
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the impact analysis.</param>
         /// <param name="eventName">The name of the event.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -361,14 +348,13 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
 
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data already saved to the API.
         /// </summary>
         /// <param name="data">Information about the dataset to be used for the impact analysis.</param>
         /// <param name="eventName">The name of the event.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -377,7 +363,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the sesssion.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
-        Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Estimate the cost of impact analysis for an event with data already saved to the API.

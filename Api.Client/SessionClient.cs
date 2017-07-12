@@ -19,31 +19,30 @@ namespace Nexosis.Api.Client
             this.apiConnection = apiConnection;
         }
 
-        public Task<SessionResponse> CreateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval)
+        public Task<SessionResponse> CreateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval)
         {
-            return CreateForecast(data, targetColumn, startDate, endDate, resultInterval, null);
+            return CreateForecast(data, startDate, endDate, resultInterval, null);
         }
 
-        public Task<SessionResponse> CreateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval,
+        public Task<SessionResponse> CreateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval,
             string statusCallbackUrl)
         {
-            return CreateForecast(data, targetColumn, startDate, endDate, resultInterval, statusCallbackUrl, null);
+            return CreateForecast(data, startDate, endDate, resultInterval, statusCallbackUrl, null);
         }
 
-        public Task<SessionResponse> CreateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval,
+        public Task<SessionResponse> CreateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return CreateForecast(data, targetColumn, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
+            return CreateForecast(data, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> CreateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval,
+        public Task<SessionResponse> CreateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval,
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(data, nameof(data));
             Argument.IsNotNullOrEmpty(data.DataSetName, "data.DataSetName");
-            Argument.IsNotNullOrEmpty(targetColumn, nameof(targetColumn));
 
-            return CreateSessionInternal("sessions/forecast", data, null /* eventName */, targetColumn, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
+            return CreateSessionInternal("sessions/forecast", data, null /* eventName */, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
         public Task<SessionResponse> CreateForecast(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval)
@@ -67,40 +66,47 @@ namespace Nexosis.Api.Client
             string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
+            Argument.IsNotNullOrEmpty(targetColumn, nameof(targetColumn));
 
-            var data = new SessionDetail { DataSetName = dataSetName };
+            var data = new SessionDetail
+            {
+                DataSetName = dataSetName,
+                Columns = new Dictionary<string, ColumnMetadata>()
+                {
+                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target, DataType = ColumnType.Numeric } }
+                }
+            };
 
-            return CreateForecast(data, targetColumn, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, cancellationToken);
+            return CreateForecast(data, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, cancellationToken);
         }
 
-        public Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, DateTimeOffset startDate,
             DateTimeOffset endDate, ResultInterval resultInterval)
         {
-            return AnalyzeImpact(data, eventName, targetColumn, startDate, endDate, resultInterval, null);
+            return AnalyzeImpact(data, eventName, startDate, endDate, resultInterval, null);
         }
 
-        public Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, DateTimeOffset startDate,
             DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl)
         {
-            return AnalyzeImpact(data, eventName, targetColumn, startDate, endDate, resultInterval, statusCallbackUrl, null);
+            return AnalyzeImpact(data, eventName, startDate, endDate, resultInterval, statusCallbackUrl, null);
         }
 
-        public Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, DateTimeOffset startDate,
             DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return AnalyzeImpact(data, eventName, targetColumn, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
+            return AnalyzeImpact(data, eventName, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> AnalyzeImpact(SessionDetail data, string eventName, DateTimeOffset startDate,
             DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
             CancellationToken cancellationToken)
         {
             Argument.IsNotNull(data, nameof(data));
             Argument.IsNotNullOrEmpty(data.DataSetName, "data.DataSetName");
-            Argument.IsNotNullOrEmpty(targetColumn, nameof(targetColumn));
             Argument.IsNotNullOrEmpty(eventName, nameof(eventName));
 
-            return CreateSessionInternal("sessions/impact", data, eventName, targetColumn, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
+            return CreateSessionInternal("sessions/impact", data, eventName, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, cancellationToken, isEstimate: false);
         }
 
         public Task<SessionResponse> AnalyzeImpact(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval)
@@ -124,31 +130,38 @@ namespace Nexosis.Api.Client
             ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
+            Argument.IsNotNullOrEmpty(targetColumn, nameof(targetColumn));
 
-            var data = new SessionDetail { DataSetName = dataSetName };
+            var data = new SessionDetail
+            {
+                DataSetName = dataSetName,
+                Columns = new Dictionary<string, ColumnMetadata>()
+                {
+                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target, DataType = ColumnType.Numeric } }
+                }
+            };
 
-            return AnalyzeImpact(data, eventName, targetColumn, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, cancellationToken);
+            return AnalyzeImpact(data, eventName, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, cancellationToken);
         }
 
-        public Task<SessionResponse> EstimateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval)
+        public Task<SessionResponse> EstimateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval)
         {
-            return EstimateForecast(data, targetColumn, startDate, endDate, resultInterval, null);
+            return EstimateForecast(data, startDate, endDate, resultInterval, null);
         }
 
-        public Task<SessionResponse> EstimateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval,
+        public Task<SessionResponse> EstimateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return EstimateForecast(data, targetColumn, startDate, endDate, resultInterval, httpMessageTransformer, CancellationToken.None);
+            return EstimateForecast(data, startDate, endDate, resultInterval, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> EstimateForecast(SessionDetail data, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval,
+        public Task<SessionResponse> EstimateForecast(SessionDetail data, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(data, nameof(data));
             Argument.IsNotNullOrEmpty(data.DataSetName, "data.DataSetName");
-            Argument.IsNotNullOrEmpty(targetColumn, nameof(targetColumn));
 
-            return CreateSessionInternal("sessions/forecast", data, null /* eventName */, targetColumn, startDate, endDate, resultInterval, null, httpMessageTransformer, cancellationToken, isEstimate: true);
+            return CreateSessionInternal("sessions/forecast", data, null /* eventName */, startDate, endDate, resultInterval, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
         public Task<SessionResponse> EstimateForecast(string dataSetName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval)
@@ -166,33 +179,40 @@ namespace Nexosis.Api.Client
             ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
+            Argument.IsNotNullOrEmpty(targetColumn, nameof(targetColumn));
 
-            var data = new SessionDetail { DataSetName = dataSetName };
+            var data = new SessionDetail
+            {
+                DataSetName = dataSetName,
+                Columns = new Dictionary<string, ColumnMetadata>()
+                {
+                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target, DataType = ColumnType.Numeric } }
+                }
+            };
 
-            return EstimateForecast(data, targetColumn, startDate, endDate, resultInterval, httpMessageTransformer, cancellationToken);
+            return EstimateForecast(data, startDate, endDate, resultInterval, httpMessageTransformer, cancellationToken);
         }
 
-        public Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, DateTimeOffset startDate,
             DateTimeOffset endDate, ResultInterval resultInterval)
         {
-            return EstimateImpact(data, eventName, targetColumn, startDate, endDate, resultInterval, null);
+            return EstimateImpact(data, eventName, startDate, endDate, resultInterval, null);
         }
 
-        public Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate,
+        public Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, DateTimeOffset startDate,
             DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
-            return EstimateImpact(data, eventName, targetColumn, startDate, endDate, resultInterval, httpMessageTransformer, CancellationToken.None);
+            return EstimateImpact(data, eventName, startDate, endDate, resultInterval, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        public Task<SessionResponse> EstimateImpact(SessionDetail data, string eventName, DateTimeOffset startDate, DateTimeOffset endDate,
             ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(data, nameof(data));
             Argument.IsNotNullOrEmpty(data.DataSetName, "data.DataSetName");
-            Argument.IsNotNullOrEmpty(targetColumn, nameof(targetColumn));
             Argument.IsNotNullOrEmpty(eventName, nameof(eventName));
 
-            return CreateSessionInternal("sessions/impact", data, eventName, targetColumn, startDate, endDate, resultInterval, null, httpMessageTransformer, cancellationToken, isEstimate: true);
+            return CreateSessionInternal("sessions/impact", data, eventName, startDate, endDate, resultInterval, null, httpMessageTransformer, cancellationToken, isEstimate: true);
         }
 
         public Task<SessionResponse> EstimateImpact(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval)
@@ -210,19 +230,26 @@ namespace Nexosis.Api.Client
             DateTimeOffset endDate, ResultInterval resultInterval, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
+            Argument.IsNotNullOrEmpty(targetColumn, nameof(targetColumn));
 
-            var data = new SessionDetail { DataSetName = dataSetName };
+            var data = new SessionDetail
+            {
+                DataSetName = dataSetName,
+                Columns = new Dictionary<string, ColumnMetadata>()
+                {
+                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target, DataType = ColumnType.Numeric } }
+                }
+            };
 
-            return EstimateImpact(data, eventName, targetColumn, startDate, endDate, resultInterval, httpMessageTransformer, cancellationToken);
+            return EstimateImpact(data, eventName, startDate, endDate, resultInterval, httpMessageTransformer, cancellationToken);
         }
 
-        private Task<SessionResponse> CreateSessionInternal(string path, SessionDetail data, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate,
+        private Task<SessionResponse> CreateSessionInternal(string path, SessionDetail data, string eventName, DateTimeOffset startDate, DateTimeOffset endDate,
             ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, bool isEstimate)
         {
             var parameters = new Dictionary<string, string>
             {
                 { "dataSetName", data.DataSetName },
-                { nameof(targetColumn), targetColumn },
                 { nameof(startDate), startDate.ToString("O") },
                 { nameof(endDate), endDate.ToString("O") },
                 { nameof(isEstimate), isEstimate.ToString().ToLowerInvariant() },
