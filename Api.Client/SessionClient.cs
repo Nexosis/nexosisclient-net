@@ -73,7 +73,7 @@ namespace Nexosis.Api.Client
                 DataSetName = dataSetName,
                 Columns = new Dictionary<string, ColumnMetadata>()
                 {
-                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target, DataType = ColumnType.Numeric } }
+                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target } }
                 }
             };
 
@@ -137,7 +137,7 @@ namespace Nexosis.Api.Client
                 DataSetName = dataSetName,
                 Columns = new Dictionary<string, ColumnMetadata>()
                 {
-                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target, DataType = ColumnType.Numeric } }
+                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target } }
                 }
             };
 
@@ -186,7 +186,7 @@ namespace Nexosis.Api.Client
                 DataSetName = dataSetName,
                 Columns = new Dictionary<string, ColumnMetadata>()
                 {
-                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target, DataType = ColumnType.Numeric } }
+                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target } }
                 }
             };
 
@@ -237,7 +237,7 @@ namespace Nexosis.Api.Client
                 DataSetName = dataSetName,
                 Columns = new Dictionary<string, ColumnMetadata>()
                 {
-                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target, DataType = ColumnType.Numeric } }
+                    { targetColumn, new ColumnMetadata { Role = ColumnRole.Target } }
                 }
             };
 

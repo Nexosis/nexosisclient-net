@@ -2,7 +2,7 @@
 {
     public class ColumnMetadata
     {
-        public ColumnType DataType { get; set; }
+        public ColumnType? DataType { get; set; }
         public ColumnRole? Role { get; set; }
     }
 
@@ -13,7 +13,7 @@
         Logical,
         Date,
     }
-    
+
     public enum ColumnRole
     {
         None,
