@@ -15,7 +15,7 @@ namespace Api.Client.Tests
         public NexosisClient_TestsBase(object data)
         {
             handler = new FakeHttpMessageHandler { ContentResult = new StringContent(JsonConvert.SerializeObject(data)) };
-            target = new NexosisClient("abcdefg", baseUri.ToString(), new ApiConnection.HttpClientFactory(handler));
+            target = new NexosisClient("abcdefg", baseUri.ToString(), new ApiConnection.HttpClientFactory(() => handler));
         }
     }
 }

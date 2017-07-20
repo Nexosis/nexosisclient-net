@@ -14,9 +14,9 @@ namespace Nexosis.Api.Client
 {
     public class ApiConnection
     {
-        private string endpoint;
-        private string key;
-        private IHttpClientFactory httpClientFactory;
+        private readonly string endpoint;
+        private readonly string key;
+        private readonly IHttpClientFactory httpClientFactory;
 
         internal ApiConnection(string endpoint, string key, IHttpClientFactory httpClientFactory)
         {
@@ -36,23 +36,23 @@ namespace Nexosis.Api.Client
 
         internal class HttpClientFactory : IHttpClientFactory
         {
-            private readonly HttpMessageHandler handler;
+            private readonly Func<HttpMessageHandler> handlerFactory;
 
             public HttpClientFactory()
             {
 
             }
 
-            public HttpClientFactory(HttpMessageHandler handler)
+            public HttpClientFactory(Func<HttpMessageHandler> handlerFactory)
             {
-                this.handler = handler;
+                this.handlerFactory = handlerFactory;
             }
 
             public HttpClient CreateClient()
             {
-                if (handler != null)
+                if (handlerFactory != null)
                 {
-                    return new HttpClient(handler);
+                    return new HttpClient(handlerFactory());
                 }
 
                 return new HttpClient();
@@ -160,8 +160,7 @@ namespace Nexosis.Api.Client
 
         private async Task<T> MakeRequest<T>(HttpRequestMessage requestMessage, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            var client = httpClientFactory.CreateClient();
-            try
+            using (var client = httpClientFactory.CreateClient())
             {
                 var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client);
 
@@ -188,16 +187,11 @@ namespace Nexosis.Api.Client
                     return default(T); // here to satify compiler as ProcessFailureRequest always throws
                 }
             }
-            finally
-            {
-                client.Dispose();
-            }
         }
 
         private async Task MakeRequest(HttpRequestMessage requestMessage, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            var client = httpClientFactory.CreateClient();
-            try
+            using (var client = httpClientFactory.CreateClient())
             {
                 var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client);
 
@@ -206,16 +200,11 @@ namespace Nexosis.Api.Client
                     await ProcessFailureResponse(responseMessage);
                 }
             }
-            finally
-            {
-                client.Dispose();
-            }
         }
 
         private async Task MakeRequest(HttpRequestMessage requestMessage, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, StreamWriter output)
         {
-            var client = httpClientFactory.CreateClient();
-            try
+            using (var client = httpClientFactory.CreateClient())
             {
                 var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client);
 
@@ -224,13 +213,9 @@ namespace Nexosis.Api.Client
                     await responseMessage.Content.CopyToAsync(output.BaseStream);
                 }
                 else
-                { 
+                {
                     await ProcessFailureResponse(responseMessage);
                 }
-            }
-            finally
-            {
-                client.Dispose();
             }
         }
 
@@ -252,7 +237,7 @@ namespace Nexosis.Api.Client
             var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await errorResponseContent);
             if (errorResponse != null)
                 throw new NexosisClientException($"API Error: {responseMessage.StatusCode}", errorResponse);
-            else 
+            else
                 throw new NexosisClientException($"API Error: {responseMessage.StatusCode} - no details provided.", responseMessage.StatusCode);
         }
 

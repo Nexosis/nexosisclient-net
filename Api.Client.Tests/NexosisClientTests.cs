@@ -23,7 +23,7 @@ namespace Api.Client.Tests
         [Fact]
         public void AddsTrailingSlashWhenNeeded()
         {
-            var target = new NexosisClient("alpha-bravo-delta-charlie", "https://should.have.a.slash", new ApiConnection.HttpClientFactory()); 
+            var target = new NexosisClient("alpha-bravo-delta-charlie", "https://should.have.a.slash", new ApiConnection.HttpClientFactory());
 
             Assert.Equal("https://should.have.a.slash/", target.ConfiguredUrl);
         }
@@ -38,8 +38,8 @@ namespace Api.Client.Tests
         [Fact]
         public async Task AddsApiKeyHeaderToRequest()
         {
-            var handler = new FakeHttpMessageHandler { ContentResult = new StringContent(JsonConvert.SerializeObject(new {})) };
-            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(handler));
+            var handler = new FakeHttpMessageHandler { ContentResult = new StringContent(JsonConvert.SerializeObject(new { })) };
+            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(() => handler));
 
             await target.GetAccountBalance();
 
@@ -50,8 +50,8 @@ namespace Api.Client.Tests
         [Fact]
         public async Task AddsUserAgentToRequest()
         {
-            var handler = new FakeHttpMessageHandler { ContentResult = new StringContent(JsonConvert.SerializeObject(new {})) };
-            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(handler));
+            var handler = new FakeHttpMessageHandler { ContentResult = new StringContent(JsonConvert.SerializeObject(new { })) };
+            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(() => handler));
 
             await target.GetAccountBalance();
 
@@ -63,10 +63,10 @@ namespace Api.Client.Tests
         public async Task ProcessesCostAndBalance()
         {
             var handler = new FakeHttpMessageHandler { ContentResult = new StringContent("{ }") };
-            handler.ResponseHeaders.Add("nexosis-request-cost", new [] { "123.12 USD" });
-            handler.ResponseHeaders.Add("nexosis-account-balance",new [] { "999.99 USD" });
+            handler.ResponseHeaders.Add("nexosis-request-cost", new[] { "123.12 USD" });
+            handler.ResponseHeaders.Add("nexosis-account-balance", new[] { "999.99 USD" });
 
-            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(handler));
+            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(() => handler));
 
             var result = await target.GetAccountBalance();
 
@@ -86,9 +86,9 @@ namespace Api.Client.Tests
                 Message = "An error occurred",
                 ErrorDetails = new Dictionary<string, object> { { "error", "details" } }
             };
-            var handler = new FakeHttpMessageHandler { ReturnStatus = HttpStatusCode.InternalServerError,  ContentResult = new StringContent(JsonConvert.SerializeObject(data)), };
+            var handler = new FakeHttpMessageHandler { ReturnStatus = HttpStatusCode.InternalServerError, ContentResult = new StringContent(JsonConvert.SerializeObject(data)), };
 
-            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(handler));
+            var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(() => handler));
 
             var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await target.GetAccountBalance());
 
