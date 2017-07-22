@@ -29,7 +29,25 @@ namespace Api.Client.Tests
 
             Assert.Equal("mike", result.DataSetName);
         }
-        
+
+        [Fact]
+        public async Task CanCreateDataSetFromCsvFileWithNoHeader()
+        {
+            var name = Guid.NewGuid().ToString();
+            using (var file = File.OpenText("..\\..\\..\\CsvFiles\\noheader.csv"))
+            {
+                var summary = await fixture.Client.DataSets.Create(name, file);
+                var dataSet = await fixture.Client.DataSets.Get(name);
+                await fixture.Client.DataSets.Remove(name, DataSetDeleteOptions.None);
+
+                Assert.Contains("column1", dataSet.Columns.Keys);
+                Assert.Contains("column2", dataSet.Columns.Keys);
+                Assert.Contains("column3", dataSet.Columns.Keys);
+                Assert.Contains("column4", dataSet.Columns.Keys);
+
+            }
+        }
+
         [Fact]
         public async Task CanSaveDataSetWithAssumedTimestampColumn()
         {

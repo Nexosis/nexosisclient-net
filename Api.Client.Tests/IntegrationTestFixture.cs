@@ -19,8 +19,8 @@ namespace Api.Client.Tests
                 SavedHourlySessionId = Guid.Parse("015ce681-cccb-4374-ba06-91d699981890");
                 ForecastDataSetName = "forecast.015ce681-ca24-449d-a673-699aff25a0cc";
             }
-
             Client = new NexosisClient(Environment.GetEnvironmentVariable(NexosisClient.NexosisApiKeyEnvironmentVariable), url, new ApiConnection.HttpClientFactory());
+
         }
 
         public NexosisClient Client { get; set; }
