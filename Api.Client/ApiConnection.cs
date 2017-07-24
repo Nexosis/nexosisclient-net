@@ -29,12 +29,12 @@ namespace Nexosis.Api.Client
         /// <see cref="HttpClient"/> is extensible using a <see cref="HttpMessageHandler"/>, so if we provide a factory for creation of the <see cref="HttpClient"/> in the library, 
         /// we can then substitute another <see cref="HttpMessageHandler"/> in the creation of the client and that way fake/mock it out for use in testing.
         /// </summary>
-        internal interface IHttpClientFactory
+        public interface IHttpClientFactory
         {
             HttpClient CreateClient();
         }
 
-        internal class HttpClientFactory : IHttpClientFactory
+        public class HttpClientFactory : IHttpClientFactory
         {
             private readonly Func<HttpMessageHandler> handlerFactory;
 

@@ -73,16 +73,16 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Internal provided for testing use only 
         /// </summary>
-        internal NexosisClient(string key, string endpoint, ApiConnection.HttpClientFactory clientFactory)
+        protected internal NexosisClient(string key, string uri, ApiConnection.IHttpClientFactory clientFactory)
         {
             this.key = key;
 
-            if (!endpoint.EndsWith("/"))
-                endpoint = endpoint + "/";
+            if (!uri.EndsWith("/"))
+                uri = uri + "/";
 
-            configuredUrl = endpoint;
+            configuredUrl = uri;
 
-            apiConnection = new ApiConnection(endpoint, key, clientFactory);
+            apiConnection = new ApiConnection(uri, key, clientFactory);
 
             Sessions = new SessionClient(apiConnection);
             DataSets = new DataSetClient(apiConnection);
@@ -105,7 +105,6 @@ namespace Nexosis.Api.Client
         }
 
         public ISessionClient Sessions { get; }
-
         public IDataSetClient DataSets { get; }
         public IImportClient Imports { get; }
     }
