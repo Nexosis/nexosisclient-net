@@ -13,7 +13,8 @@ namespace Nexosis.Api.Client
     {
         private readonly string key;
         private readonly string configuredUrl;
-        private readonly ApiConnection apiConnection;
+
+        protected readonly ApiConnection apiConnection;
 
         /// <summary>
         /// The name of the environment variable used for the API key from the api manager
@@ -40,7 +41,7 @@ namespace Nexosis.Api.Client
         /// </summary>
         public string ConfiguredUrl => configuredUrl ?? BaseUrl;
 
-        internal const int MaxPageSize = 100;
+        public const int MaxPageSize = 100;
 
         /// <summary>
         /// Constructs a instance of the client with the api key read from an environement variable
