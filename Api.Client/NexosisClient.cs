@@ -13,7 +13,8 @@ namespace Nexosis.Api.Client
     {
         private readonly string key;
         private readonly string configuredUrl;
-        private readonly ApiConnection apiConnection;
+
+        protected readonly ApiConnection apiConnection;
 
         /// <summary>
         /// The name of the environment variable used for the API key from the api manager
@@ -40,7 +41,7 @@ namespace Nexosis.Api.Client
         /// </summary>
         public string ConfiguredUrl => configuredUrl ?? BaseUrl;
 
-        internal const int MaxPageSize = 100;
+        public const int MaxPageSize = 1000;
 
         /// <summary>
         /// Constructs a instance of the client with the api key read from an environement variable
@@ -72,16 +73,16 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Internal provided for testing use only 
         /// </summary>
-        internal NexosisClient(string key, string endpoint, ApiConnection.HttpClientFactory clientFactory)
+        protected internal NexosisClient(string key, string uri, ApiConnection.IHttpClientFactory clientFactory)
         {
             this.key = key;
 
-            if (!endpoint.EndsWith("/"))
-                endpoint = endpoint + "/";
+            if (!uri.EndsWith("/"))
+                uri = uri + "/";
 
-            configuredUrl = endpoint;
+            configuredUrl = uri;
 
-            apiConnection = new ApiConnection(endpoint, key, clientFactory);
+            apiConnection = new ApiConnection(uri, key, clientFactory);
 
             Sessions = new SessionClient(apiConnection);
             DataSets = new DataSetClient(apiConnection);
@@ -104,7 +105,6 @@ namespace Nexosis.Api.Client
         }
 
         public ISessionClient Sessions { get; }
-
         public IDataSetClient DataSets { get; }
         public IImportClient Imports { get; }
     }

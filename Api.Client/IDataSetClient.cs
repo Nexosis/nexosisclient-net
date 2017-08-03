@@ -126,7 +126,7 @@ namespace Nexosis.Api.Client
         /// <summary>Get the data in the set, optionally filtering it.</summary>
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
         /// <param name="pageNumber">Zero-based page number of results to retrieve.</param>
-        /// <param name="pageSize">Count of results to retrieve in each page (max 100).</param>
+        /// <param name="pageSize">Count of results to retrieve in each page (max 1000).</param>
         /// <param name="includeColumns">Limits results to the specified columns of the dataset.</param>
         /// <returns><see cref="DataSetData" /></returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
@@ -136,7 +136,7 @@ namespace Nexosis.Api.Client
         /// <summary>Get the data in the set, optionally filtering it.</summary>
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
         /// <param name="pageNumber">Zero-based page number of results to retrieve.</param>
-        /// <param name="pageSize">Count of results to retrieve in each page (max 100).</param>
+        /// <param name="pageSize">Count of results to retrieve in each page (max 1000).</param>
         /// <param name="startDate"> Limits results to those on or after the specified date.</param>
         /// <param name="endDate">Limits results to those on or before the specified date.</param>
         /// <param name="includeColumns">Limits results to the specified columns of the dataset.</param>
@@ -150,7 +150,7 @@ namespace Nexosis.Api.Client
         /// <param name="startDate"> Limits results to those on or after the specified date.</param>
         /// <param name="endDate">Limits results to those on or before the specified date.</param>
         /// <param name="pageNumber">Zero-based page number of results to retrieve.</param>
-        /// <param name="pageSize">Count of results to retrieve in each page (max 100).</param>
+        /// <param name="pageSize">Count of results to retrieve in each page (max 1000).</param>
         /// <param name="includeColumns">Limits results to the specified columns of the dataset.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns><see cref="DataSetData" /></returns>
@@ -164,7 +164,7 @@ namespace Nexosis.Api.Client
         /// <param name="startDate"> Limits results to those on or after the specified date.</param>
         /// <param name="endDate">Limits results to those on or before the specified date.</param>
         /// <param name="pageNumber">Zero-based page number of results to retrieve.</param>
-        /// <param name="pageSize">Count of results to retrieve in each page (max 100).</param>
+        /// <param name="pageSize">Count of results to retrieve in each page (max 1000).</param>
         /// <param name="includeColumns">Limits results to the specified columns of the dataset.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -185,7 +185,7 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
         /// <param name="output">A <see cref="StreamWriter"/> where the data should be written.</param>
         /// <param name="pageNumber">Zero-based page number of results to retrieve.</param>
-        /// <param name="pageSize">Count of results to retrieve in each page (max 100).</param>
+        /// <param name="pageSize">Count of results to retrieve in each page (max 1000).</param>
         /// <param name="includeColumns">Limits results to the specified columns of the dataset.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/data/{dataSetName}</remarks>
@@ -195,7 +195,7 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
         /// <param name="output">A <see cref="StreamWriter"/> where the data should be written.</param>
         /// <param name="pageNumber">Zero-based page number of results to retrieve.</param>
-        /// <param name="pageSize">Count of results to retrieve in each page (max 100).</param>
+        /// <param name="pageSize">Count of results to retrieve in each page (max 1000).</param>
         /// <param name="startDate"> Limits results to those on or after the specified date.</param>
         /// <param name="endDate">Limits results to those on or before the specified date.</param>
         /// <param name="includeColumns">Limits results to the specified columns of the dataset.</param>
@@ -207,7 +207,7 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
         /// <param name="output">A <see cref="StreamWriter"/> where the data should be written.</param>
         /// <param name="pageNumber">Zero-based page number of results to retrieve.</param>
-        /// <param name="pageSize">Count of results to retrieve in each page (max 100).</param>
+        /// <param name="pageSize">Count of results to retrieve in each page (max 1000).</param>
         /// <param name="startDate"> Limits results to those on or after the specified date.</param>
         /// <param name="endDate">Limits results to those on or before the specified date.</param>
         /// <param name="includeColumns">Limits results to the specified columns of the dataset.</param>
@@ -221,7 +221,7 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Name of the dataset for which to retrieve data.</param>
         /// <param name="output">A <see cref="StreamWriter"/> where the data should be written.</param>
         /// <param name="pageNumber">Zero-based page number of results to retrieve.</param>
-        /// <param name="pageSize">Count of results to retrieve in each page (max 100).</param>
+        /// <param name="pageSize">Count of results to retrieve in each page (max 1000).</param>
         /// <param name="startDate"> Limits results to those on or after the specified date.</param>
         /// <param name="endDate">Limits results to those on or before the specified date.</param>
         /// <param name="includeColumns">Limits results to the specified columns of the dataset.</param>

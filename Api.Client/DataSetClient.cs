@@ -88,7 +88,7 @@ namespace Nexosis.Api.Client
 
         public Task<DataSetData> Get(string dataSetName)
         {
-            return Get(dataSetName, 0, NexosisClient.MaxPageSize, new string[]{});
+            return Get(dataSetName, 0, NexosisClient.MaxPageSize, new string[] { });
         }
 
         public async Task<DataSetData> Get(string dataSetName, int pageNumber, int pageSize, IEnumerable<string> includeColumns)
@@ -101,8 +101,9 @@ namespace Nexosis.Api.Client
                 { "page", pageNumber.ToString() },
                 { "pageSize", pageSize.ToString() },
             };
+            var includes = includeColumns.Select(ic => new KeyValuePair<string, string>("include", ic));
 
-            return await apiConnection.Get<DataSetData>($"data/{dataSetName}", parameters, null, CancellationToken.None).ConfigureAwait(false);
+            return await apiConnection.Get<DataSetData>($"data/{dataSetName}", parameters.Union(includes), null, CancellationToken.None).ConfigureAwait(false);
         }
 
         public Task<DataSetData> Get(string dataSetName, int pageNumber, int pageSize, DateTimeOffset startDate, DateTimeOffset endDate,
