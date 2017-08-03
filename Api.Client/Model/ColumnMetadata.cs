@@ -4,6 +4,9 @@
     {
         public ColumnType? DataType { get; set; }
         public ColumnRole? Role { get; set; }
+        
+        public ImputationStrategy? Imputation { get; set; }
+        public AggregationStrategy? Aggregation { get; set; }
     }
 
     public enum ColumnType
@@ -12,6 +15,7 @@
         Numeric,
         Logical,
         Date,
+        NumericMeasure
     }
 
     public enum ColumnRole
@@ -20,5 +24,21 @@
         Timestamp,
         Target,
         Feature
+    }
+
+    public enum ImputationStrategy
+    {
+        Zeroes,
+        Mean,
+        Median,
+        Mode
+    }
+
+    public enum AggregationStrategy
+    {
+        Sum,
+        Mean,
+        Median,
+        Mode,
     }
 }

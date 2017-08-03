@@ -134,7 +134,7 @@ namespace Api.Client.Tests
         }
 
         [Fact]
-        public async Task CheckingSessionStatusReturnsExpcetedValue()
+        public async Task CheckingSessionStatusReturnsExpectedValue()
         {
             var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
