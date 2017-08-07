@@ -11,11 +11,12 @@
 
     public enum ColumnType
     {
-        String,
-        Numeric,
-        Logical,
-        Date,
-        NumericMeasure
+        // Order of values is relevant for priority of recommended type
+        String = 0,
+        Numeric = 1,
+        Logical = 2,
+        Date = 3,
+        NumericMeasure = -1
     }
 
     public enum ColumnRole
