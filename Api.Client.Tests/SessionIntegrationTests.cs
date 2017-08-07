@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -37,7 +38,32 @@ namespace Api.Client.Tests
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
             await fixture.Client.DataSets.Create(dataSetName, dataSet);
 
-            var actual = await fixture.Client.Sessions.CreateForecast(dataSetName, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
+            var sessionRequest = new SessionDetail()
+            {
+                DataSetName = dataSetName,
+                Columns = new Dictionary<string, ColumnMetadata>()
+                {
+                    ["instances"] =
+                    new ColumnMetadata() {DataType = ColumnType.NumericMeasure, Role = ColumnRole.Target}
+                }
+            };
+
+            var actual = await fixture.Client.Sessions.CreateForecast(sessionRequest, DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
+            Assert.NotNull(actual.SessionId);
+        }
+
+        [Fact]
+        public async Task StartingSessionWithMeasureDatatypeTargetStartsSession()
+        {
+            var dataSetName = $"testDataSet-{DateTime.Now:s}";
+            var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
+            
+            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+            
+            
+
+            var actual = await fixture.Client.Sessions.CreateForecast(dataSetName, "instances",
+                DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
             Assert.NotNull(actual.SessionId);
         }
 
