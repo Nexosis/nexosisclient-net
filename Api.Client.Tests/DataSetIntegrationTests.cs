@@ -43,6 +43,7 @@ namespace Api.Client.Tests
             Assert.Equal(AggregationStrategy.Sum, dataSet.Columns["xray"].Aggregation);
         }
 
+
         [Fact]
         public async Task MeasureDataTypeReturnsCorrectImputationAndAggregation()
         {
