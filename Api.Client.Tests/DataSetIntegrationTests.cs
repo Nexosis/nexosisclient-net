@@ -29,7 +29,69 @@ namespace Api.Client.Tests
 
             Assert.Equal("mike", result.DataSetName);
         }
+
+        [Fact]
+        public async Task SavingDataSetReturnsImputationAndAggregationOnColumns()
+        {
+            var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
+
+            var result = await fixture.Client.DataSets.Create("mike", data);
+
+            var dataSet = await fixture.Client.DataSets.Get("mike");
+            
+            Assert.Equal(ImputationStrategy.Zeroes, dataSet.Columns["xray"].Imputation);
+            Assert.Equal(AggregationStrategy.Sum, dataSet.Columns["xray"].Aggregation);
+        }
+
+
+        [Fact]
+        public async Task MeasureDataTypeReturnsCorrectImputationAndAggregation()
+        {
+            var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "temp");
+            data.Columns["temp"].DataType = ColumnType.NumericMeasure;
+
+            var result = await fixture.Client.DataSets.Create("temps", data);
+
+            var dataSet = await fixture.Client.DataSets.Get("temps");
+
+            Assert.Equal(ImputationStrategy.Mean, dataSet.Columns["temp"].Imputation);
+            Assert.Equal(AggregationStrategy.Mean, dataSet.Columns["temp"].Aggregation);
+        }
+
+
+        [Fact]
+        public async Task SettingImputationAndAggregationExplicitlySetsCorrectValues()
+        {
+            var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "temp");
+            data.Columns["temp"].Imputation = ImputationStrategy.Mode;
+            data.Columns["temp"].Aggregation = AggregationStrategy.Median;
+
+            var result = await fixture.Client.DataSets.Create("agg", data);
+
+            var dataSet = await fixture.Client.DataSets.Get("agg");
+
+            Assert.Equal(ImputationStrategy.Mode, dataSet.Columns["temp"].Imputation);
+            Assert.Equal(AggregationStrategy.Median, dataSet.Columns["temp"].Aggregation);
+        }
         
+        [Fact]
+        public async Task CanCreateDataSetFromCsvFileWithNoHeader()
+        {
+            var name = Guid.NewGuid().ToString();
+            using (var file = File.OpenText("..\\..\\..\\CsvFiles\\noheader.csv"))
+            {
+                var summary = await fixture.Client.DataSets.Create(name, file);
+                var dataSet = await fixture.Client.DataSets.Get(name);
+                await fixture.Client.DataSets.Remove(name, DataSetDeleteOptions.None);
+
+                Assert.Contains("column1", dataSet.Columns.Keys);
+                Assert.Contains("column2", dataSet.Columns.Keys);
+                Assert.Contains("column3", dataSet.Columns.Keys);
+                Assert.Contains("column4", dataSet.Columns.Keys);
+
+            }
+        }
+
         [Fact]
         public async Task CanSaveDataSetWithAssumedTimestampColumn()
         {
