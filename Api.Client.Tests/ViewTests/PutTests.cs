@@ -40,7 +40,7 @@ namespace Api.Client.Tests.ViewTests
             var view = new ViewInfo()
             {
                 DataSetName = "foo",
-                ColumnOptions = new Dictionary<string, ColumnMetadata>()
+                Columns = new Dictionary<string, ColumnMetadata>()
                 {
                     ["timestamp"] = new ColumnMetadata() {DataType = ColumnType.Date, Role = ColumnRole.Timestamp}
                 },
@@ -49,7 +49,7 @@ namespace Api.Client.Tests.ViewTests
                     new JoinMetadata()
                     {
                         DataSet = new DataSetJoinSource() {Name = "bar"},
-                        Columns = new Dictionary<string, JoinColumnMetadata>()
+                        ColumnOptions = new Dictionary<string, JoinColumnMetadata>()
                         {
                             ["timeStamp"] = new JoinColumnMetadata() {JoinInterval = ResultInterval.Hour}
                         }

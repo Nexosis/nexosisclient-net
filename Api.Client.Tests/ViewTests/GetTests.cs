@@ -12,7 +12,7 @@ namespace Api.Client.Tests.ViewTests
 {
     public class GetTests : NexosisClient_TestsBase
     {
-        public GetTests() : base(new ViewDetail() { Data = new List<Dictionary<string, string>>(), ColumnOptions = new Dictionary<string, ColumnMetadata>()})
+        public GetTests() : base(new ViewDetail() { Data = new List<Dictionary<string, string>>(), Columns = new Dictionary<string, ColumnMetadata>()})
         {
         }
 
