@@ -8,7 +8,7 @@ namespace Nexosis.Api.Client.Model
 
         public string DataSetName { get; set; }
 
-        public Dictionary<string, ColumnMetadata> Columns { get; set; } =
+        public Dictionary<string, ColumnMetadata> ColumnOptions { get; set; } =
             new Dictionary<string, ColumnMetadata>(StringComparer.OrdinalIgnoreCase);
 
         public JoinMetadata[] Joins { get; set; }

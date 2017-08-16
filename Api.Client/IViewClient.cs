@@ -89,7 +89,7 @@ namespace Nexosis.Api.Client
         /// <param name="view">The view definition</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <returns>A <see cref="ViewSummary"/> containing the view definition</returns>
-        Task<ViewSummary> Put(string viewName, ViewInfo view);
+        Task<ViewSummary> Create(string viewName, ViewInfo view);
 
         /// <summary>
         /// Creates or updates a view
@@ -100,7 +100,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <returns>A <see cref="ViewSummary"/> containing the view definition</returns>
-        Task<ViewSummary> Put(string viewName, ViewInfo view, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<ViewSummary> Create(string viewName, ViewInfo view, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes a view
@@ -108,7 +108,7 @@ namespace Nexosis.Api.Client
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <param name="viewName">The name of the view</param>
         /// <returns></returns>
-        Task Delete(string viewName);
+        Task Remove(string viewName);
 
         /// <summary>
         /// Deletes a view
@@ -117,7 +117,7 @@ namespace Nexosis.Api.Client
         /// <param name="options">Options for additional data to delete along with the view</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <returns></returns>
-        Task Delete(string viewName, ViewDeleteOptions options);
+        Task Remove(string viewName, ViewDeleteOptions options);
 
         /// <summary>
         /// Deletes a view
@@ -127,7 +127,7 @@ namespace Nexosis.Api.Client
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns></returns>
-        Task Delete(string viewName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task Remove(string viewName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes a view
@@ -138,6 +138,6 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <returns></returns>
-        Task Delete(string viewName, ViewDeleteOptions options, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task Remove(string viewName, ViewDeleteOptions options, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
     }
 }

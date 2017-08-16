@@ -78,6 +78,8 @@ namespace Nexosis.Api.Client
 
         public async Task<ViewDetail> Get(string viewName, GetViewOptions options, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            Argument.IsNotNullOrEmpty(viewName, nameof(viewName));
+            
             var parameters = new Dictionary<string, string>();
             if (options?.StartDate != null)
             {
@@ -98,7 +100,7 @@ namespace Nexosis.Api.Client
 
             IEnumerable<KeyValuePair<string, string>> getParameters = parameters;
 
-            if (options?.Include.Any() == true)
+            if (options?.Include?.Any() == true)
             {
                 var includes = options.Include.Select(ic => new KeyValuePair<string, string>("include", ic));
                 getParameters = parameters.Union(includes);
@@ -107,33 +109,37 @@ namespace Nexosis.Api.Client
             return await apiConnection.Get<ViewDetail>($"views/{viewName}", getParameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task<ViewSummary> Put(string viewName, ViewInfo view)
+        public Task<ViewSummary> Create(string viewName, ViewInfo view)
         {
-            return Put(viewName, view, null, CancellationToken.None);
+            return Create(viewName, view, null, CancellationToken.None);
         }
 
-        public async Task<ViewSummary> Put(string viewName, ViewInfo view, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<ViewSummary> Create(string viewName, ViewInfo view, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            Argument.IsNotNullOrEmpty(viewName, nameof(viewName));
+            Argument.IsNotNull(view, nameof(view));
             return await apiConnection.Put<ViewSummary>($"views/{viewName}", null, view, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task Delete(string viewName)
+        public Task Remove(string viewName)
         {
-            return Delete(viewName, new ViewDeleteOptions());
+            return Remove(viewName, new ViewDeleteOptions());
         }
 
-        public Task Delete(string viewName, ViewDeleteOptions options)
+        public Task Remove(string viewName, ViewDeleteOptions options)
         {
-            return Delete(viewName, options, null, CancellationToken.None);
+            return Remove(viewName, options, null, CancellationToken.None);
         }
 
-        public Task Delete(string viewName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public Task Remove(string viewName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            return Delete(viewName, new ViewDeleteOptions(), httpMessageTransformer, cancellationToken);
+            return Remove(viewName, new ViewDeleteOptions(), httpMessageTransformer, cancellationToken);
         }
 
-        public async Task Delete(string viewName, ViewDeleteOptions options, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task Remove(string viewName, ViewDeleteOptions options, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
+            Argument.IsNotNullOrEmpty(viewName, nameof(viewName));
+            
             var parameters = new List<KeyValuePair<string, string>>();
 
             if (options?.Cascade != null)

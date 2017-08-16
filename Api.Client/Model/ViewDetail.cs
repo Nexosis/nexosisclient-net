@@ -7,6 +7,6 @@ namespace Nexosis.Api.Client.Model
         /// <summary>
         /// The data
         /// </summary>
-        public Dictionary<string, string>[] Data { get; set; }
+        public List<Dictionary<string, string>> Data { get; set; }
     }
 }
