@@ -15,7 +15,7 @@ namespace Nexosis.Api.Client
         /// </summary>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <returns>A listing of views associated with your company</returns>
-        Task<List<ViewSummary>> List();
+        Task<List<ViewDefinition>> List();
         
         /// <summary>
         /// Lists views that have been saved to the system
@@ -24,7 +24,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <returns>A listing of views associated with your company</returns>
-        Task<List<ViewSummary>> List(Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<List<ViewDefinition>> List(Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Lists views that have been saved to the system
@@ -34,7 +34,7 @@ namespace Nexosis.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <returns>A listing of views associated with your company</returns>
-        Task<List<ViewSummary>> List(ViewQuery query, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<List<ViewDefinition>> List(ViewQuery query, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Lists views that have been saved to the system
@@ -42,7 +42,7 @@ namespace Nexosis.Api.Client
         /// <param name="query">Query parameters to filter the list of views</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <returns>A listing of views associated with your company</returns>
-        Task<List<ViewSummary>> List(ViewQuery query);
+        Task<List<ViewDefinition>> List(ViewQuery query);
 
         /// <summary>
         /// Gets a view
@@ -88,8 +88,33 @@ namespace Nexosis.Api.Client
         /// <param name="viewName">The name of the view</param>
         /// <param name="view">The view definition</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
-        /// <returns>A <see cref="ViewSummary"/> containing the view definition</returns>
-        Task<ViewSummary> Create(string viewName, ViewInfo view);
+        /// <returns>A <see cref="ViewDefinition"/> containing the view definition</returns>
+        Task<ViewDefinition> Create(string viewName, ViewInfo view);
+
+        /// <summary>
+        /// Creates or updates a view
+        /// </summary>
+        /// <param name="viewName">The name of the view</param>
+        /// <param name="primaryDataSetName">The primary data set from which the view is based</param>
+        /// <param name="joinDataSetName">The data set to join to on its timestamp column</param>
+        /// <param name="columns">Column definitions for the resulting view</param>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <returns>A <see cref="ViewDefinition"/> containing the view definition</returns>
+        Task<ViewDefinition> Create(string viewName, string primaryDataSetName, string joinDataSetName, Dictionary<string, ColumnMetadata> columns);
+
+        /// <summary>
+        /// Creates or updates a view
+        /// </summary>
+        /// <param name="viewName">The name of the view</param>
+        /// <param name="primaryDataSetName">The primary data set from which the view is based</param>
+        /// <param name="joinDataSetName">The data set to join to on its timestamp column</param>
+        /// <param name="columns">Column definitions for the resulting view</param>
+        /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <returns>A <see cref="ViewDefinition"/> containing the view definition</returns>
+        Task<ViewDefinition> Create(string viewName, string primaryDataSetName, string joinDataSetName,
+            Dictionary<string, ColumnMetadata> columns, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Creates or updates a view
@@ -99,8 +124,8 @@ namespace Nexosis.Api.Client
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
-        /// <returns>A <see cref="ViewSummary"/> containing the view definition</returns>
-        Task<ViewSummary> Create(string viewName, ViewInfo view, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        /// <returns>A <see cref="ViewDefinition"/> containing the view definition</returns>
+        Task<ViewDefinition> Create(string viewName, ViewInfo view, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes a view

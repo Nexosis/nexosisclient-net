@@ -18,22 +18,22 @@ namespace Nexosis.Api.Client
             this.apiConnection = apiConnection;
         }
 
-        public Task<List<ViewSummary>> List()
+        public Task<List<ViewDefinition>> List()
         {
             return List(null, CancellationToken.None);
         }
 
-        public Task<List<ViewSummary>> List(Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public Task<List<ViewDefinition>> List(Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             return List(new ViewQuery(), httpMessageTransformer, cancellationToken);
         }
 
         private class ViewListResponse
         {
-            public List<ViewSummary> items { get; set; }
+            public List<ViewDefinition> items { get; set; }
         }
         
-        public async Task<List<ViewSummary>> List(ViewQuery query, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<List<ViewDefinition>> List(ViewQuery query, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var parameters = new Dictionary<string, string>();
             if (!string.IsNullOrEmpty(query?.DataSetName))
@@ -56,7 +56,7 @@ namespace Nexosis.Api.Client
             return (await apiConnection.Get<ViewListResponse>($"views", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false))?.items;
         }
 
-        public Task<List<ViewSummary>> List(ViewQuery query)
+        public Task<List<ViewDefinition>> List(ViewQuery query)
         {
             return List(query, null, CancellationToken.None);
         }
@@ -109,16 +109,35 @@ namespace Nexosis.Api.Client
             return await apiConnection.Get<ViewDetail>($"views/{viewName}", getParameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task<ViewSummary> Create(string viewName, ViewInfo view)
+        public Task<ViewDefinition> Create(string viewName, ViewInfo view)
         {
             return Create(viewName, view, null, CancellationToken.None);
         }
 
-        public async Task<ViewSummary> Create(string viewName, ViewInfo view, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public Task<ViewDefinition> Create(string viewName, string primaryDataSetName, string joinDataSetName, Dictionary<string, ColumnMetadata> columns)
+        {
+            return Create(viewName, primaryDataSetName, joinDataSetName, columns, null, CancellationToken.None);
+        }
+
+        public Task<ViewDefinition> Create(string viewName, string primaryDataSetName, string joinDataSetName, Dictionary<string, ColumnMetadata> columns,
+            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
+            return Create(viewName, new ViewInfo()
+            {
+                DataSetName = primaryDataSetName,
+                Columns = columns,
+                Joins = new[]
+                {
+                    new JoinMetadata() {DataSet = new DataSetJoinSource() {Name = joinDataSetName}},
+                }
+            }, httpMessageTransformer, cancellationToken);
+        }
+
+        public async Task<ViewDefinition> Create(string viewName, ViewInfo view, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(viewName, nameof(viewName));
             Argument.IsNotNull(view, nameof(view));
-            return await apiConnection.Put<ViewSummary>($"views/{viewName}", null, view, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
+            return await apiConnection.Put<ViewDefinition>($"views/{viewName}", null, view, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
         public Task Remove(string viewName)

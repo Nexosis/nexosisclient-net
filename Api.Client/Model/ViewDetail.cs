@@ -2,7 +2,7 @@
 
 namespace Nexosis.Api.Client.Model
 {
-    public class ViewDetail : ViewSummary
+    public class ViewDetail : ViewDefinition
     {
         /// <summary>
         /// The data

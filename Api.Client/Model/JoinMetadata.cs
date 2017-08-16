@@ -10,7 +10,7 @@ namespace Nexosis.Api.Client.Model
 
         //private CalendarJoinSource Calendar { get; set; }
 
-        public Dictionary<string, JoinColumnMetadata> Columns { get; set; } =
+        public Dictionary<string, JoinColumnMetadata> ColumnOptions { get; set; } =
             new Dictionary<string, JoinColumnMetadata>(StringComparer.OrdinalIgnoreCase);
 
         public JoinMetadata[] Joins { get; set; }
