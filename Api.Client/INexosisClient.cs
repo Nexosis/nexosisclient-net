@@ -40,8 +40,13 @@ namespace Nexosis.Api.Client
         IDataSetClient DataSets { get; }
         
         /// <summary>
-        /// Access to the Import operations in the api
+        /// Access to the Import operations in the API
         /// </summary>
         IImportClient Imports { get; }
+        
+        /// <summary>
+        /// Access to the View operations in the API
+        /// </summary>
+        IViewClient Views { get; }
     }
 }

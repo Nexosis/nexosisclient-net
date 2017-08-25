@@ -87,6 +87,7 @@ namespace Nexosis.Api.Client
             Sessions = new SessionClient(apiConnection);
             DataSets = new DataSetClient(apiConnection);
             Imports = new ImportClient(apiConnection);
+            Views = new ViewClient(apiConnection);
         }
 
         public Task<AccountBalance> GetAccountBalance()
@@ -107,5 +108,6 @@ namespace Nexosis.Api.Client
         public ISessionClient Sessions { get; }
         public IDataSetClient DataSets { get; }
         public IImportClient Imports { get; }
+        public IViewClient Views { get; }
     }
 }

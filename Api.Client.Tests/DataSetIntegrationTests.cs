@@ -110,7 +110,7 @@ namespace Api.Client.Tests
             Assert.Equal(1, result.Links.Count);
             Assert.Equal(new [] { "sessions"}, result.Links.Select(l => l.Rel));
             
-            Assert.Equal($"{fixture.Client.ConfiguredUrl}sessions?dataSetName=whiskey", result.Links[0].Href);
+            Assert.Equal($"{fixture.Client.ConfiguredUrl}sessions?dataSourceName=whiskey", result.Links[0].Href);
         }
 
         [Fact]
