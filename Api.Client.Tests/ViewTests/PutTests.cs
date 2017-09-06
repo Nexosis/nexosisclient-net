@@ -63,5 +63,11 @@ namespace Api.Client.Tests.ViewTests
             Assert.Equal(JsonConvert.SerializeObject(view), handler.RequestBody);
         }
 
+        [Fact]
+        public async Task CreatesWithCalendarName(){
+            var actual = await target.Views.Create("TestCalendarView", "TestDataSet", "Nexosis.Holidays-US", "america/new_york", null);
+            Assert.Equal(HttpMethod.Put, handler.Request.Method);
+        }
+
     }
 }
