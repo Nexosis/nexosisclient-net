@@ -14,14 +14,8 @@ namespace Api.Client.Tests
         public IntegrationTestFixture()
         {
             string baseUrl = "https://ml.nexosis.com/v1";
-            if ("Test".Equals(Environment.GetEnvironmentVariable("TEST_ENVIRONMENT"), StringComparison.OrdinalIgnoreCase))
-            {
-                baseUrl = Environment.GetEnvironmentVariable(NexosisClient.NexosisApiUriEnvironmentVariable);
-
-                SavedSessionId = Guid.Parse("015ce681-ca24-449d-a673-699aff25a0cc");
-                SavedHourlySessionId = Guid.Parse("015ce681-cccb-4374-ba06-91d699981890");
-                ForecastDataSetName = "forecast.015ce681-ca24-449d-a673-699aff25a0cc";
-            }
+            baseUrl = Environment.GetEnvironmentVariable(NexosisClient.NexosisApiUriEnvironmentVariable);
+            ForecastDataSetName = "forecast.015ce681-ca24-449d-a673-699aff25a0cc";
             Client = new NexosisClient(Environment.GetEnvironmentVariable(NexosisClient.NexosisApiKeyEnvironmentVariable)
                 , baseUrl
                 , new ApiConnection.HttpClientFactory());
@@ -31,7 +25,7 @@ namespace Api.Client.Tests
             dataSetTask.GetAwaiter().GetResult();
         }
 
-        
+
 
         public NexosisClient Client { get; set; }
 
@@ -50,7 +44,8 @@ namespace Api.Client.Tests
                     var task = Client.DataSets.Remove(ForecastDataSetName, Nexosis.Api.Client.Model.DataSetDeleteOptions.CascadeAll);
                     task.GetAwaiter().GetResult();
                 }
-                catch { //already removed...
+                catch
+                { //already removed...
                 }
             }
         }
