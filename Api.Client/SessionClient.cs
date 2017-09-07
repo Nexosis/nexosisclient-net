@@ -271,11 +271,27 @@ namespace Nexosis.Api.Client
             return ListSessionsInternal(new Dictionary<string, string>(), null, CancellationToken.None);
         }
 
+        public Task<List<SessionResponse>> List(int page, int pageSize)
+        {
+            return List(String.Empty, page, pageSize);
+        }
+
         public Task<List<SessionResponse>> List(string dataSetName)
         {
             var parameters = new Dictionary<string, string>
             {
                 { nameof(dataSetName), dataSetName },
+            };
+            return ListSessionsInternal(parameters, null, CancellationToken.None);
+        }
+
+        public Task<List<SessionResponse>> List(string dataSetName, int page, int pageSize)
+        {
+            var parameters = new Dictionary<string, string>
+            {
+                { nameof(dataSetName), dataSetName },
+                { nameof(page), page.ToString()  },
+                {nameof(pageSize), pageSize.ToString() }
             };
             return ListSessionsInternal(parameters, null, CancellationToken.None);
         }

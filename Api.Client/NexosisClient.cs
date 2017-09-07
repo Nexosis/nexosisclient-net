@@ -20,6 +20,7 @@ namespace Nexosis.Api.Client
         /// The name of the environment variable used for the API key from the api manager
         /// </summary>
         public const string NexosisApiKeyEnvironmentVariable = "NEXOSIS_API_KEY";
+        public const string NexosisApiUriEnvironmentVariable = "NEXOSIS_API_TESTURI";
 
         /// <summary>
         /// The default URL of the api endpoint.

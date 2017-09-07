@@ -179,7 +179,8 @@ namespace Nexosis.Api.Client
 
             var parameters = new List<KeyValuePair<string, string>>();
             if ((options & DataSetDeleteOptions.CascadeForecast) != 0) parameters.Add(new KeyValuePair<string, string>("cascade", "forecast"));
-            if ((options & DataSetDeleteOptions.CascadeSessions) != 0) parameters.Add(new KeyValuePair<string, string>("cascade", "sessions"));
+            if ((options & DataSetDeleteOptions.CascadeSessions) != 0) parameters.Add(new KeyValuePair<string, string>("cascade", "session"));
+            if ((options & DataSetDeleteOptions.CascadeViews) != 0) parameters.Add(new KeyValuePair<string, string>("cascade", "view"));
 
             await apiConnection.Delete($"data/{dataSetName}", parameters, null, CancellationToken.None).ConfigureAwait(false);
         }

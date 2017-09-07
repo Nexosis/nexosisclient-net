@@ -128,6 +128,28 @@ namespace Nexosis.Api.Client
         Task<ViewDefinition> Create(string viewName, ViewInfo view, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Create the specified view with the given calendar name
+        /// </summary>
+        /// <returns>The definition of the created view</returns>
+        /// <param name="viewName">View name.</param>
+        /// <param name="primaryDataSetName">Primary data set name.</param>
+        /// <param name="calendarName">Calendar name.</param>
+        /// <param name="timeZone">Time zone id from tz-db to set the calendar events' time zone</param>
+        /// <param name="columns">column metadata to override column information from the dataset</param>
+        Task<ViewDefinition> Create(string viewName, string primaryDataSetName, string calendarName, string timeZone, Dictionary<string, ColumnMetadata> columns);
+
+		/// <summary>
+		/// Create the specified view with the calendar events identified by iCal
+		/// </summary>
+		/// <returns>The definition of the created view</returns>
+		/// <param name="viewName">View name.</param>
+		/// <param name="primaryDataSetName">Primary data set name.</param>
+		/// <param name="iCalUri">Uri of publicly available iCal</param>
+		/// <param name="timeZone">Time zone id from tz-db to set the calendar events' time zone</param>
+		/// <param name="columns">column metadata to override column information from the dataset</param>
+        Task<ViewDefinition> Create(string viewName, string primaryDataSetName, Uri iCalUri, string timeZone, Dictionary<string, ColumnMetadata> columns);
+
+        /// <summary>
         /// Deletes a view
         /// </summary>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>

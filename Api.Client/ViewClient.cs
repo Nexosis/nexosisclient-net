@@ -32,7 +32,7 @@ namespace Nexosis.Api.Client
         {
             public List<ViewDefinition> items { get; set; }
         }
-        
+
         public async Task<List<ViewDefinition>> List(ViewQuery query, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var parameters = new Dictionary<string, string>();
@@ -79,7 +79,7 @@ namespace Nexosis.Api.Client
         public async Task<ViewDetail> Get(string viewName, GetViewOptions options, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(viewName, nameof(viewName));
-            
+
             var parameters = new Dictionary<string, string>();
             if (options?.StartDate != null)
             {
@@ -105,7 +105,7 @@ namespace Nexosis.Api.Client
                 var includes = options.Include.Select(ic => new KeyValuePair<string, string>("include", ic));
                 getParameters = parameters.Union(includes);
             }
-            
+
             return await apiConnection.Get<ViewDetail>($"views/{viewName}", getParameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
@@ -140,6 +140,34 @@ namespace Nexosis.Api.Client
             return await apiConnection.Put<ViewDefinition>($"views/{viewName}", null, view, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task<ViewDefinition> Create(string viewName, string primaryDataSetName, string calendarName, string timeZone, Dictionary<string, ColumnMetadata> columns)
+        {
+            var viewDefinition = new ViewInfo
+            {
+                Columns = columns,
+                DataSetName = primaryDataSetName,
+                Joins = new[]
+                {
+                    new JoinMetadata{ Calendar = new CalendarJoinSource { Name = calendarName, TimeZone = timeZone } }
+                }
+            };
+            return await this.Create(viewName, viewDefinition, null, CancellationToken.None);
+        }
+
+        public async Task<ViewDefinition> Create(string viewName, string primaryDataSetName, Uri iCalUri, string timeZone, Dictionary<string, ColumnMetadata> columns)
+        {
+            var viewDefinition = new ViewInfo
+            {
+                Columns = columns,
+                DataSetName = primaryDataSetName,
+                Joins = new[]
+                {
+                    new JoinMetadata{ Calendar = new CalendarJoinSource { Url = iCalUri.AbsoluteUri, TimeZone = timeZone } }
+                }
+            };
+            return await this.Create(viewName, viewDefinition, null, CancellationToken.None);
+        }
+
         public Task Remove(string viewName)
         {
             return Remove(viewName, new ViewDeleteOptions());
@@ -158,7 +186,7 @@ namespace Nexosis.Api.Client
         public async Task Remove(string viewName, ViewDeleteOptions options, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(viewName, nameof(viewName));
-            
+
             var parameters = new List<KeyValuePair<string, string>>();
 
             if (options?.Cascade != null)
@@ -168,9 +196,10 @@ namespace Nexosis.Api.Client
                     parameters.Add(new KeyValuePair<string, string>("cascade", "sessions"));
                 }
             }
-            
+
             await apiConnection.Delete($"views/{viewName}", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
 
         }
+
     }
 }

@@ -421,11 +421,32 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
         /// </summary>
+        /// <param name="page">zero index page of the results to get</param>
+        /// <param name="pageSize">number of items per page</param>
+        /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
+        Task<List<SessionResponse>> List(int page, int pageSize);
+
+        /// <summary>
+        /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
+        /// </summary>
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
         Task<List<SessionResponse>> List(string dataSetName);
+
+        /// <summary>
+        /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
+        /// </summary>
+        /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
+        /// <param name="page">zero index page of the results to get</param>
+        /// <param name="pageSize">number of items per page</param>
+        /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
+        Task<List<SessionResponse>> List(string dataSetName, int page, int pageSize);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 

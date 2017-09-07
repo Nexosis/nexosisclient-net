@@ -25,7 +25,7 @@ namespace Api.Client.Tests.DataSetTests
             await target.DataSets.Remove("sierra", DataSetDeleteOptions.CascadeBoth);
 
             Assert.Equal(HttpMethod.Delete, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "data/sierra?cascade=forecast&cascade=sessions"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "data/sierra?cascade=forecast&cascade=session"), handler.Request.RequestUri);
         }
 
         [Fact]

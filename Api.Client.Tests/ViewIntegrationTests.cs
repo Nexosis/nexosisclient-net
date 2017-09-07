@@ -11,7 +11,7 @@ namespace Api.Client.Tests
 {
 #if !SKIP_INTEGRATION // integration tests will charge your account and require an API key in environment variables
     [Collection("Integration")]
-    public class ViewIntegrationTests
+    public class ViewIntegrationTests : IDisposable
     {
         private readonly IntegrationTestFixture fixture;
 
@@ -22,7 +22,7 @@ namespace Api.Client.Tests
 
             var result = fixture.Client.DataSets.Create("mike", data).Result;
 
-            
+
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace Api.Client.Tests
             Assert.Equal("mikeView", result.ViewName);
         }
 
-        
+
         [Fact]
         public async Task ListViews()
         {
@@ -50,7 +50,7 @@ namespace Api.Client.Tests
             };
 
             var result = await fixture.Client.Views.Create("mikeView", view);
-            
+
             var list = await fixture.Client.Views.List();
 
             Assert.True(list.Count > 0);
@@ -72,7 +72,35 @@ namespace Api.Client.Tests
             var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await fixture.Client.DataSets.Get(id));
 
             Assert.Equal(HttpStatusCode.NotFound, exception.StatusCode);
-        }  
+        }
+
+
+
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    fixture.Client.DataSets.Remove("mike", DataSetDeleteOptions.CascadeAll);
+                }
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
 
     }
 #endif

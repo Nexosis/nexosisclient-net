@@ -37,5 +37,12 @@ namespace Api.Client.Tests.SessionTests
             Assert.Equal(handler.Request.RequestUri, new Uri(baseUri, "sessions"));
         }
 
+        [Fact]
+        public async Task SetPageSizeIncludeParam()
+        {
+            var result = await target.Sessions.List(0, 20);
+            Assert.Equal(handler.Request.RequestUri.Query, "?page=0&pageSize=20");
+        }
+
     }
 }
