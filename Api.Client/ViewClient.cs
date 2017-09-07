@@ -162,7 +162,7 @@ namespace Nexosis.Api.Client
                 DataSetName = primaryDataSetName,
                 Joins = new[]
                 {
-                    new JoinMetadata{ Calendar = new CalendarJoinSource { Url = iCalUri.AbsolutePath, TimeZone = timeZone } }
+                    new JoinMetadata{ Calendar = new CalendarJoinSource { Url = iCalUri.AbsoluteUri, TimeZone = timeZone } }
                 }
             };
             return await this.Create(viewName, viewDefinition, null, CancellationToken.None);

@@ -28,6 +28,7 @@ namespace Api.Client.Tests
             var result = await fixture.Client.DataSets.Create("mike", data);
 
             Assert.Equal("mike", result.DataSetName);
+            await fixture.Client.DataSets.Remove("mike", DataSetDeleteOptions.CascadeAll);
         }
 
         [Fact]
@@ -41,6 +42,7 @@ namespace Api.Client.Tests
             
             Assert.Equal(ImputationStrategy.Zeroes, dataSet.Columns["xray"].Imputation);
             Assert.Equal(AggregationStrategy.Sum, dataSet.Columns["xray"].Aggregation);
+            await fixture.Client.DataSets.Remove("mike", DataSetDeleteOptions.CascadeAll);
         }
 
 
@@ -56,6 +58,8 @@ namespace Api.Client.Tests
 
             Assert.Equal(ImputationStrategy.Mean, dataSet.Columns["temp"].Imputation);
             Assert.Equal(AggregationStrategy.Mean, dataSet.Columns["temp"].Aggregation);
+
+            await fixture.Client.DataSets.Remove("temps", DataSetDeleteOptions.CascadeAll);
         }
 
 
@@ -72,6 +76,7 @@ namespace Api.Client.Tests
 
             Assert.Equal(ImputationStrategy.Mode, dataSet.Columns["temp"].Imputation);
             Assert.Equal(AggregationStrategy.Median, dataSet.Columns["temp"].Aggregation);
+            await fixture.Client.DataSets.Remove("agg", DataSetDeleteOptions.CascadeAll);
         }
         
         [Fact]
@@ -100,17 +105,18 @@ namespace Api.Client.Tests
             var result = await fixture.Client.DataSets.Create("whiskey", data);
 
             Assert.Equal("whiskey", result.DataSetName);
+            await fixture.Client.DataSets.Remove("whiskey", DataSetDeleteOptions.CascadeAll);
         }
 
         [Fact]
         public async Task GettingDataSetGivesBackLinks()
         {
-            var result = await fixture.Client.DataSets.Get("whiskey");
+            var result = await fixture.Client.DataSets.Get(fixture.ForecastDataSetName);
 
             Assert.Equal(1, result.Links.Count);
             Assert.Equal(new [] { "sessions"}, result.Links.Select(l => l.Rel));
             
-            Assert.Equal($"{fixture.Client.ConfiguredUrl}sessions?dataSourceName=whiskey", result.Links[0].Href);
+            Assert.Equal($"{fixture.Client.ConfiguredUrl}sessions?dataSourceName={fixture.ForecastDataSetName}", result.Links[0].Href);
         }
 
         [Fact]
@@ -124,6 +130,7 @@ namespace Api.Client.Tests
 
             Assert.Equal(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse(result.Data.First()["time"]));
             Assert.True(result.Data.First().ContainsKey("india juliet"));
+            await fixture.Client.DataSets.Remove("zulu yankee", DataSetDeleteOptions.CascadeAll);
         }
 
         [Fact]
@@ -140,6 +147,7 @@ namespace Api.Client.Tests
             var orderedData = result.Data.Select(d => DateTimeOffset.Parse(d["time"])).OrderBy(it => it);
             Assert.Equal(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), orderedData.First());
             Assert.Equal(DateTimeOffset.Parse("2017-02-28 0:00 -0:00"), orderedData.Last());
+            await fixture.Client.DataSets.Remove("alpha bravo", DataSetDeleteOptions.CascadeAll);
         }
 
         [Fact]
@@ -163,22 +171,6 @@ namespace Api.Client.Tests
             var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await fixture.Client.DataSets.Get(id));
 
             Assert.Equal(HttpStatusCode.NotFound, exception.StatusCode);
-        }
-
-        [Fact(Skip = "Only run if changing the API key used.")]
-        public async Task PopulateDataForTesting()
-        {
-            // loads a dataset and creates a forecast so we can query it when running the tests
-            string dataSet = fixture.SavedDataSet;
-
-            using (var file = File.OpenText("..\\..\\..\\CsvFiles\\producttest.csv"))
-            {
-                await fixture.Client.DataSets.Create(dataSet, file);
-            }
-            await fixture.Client.Sessions.CreateForecast(dataSet, "sales", DateTimeOffset.Parse("2017-03-25 0:00:00 -0:00"), DateTimeOffset.Parse("2017-04-24 0:00:00 -0:00"), ResultInterval.Day);
-
-            var names = String.Join(", ", fixture.Client.DataSets.List(dataSet).GetAwaiter().GetResult().Select(ds => ds.DataSetName));
-            Console.WriteLine(names);
         }
 
     }

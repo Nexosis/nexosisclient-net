@@ -105,8 +105,9 @@ namespace Nexosis.Api.Client
             using (var requestMessage = new HttpRequestMessage(method, uri))
             {
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
                 // TODO: would it be better to do StreamContent with a MemoryStream?
-                requestMessage.Content = new ByteArrayContent(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(body)));
+                requestMessage.Content = new ByteArrayContent(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(body, settings)));
                 requestMessage.Content.Headers.Add("Content-Type", "application/json");
                 return await MakeRequest<T>(requestMessage, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
             }

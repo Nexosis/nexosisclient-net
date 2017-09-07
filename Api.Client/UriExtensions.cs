@@ -40,7 +40,7 @@ namespace Nexosis.Api.Client
                 baseUri = uri.OriginalString;
             }
 
-            string query = string.Join("&", parameters.Select(kvp => kvp.Key + "=" + Uri.EscapeDataString(kvp.Value)));
+            string query = string.Join("&", parameters.Where(kvp=>String.IsNullOrEmpty(kvp.Value) == false).Select(kvp => kvp.Key + "=" + Uri.EscapeDataString(kvp.Value)));
             return new Uri(baseUri + "?" + query);
         }
     }

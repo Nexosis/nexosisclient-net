@@ -67,7 +67,17 @@ namespace Api.Client.Tests.ViewTests
         public async Task CreatesWithCalendarName(){
             var actual = await target.Views.Create("TestCalendarView", "TestDataSet", "Nexosis.Holidays-US", "america/new_york", null);
             Assert.Equal(HttpMethod.Put, handler.Request.Method);
+            var expected = "{\"DataSetName\":\"TestDataSet\",\"Joins\":[{\"Calendar\":{\"Name\":\"Nexosis.Holidays-US\",\"TimeZone\":\"america/new_york\"},\"ColumnOptions\":{}}]}";
+            Assert.Equal(expected, handler.RequestBody);
         }
 
+        [Fact]
+        public async Task CreatesWithCalendarUrl()
+        {
+            var actual = await target.Views.Create("TestCalendarView", "TestDataSet", new Uri("http://example.com/mycalendar.ical"), "america/new_york", null);
+            Assert.Equal(HttpMethod.Put, handler.Request.Method);
+            var expected = "{\"DataSetName\":\"TestDataSet\",\"Joins\":[{\"Calendar\":{\"Url\":\"http://example.com/mycalendar.ical\",\"TimeZone\":\"america/new_york\"},\"ColumnOptions\":{}}]}";
+            Assert.Equal(expected, handler.RequestBody);
+        }
     }
 }

@@ -41,5 +41,7 @@
         Mean,
         Median,
         Mode,
+        Min,
+        Max,
     }
 }
