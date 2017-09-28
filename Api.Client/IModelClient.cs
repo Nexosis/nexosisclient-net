@@ -91,5 +91,38 @@ namespace Nexosis.Api.Client
         /// <returns>A list of <see cref="ModelSummary"/>.</returns>
         /// <remarks>GET of https://ml.nexosis.com/api/model</remarks>
         Task<List<ModelSummary>>List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Predicts target values for a set of features using the specified model. 
+        /// </summary>
+        /// <param name="modelId">The identifier of the model to use for prediction.</param>
+        /// <param name="data">Column and value pairs of the features which will be used in this prediction.</param>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <returns>A </returns>
+        /// <remarks>POST of https://ml.nexosis.com/api/model/{modelId}/predict</remarks>
+        Task Predict(Guid modelId, List<Dictionary<string, string>> data);
+
+        /// <summary>
+        /// Predicts target values for a set of features using the specified model. 
+        /// </summary>
+        /// <param name="modelId">The identifier of the model to use for prediction.</param>
+        /// <param name="data">Column and value pairs of the features which will be used in this prediction.</param>
+        /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <returns></returns>
+        /// <remarks>POST of https://ml.nexosis.com/api/model/{modelId}/predict</remarks>
+        Task Predict(Guid modelId, List<Dictionary<string, string>> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+
+        /// <summary>
+        /// Predicts target values for a set of features using the specified model. 
+        /// </summary>
+        /// <param name="modelId">The identifier of the model to use for prediction.</param>
+        /// <param name="data">Column and value pairs of the features which will be used in this prediction.</param>
+        /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <returns></returns>
+        /// <remarks>POST of https://ml.nexosis.com/api/model/{modelId}/predict</remarks>
+        Task Predict(Guid modelId, List<Dictionary<string, string>> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
     }
 }

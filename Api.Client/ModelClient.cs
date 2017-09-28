@@ -80,6 +80,11 @@ namespace Nexosis.Api.Client
 
             return ListModelInternal(parameters, httpMessageTransformer, cancellationToken);
         }
+        private class ModelResponseDto
+        {
+            [JsonProperty("items", Required = Required.Always)]
+            public List<ModelSummary> items { get; set; }
+        }
 
         private async Task<List<ModelSummary>> ListModelInternal(IDictionary<string, string> parameters,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
@@ -87,11 +92,23 @@ namespace Nexosis.Api.Client
             var response = await apiConnection.Get<ModelResponseDto>("models", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
             return response?.items;
         }
-
-        private class ModelResponseDto
+        public Task Predict(Guid modelId, List<Dictionary<string, string>> data)
         {
-            [JsonProperty("items", Required = Required.Always)]
-            public List<ModelSummary> items { get; set; }
+            return Predict(modelId, data, null);
         }
+
+        public Task Predict(Guid modelId, List<Dictionary<string, string>> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        {
+            return Predict(modelId, data, httpMessageTransformer, CancellationToken.None);
+        }
+
+        public Task Predict(Guid modelId, List<Dictionary<string, string>> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        {
+            Argument.IsNotNull(data, nameof(data));
+
+            var requestBody = new { Data = data };
+            return apiConnection.Post<ModelPredictionResult>($"models/{modelId}/predict", null, requestBody, httpMessageTransformer, cancellationToken);
+        }
+
     }
 }
