@@ -13,7 +13,7 @@ namespace Nexosis.Api.Client.Model
         /// <summary>
         /// Type of prediction that this model is intended to make.
         /// </summary>
-        public string PredictionDomain { get; set; }
+        public PredictionDomain PredictionDomain { get; set; }
 
         /// <summary>
         /// Name of the datasource used as the training data for this model.
