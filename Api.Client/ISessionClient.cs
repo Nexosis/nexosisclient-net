@@ -230,7 +230,7 @@ namespace Nexosis.Api.Client
         /// </summary>
         /// <param name="dataSetName">The name of the dataset that has the data to run the impact analysis on.</param>
         /// <param name="eventName">The name of the event.</param>
-        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
+        /// <param name="targetColumn">The name of the column for which you want to analyze impact.</param>
         /// <param name="startDate">The starting date of the event being analyzed.</param>
         /// <param name="endDate">The ending date of the event being analyzed.</param>
         /// <param name="resultInterval">The interval at which predictions should be generated.</param>
@@ -241,6 +241,86 @@ namespace Nexosis.Api.Client
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/impact</remarks>
         Task<SessionResponse> AnalyzeImpact(string dataSetName, string eventName, string targetColumn, DateTimeOffset startDate, DateTimeOffset endDate, ResultInterval resultInterval, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Train a model from data already saved to the API.
+        /// </summary>
+        /// <param name="dataSourceName">The name of the datasource that has the data to train the model with.</param>
+        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
+        /// <param name="predictionDomain"></param>
+        /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
+        /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
+        Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain);
+
+        /// <summary>
+        /// Train a model from data already saved to the API.
+        /// </summary>
+        /// <param name="dataSourceName">The name of the datasource that has the data to train the model with.</param>
+        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
+        /// <param name="predictionDomain"></param>
+        /// <param name="statusCallbackUrl">An optional url used for callbacks when the model has been trained.</param>
+        /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
+        /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
+        Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl);
+
+        /// <summary>
+        /// Train a model from data already saved to the API.
+        /// </summary>
+        /// <param name="dataSourceName">The name of the datasource that has the data to train the model with.</param>
+        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
+        /// <param name="predictionDomain"></param>
+        /// <param name="statusCallbackUrl">An optional url used for callbacks when the model has been trained.</param>
+        /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
+        /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
+        Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+
+        /// <summary>
+        /// Train a model from data already saved to the API.
+        /// </summary>
+        /// <param name="dataSourceName">The name of the datasource that has the data to train the model with.</param>
+        /// <param name="targetColumn">The name of the column for which you want predictions.</param>
+        /// <param name="predictionDomain"></param>
+        /// <param name="statusCallbackUrl">An optional url used for callbacks when the model has been trained.</param>
+        /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
+        /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
+        Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Train a model from data already saved to the API.
+        /// </summary>
+        /// <param name="data">Information about the datasource to be used to train the model.</param>
+        /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
+        /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
+        Task TrainModel(ModelSessionDetail data);
+
+        /// <summary>
+        /// Train a model from data already saved to the API.
+        /// </summary>
+        /// <param name="data">Information about the datasource to be used to train the model.</param>
+        /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
+        /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
+        Task TrainModel(ModelSessionDetail data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+
+        /// <summary>
+        /// Train a model from data already saved to the API.
+        /// </summary>
+        /// <param name="data">Information about the datasource to be used to train the model.</param>
+        /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
+        /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
+        Task TrainModel(ModelSessionDetail data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Estimate the cost of a forecast from data already saved to the API.
