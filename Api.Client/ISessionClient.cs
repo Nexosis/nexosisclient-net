@@ -251,7 +251,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
-        Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain);
+        Task<SessionResponse> TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain);
 
         /// <summary>
         /// Train a model from data already saved to the API.
@@ -263,7 +263,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
-        Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl);
+        Task<SessionResponse> TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl);
 
         /// <summary>
         /// Train a model from data already saved to the API.
@@ -276,7 +276,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
-        Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
 
         /// <summary>
         /// Train a model from data already saved to the API.
@@ -290,7 +290,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
-        Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Train a model from data already saved to the API.
@@ -299,7 +299,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
-        Task TrainModel(ModelSessionDetail data);
+        Task<SessionResponse> TrainModel(ModelSessionDetail data);
 
         /// <summary>
         /// Train a model from data already saved to the API.
@@ -309,7 +309,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
-        Task TrainModel(ModelSessionDetail data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<SessionResponse> TrainModel(ModelSessionDetail data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
 
         /// <summary>
         /// Train a model from data already saved to the API.
@@ -320,7 +320,7 @@ namespace Nexosis.Api.Client
         /// <returns><see cref="SessionResponse"/> providing information about the session.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is recived from server, or errors in parsing the response.</exception>
         /// <remarks>POST to https://ml.nexosis.com/api/sessions/model</remarks>
-        Task TrainModel(ModelSessionDetail data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<SessionResponse> TrainModel(ModelSessionDetail data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
         /// <summary>
         /// Estimate the cost of a forecast from data already saved to the API.

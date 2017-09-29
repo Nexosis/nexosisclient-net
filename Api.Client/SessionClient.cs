@@ -144,18 +144,18 @@ namespace Nexosis.Api.Client
             return AnalyzeImpact(data, eventName, startDate, endDate, resultInterval, statusCallbackUrl, httpMessageTransformer, cancellationToken);
         }
 
-        public Task TrainModel(ModelSessionDetail data)
+        public Task<SessionResponse> TrainModel(ModelSessionDetail data)
         {
             return TrainModel(data, null);
         }
 
-        public Task TrainModel(ModelSessionDetail data,
+        public Task<SessionResponse> TrainModel(ModelSessionDetail data,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
             return TrainModel(data, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task TrainModel(ModelSessionDetail data,
+        public Task<SessionResponse> TrainModel(ModelSessionDetail data,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNull(data, nameof(data));
@@ -164,23 +164,23 @@ namespace Nexosis.Api.Client
             return CreateSessionInternal("sessions/model", data, httpMessageTransformer, cancellationToken, false);
         }
 
-        public Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain)
+        public Task<SessionResponse> TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain)
         {
             return TrainModel(dataSourceName, targetColumn, predictionDomain, null);
         }
 
-        public Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl)
+        public Task<SessionResponse> TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl)
         {
             return TrainModel(dataSourceName, targetColumn, predictionDomain, statusCallbackUrl, null);
         }
 
-        public Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl,
+        public Task<SessionResponse> TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
         {
             return TrainModel(dataSourceName, targetColumn, predictionDomain, statusCallbackUrl, httpMessageTransformer, CancellationToken.None);
         }
 
-        public Task TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl,
+        public Task<SessionResponse> TrainModel(string dataSourceName, string targetColumn, PredictionDomain predictionDomain, string statusCallbackUrl,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             Argument.IsNotNullOrEmpty(dataSourceName, nameof(dataSourceName));
