@@ -11,6 +11,7 @@ namespace Nexosis.Api.Client
     /// </summary>
     public interface INexosisClient
     {
+
         /// <summary>Gets the current account balance.</summary>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
@@ -48,5 +49,10 @@ namespace Nexosis.Api.Client
         /// Access to the View operations in the API
         /// </summary>
         IViewClient Views { get; }
+
+        /// <summary>
+        /// Access to the Models operations in the API
+        /// </summary>
+        IModelClient Models { get; }
     }
 }
