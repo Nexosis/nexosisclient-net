@@ -33,6 +33,16 @@ namespace Nexosis.Api.Client.Model
 
         public string EventName { get; set; }
 
+        /// <summary>
+        /// For model-building sessions, the type of model being built e.g. "regression"
+        /// </summary>
+        public string PredictionDomain { get; set; }
+
+        /// <summary>
+        /// For model-building sessions, the identifier of the model that is being built
+        /// </summary>
+        public Guid? ModelId { get; set; }
+
         /// <summary>The date and time the request for the session was initiated.</summary>
         public DateTimeOffset RequestedDate { get; set; }
 
