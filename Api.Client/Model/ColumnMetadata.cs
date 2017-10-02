@@ -36,7 +36,10 @@ namespace Nexosis.Api.Client.Model
         Target,
 
         [EnumMember(Value = "Feature")]
-        Feature
+        Feature,
+
+        [EnumMember(Value = "Key")] 
+        Key
     }
 
     public enum ImputationStrategy
