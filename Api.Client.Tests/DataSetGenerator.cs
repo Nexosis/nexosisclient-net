@@ -31,7 +31,30 @@ namespace Api.Client.Tests
             
             return ds;
         }
-        
-        
+
+        public static DataSetDetail Run(int rowCount, int columns, string targetKey)
+        {
+            var rand = new Random();
+            var columnNames = Enumerable.Range(0, columns).Select(i => i.ToString()).ToList();
+            if(targetKey != null)
+            {
+                columnNames.Add(targetKey);
+            }
+
+            var rows = Enumerable.Range(0, rowCount).Select(r =>
+                columnNames.ToDictionary(k => k, v => (rand.NextDouble() * 100).ToString())).ToList();
+            var ds = new DataSetDetail
+            {
+                Data = rows,
+                Columns = columnNames.ToDictionary(k => k, v => new ColumnMetadata { DataType = ColumnType.String, Role = ColumnRole.Feature })
+            };
+
+            if(targetKey != null)
+            {
+                ds.Columns[targetKey] = new ColumnMetadata { DataType = ColumnType.Numeric, Role = ColumnRole.Target };
+            }
+
+            return ds;
+        }
     }
 }

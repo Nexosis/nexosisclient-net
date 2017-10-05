@@ -24,7 +24,7 @@ namespace Nexosis.Api.Client
 
         public async Task<ModelSummary> Get(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            return await apiConnection.Get<ModelSummary>($"model/{id}", null, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
+            return await apiConnection.Get<ModelSummary>($"models/{id}", null, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
         public Task<List<ModelSummary>> List()

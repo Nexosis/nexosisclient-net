@@ -15,12 +15,18 @@ namespace Nexosis.Api.Client.Model
         /// Also deletes any views which have been created based on this dataset
         /// </summary>
         CascadeViews = 4,
+
+        /// <summary>
+        /// Also deletes any models which have been created based on this dataset.
+        /// </summary>
+        CascadeModels = 8,
+
         /// <summary>Deletes the forcasts and sessions associated with the dataset.</summary>
         [Obsolete("Now poorly named, but preserved for backward compatibility. Use CascadeAll or build your own composite.")]
         CascadeBoth = CascadeForecast | CascadeSessions,
         /// <summary>
         /// Cascade deletes to forecasts, sessions, and views associated with the dataset
         /// </summary>
-        CascadeAll = CascadeForecast | CascadeSessions | CascadeViews
+        CascadeAll = CascadeForecast | CascadeSessions | CascadeViews | CascadeModels
     }
 }

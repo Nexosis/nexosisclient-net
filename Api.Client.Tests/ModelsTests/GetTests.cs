@@ -19,7 +19,7 @@ namespace Api.Client.Tests.ModelsTests
             await target.Models.Get(id);
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, $"model/{id}"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, $"models/{id}"), handler.Request.RequestUri);
         }
 
     }
