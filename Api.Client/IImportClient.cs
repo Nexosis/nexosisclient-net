@@ -13,7 +13,7 @@ namespace Nexosis.Api.Client
         /// List imports that have been run. This will show information about them such as id and status
         /// </summary>
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List();
 
@@ -22,7 +22,7 @@ namespace Nexosis.Api.Client
         /// </summary>
         /// <param name="dataSetName">Limits imports to those with the specified name.</param>
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List(string dataSetName);
 
@@ -34,7 +34,7 @@ namespace Nexosis.Api.Client
         /// <param name="requestedAfterDate">Limits imports to those requested on or after the specified date.</param>
         /// <param name="requestedBeforeDate">Limits imports to those requested on or before the specified date.</param>
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
             DateTimeOffset requestedBeforeDate);
@@ -47,7 +47,7 @@ namespace Nexosis.Api.Client
         /// <param name="requestedBeforeDate">Limits imports to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
             DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
@@ -61,7 +61,7 @@ namespace Nexosis.Api.Client
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
             DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
@@ -73,7 +73,7 @@ namespace Nexosis.Api.Client
         /// </summary>
         /// <param name="id">The identifier of the import</param>
         /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports/{id}</remarks>
         Task<ImportDetail> Get(Guid id);
 
@@ -84,7 +84,7 @@ namespace Nexosis.Api.Client
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>     
         /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports/{id}</remarks>
         Task<ImportDetail> Get(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
 
@@ -96,7 +96,7 @@ namespace Nexosis.Api.Client
         /// <param name="path">The path inside the bucket to the file. The Nexosis API can import a single file at a time.  The file can be in either csv or json format, and optionally with gzip compression.</param>
         /// <param name="region">The AWS region where the bucket is located.  Defaults to us-east-1</param>
         /// <remarks>POST of https://ml.nexosis.com/api/imports</remarks>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
         Task<ImportDetail> ImportFromS3(string dataSetName, string bucket, string path, string region);
 
@@ -110,7 +110,7 @@ namespace Nexosis.Api.Client
         /// <param name="region">The AWS region where the bucket is located.  Defaults to us-east-1</param>
         /// <param name="columns">Metadata about each column in the dataset</param>     
         /// <remarks>POST of https://ml.nexosis.com/api/imports</remarks>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
         Task<ImportDetail> ImportFromS3(string dataSetName, string bucket, string path, string region,
             Dictionary<string, ColumnMetadata> columns);
@@ -125,7 +125,7 @@ namespace Nexosis.Api.Client
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>     
         /// <remarks>POST of https://ml.nexosis.com/api/imports</remarks>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
         Task<ImportDetail> ImportFromS3(string dataSetName, string bucket, string path, string region,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
@@ -141,7 +141,7 @@ namespace Nexosis.Api.Client
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>     
         /// <remarks>POST of https://ml.nexosis.com/api/imports</remarks>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the resposne.</exception>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
         Task<ImportDetail> ImportFromS3(string dataSetName, string bucket, string path, string region, Dictionary<string, ColumnMetadata> columns,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);

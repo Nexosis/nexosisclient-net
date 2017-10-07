@@ -12,5 +12,8 @@ namespace Nexosis.Api.Client.Model
 
         [EnumMember(Value = "impact")]
         Impact = 2,
+
+        [EnumMember(Value = "model")]
+        Model = 3,
     }
 }

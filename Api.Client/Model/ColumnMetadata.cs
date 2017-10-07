@@ -1,4 +1,8 @@
-﻿namespace Nexosis.Api.Client.Model
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Runtime.Serialization;
+
+namespace Nexosis.Api.Client.Model
 {
     public class ColumnMetadata
     {
@@ -19,12 +23,23 @@
         NumericMeasure = -1
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum ColumnRole
     {
+        [EnumMember(Value = "None")]
         None,
+
+        [EnumMember(Value = "Timestamp")]
         Timestamp,
+
+        [EnumMember(Value = "Target")]
         Target,
-        Feature
+
+        [EnumMember(Value = "Feature")]
+        Feature,
+
+        [EnumMember(Value = "Key")] 
+        Key
     }
 
     public enum ImputationStrategy
