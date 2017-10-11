@@ -33,10 +33,15 @@ namespace Nexosis.Api.Client.Model
 
         public string EventName { get; set; }
 
+        /// <summary>For forecast and impact sessions, the interval at which predictions are generated</summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ResultInterval? ResultInterval { get; set; }
+
         /// <summary>
         /// For model-building sessions, the type of model being built e.g. "regression"
         /// </summary>
-        public string PredictionDomain { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public PredictionDomain? PredictionDomain { get; set; }
 
         /// <summary>
         /// For model-building sessions, the identifier of the model that is being built
