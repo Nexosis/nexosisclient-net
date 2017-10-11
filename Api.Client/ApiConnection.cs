@@ -92,11 +92,11 @@ namespace Nexosis.Api.Client
 
         public async Task<T> Post<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, object body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            return await SendObjectContent<T>(path, parameters, HttpMethod.Post, body, httpMessageTransformer, cancellationToken);
+            return await SendObjectContent<T>(path, parameters, HttpMethod.Post, body, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
         public async Task<T> Put<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, object body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
-            return await SendObjectContent<T>(path, parameters, HttpMethod.Put, body, httpMessageTransformer, cancellationToken);
+            return await SendObjectContent<T>(path, parameters, HttpMethod.Put, body, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
         private async Task<T> SendObjectContent<T>(string path, IEnumerable<KeyValuePair<string, string>> parameters, HttpMethod method, object body, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
@@ -164,7 +164,7 @@ namespace Nexosis.Api.Client
         {
             using (var client = httpClientFactory.CreateClient())
             {
-                var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client);
+                var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client).ConfigureAwait(false);
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
@@ -185,7 +185,7 @@ namespace Nexosis.Api.Client
                 }
                 else
                 {
-                    await ProcessFailureResponse(responseMessage);
+                    await ProcessFailureResponse(responseMessage).ConfigureAwait(false);
                     return default(T); // here to satify compiler as ProcessFailureRequest always throws
                 }
             }
@@ -195,11 +195,11 @@ namespace Nexosis.Api.Client
         {
             using (var client = httpClientFactory.CreateClient())
             {
-                var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client);
+                var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client).ConfigureAwait(false);
 
                 if (!responseMessage.IsSuccessStatusCode)
                 {
-                    await ProcessFailureResponse(responseMessage);
+                    await ProcessFailureResponse(responseMessage).ConfigureAwait(false);
                 }
             }
         }
@@ -208,15 +208,15 @@ namespace Nexosis.Api.Client
         {
             using (var client = httpClientFactory.CreateClient())
             {
-                var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client);
+                var responseMessage = await MakeRequest(requestMessage, httpMessageTransformer, cancellationToken, client).ConfigureAwait(false);
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    await responseMessage.Content.CopyToAsync(output.BaseStream);
+                    await responseMessage.Content.CopyToAsync(output.BaseStream).ConfigureAwait(false);
                 }
                 else
                 {
-                    await ProcessFailureResponse(responseMessage);
+                    await ProcessFailureResponse(responseMessage).ConfigureAwait(false);
                 }
             }
         }
@@ -235,8 +235,8 @@ namespace Nexosis.Api.Client
 
         private static async Task ProcessFailureResponse(HttpResponseMessage responseMessage)
         {
-            var errorResponseContent = responseMessage.Content.ReadAsStringAsync();
-            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(await errorResponseContent);
+            var errorResponseContent = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorResponseContent);
             if (errorResponse != null)
                 throw new NexosisClientException($"API Error: {responseMessage.StatusCode}", errorResponse);
             else

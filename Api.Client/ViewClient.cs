@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using Nexosis.Api.Client.Model;
 
 namespace Nexosis.Api.Client
@@ -151,7 +150,7 @@ namespace Nexosis.Api.Client
                     new JoinMetadata{ Calendar = new CalendarJoinSource { Name = calendarName, TimeZone = timeZone } }
                 }
             };
-            return await this.Create(viewName, viewDefinition, null, CancellationToken.None);
+            return await this.Create(viewName, viewDefinition, null, CancellationToken.None).ConfigureAwait(false);
         }
 
         public async Task<ViewDefinition> Create(string viewName, string primaryDataSetName, Uri iCalUri, string timeZone, Dictionary<string, ColumnMetadata> columns)
@@ -165,7 +164,7 @@ namespace Nexosis.Api.Client
                     new JoinMetadata{ Calendar = new CalendarJoinSource { Url = iCalUri.AbsoluteUri, TimeZone = timeZone } }
                 }
             };
-            return await this.Create(viewName, viewDefinition, null, CancellationToken.None);
+            return await this.Create(viewName, viewDefinition, null, CancellationToken.None).ConfigureAwait(false);
         }
 
         public Task Remove(string viewName)

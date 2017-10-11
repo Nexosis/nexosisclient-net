@@ -17,10 +17,10 @@ namespace Nexosis.Api.Client
         {
             this.apiConnection = apiConnection;
         }
-        
+
         public async Task<List<ImportDetail>> List()
         {
-            return await ListInternal();
+            return await ListInternal().ConfigureAwait(false);
         }
 
         // we are returning just the list object, so we need a wrapper here and will then pull the results off of it.
@@ -40,7 +40,7 @@ namespace Nexosis.Api.Client
             public Dictionary<string, ColumnMetadata> Columns { get; set; }
         }
 
-        private async Task<List<ImportDetail>> ListInternal(string dataSetName = null, 
+        private async Task<List<ImportDetail>> ListInternal(string dataSetName = null,
             DateTimeOffset? requestedAfterDate = null,
             DateTimeOffset? requestedBeforeDate = null,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer = null,
@@ -100,7 +100,7 @@ namespace Nexosis.Api.Client
                 httpMessageTransformer: httpMessageTransformer,
                 cancellationToken: cancellationToken).ConfigureAwait(false);
         }
-        
+
 
         public async Task<ImportDetail> Get(Guid id)
         {
@@ -150,6 +150,6 @@ namespace Nexosis.Api.Client
             return response;
         }
 
-        
+
     }
 }
