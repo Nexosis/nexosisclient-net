@@ -31,12 +31,13 @@ namespace Nexosis.Api.Client
         /// </summary>
         public interface IHttpClientFactory
         {
+            Func<HttpMessageHandler> HandlerFactory { get; }
             HttpClient CreateClient();
         }
 
         public class HttpClientFactory : IHttpClientFactory
         {
-            private readonly Func<HttpMessageHandler> handlerFactory;
+            public Func<HttpMessageHandler> HandlerFactory { get; }
 
             public HttpClientFactory()
             {
@@ -45,14 +46,14 @@ namespace Nexosis.Api.Client
 
             public HttpClientFactory(Func<HttpMessageHandler> handlerFactory)
             {
-                this.handlerFactory = handlerFactory;
+                HandlerFactory = handlerFactory;
             }
 
             public HttpClient CreateClient()
             {
-                if (handlerFactory != null)
+                if (HandlerFactory != null)
                 {
-                    return new HttpClient(handlerFactory());
+                    return new HttpClient(HandlerFactory());
                 }
 
                 return new HttpClient();
