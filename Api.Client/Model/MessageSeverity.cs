@@ -4,6 +4,9 @@ namespace Nexosis.Api.Client.Model
 {
     public enum MessageSeverity
     {
+        [EnumMember(Value = "debug")]
+        Debug = -1,
+
         [EnumMember(Value = "informational")]
         Informational = 0,
 
