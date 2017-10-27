@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -10,5 +9,7 @@ namespace Nexosis.Api.Client.Model
     {
         [EnumMember(Value = "regression")]
         Regression = 0,
+        [EnumMember(Value = "classification")]
+        Classification = 1,
     }
 }
