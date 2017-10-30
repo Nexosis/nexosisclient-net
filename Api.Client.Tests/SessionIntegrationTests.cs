@@ -146,7 +146,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task GetSessionResultsHasLinks()
         {
-            var result = await fixture.Client.Sessions.GetResults(savedSession.SessionId);
+            var result = await fixture.Client.Sessions.Get(savedSession.SessionId);
             Assert.NotNull(result);
             Assert.Equal(2, result.Links.Count);
             Assert.Equal(new[] { "results", "data" }, result.Links.Select(l => l.Rel));

@@ -113,10 +113,10 @@ namespace Api.Client.Tests
         {
             var result = await fixture.Client.DataSets.Get(fixture.ForecastDataSetName);
 
-            Assert.Equal(1, result.Links.Count);
-            Assert.Equal(new [] { "sessions"}, result.Links.Select(l => l.Rel));
+            Assert.Equal(4, result.Links.Count);
+            Assert.Equal(new [] { "self", "sessions", "first", "last"}, result.Links.Select(l => l.Rel));
             
-            Assert.Equal($"{fixture.Client.ConfiguredUrl}sessions?dataSourceName={fixture.ForecastDataSetName}", result.Links[0].Href);
+            Assert.Equal($"{fixture.Client.ConfiguredUrl}sessions?dataSourceName={fixture.ForecastDataSetName}", result.Links[1].Href);
         }
 
         [Fact]
