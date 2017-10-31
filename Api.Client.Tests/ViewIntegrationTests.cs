@@ -21,8 +21,6 @@ namespace Api.Client.Tests
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
 
             var result = fixture.Client.DataSets.Create("mike", data).Result;
-
-
         }
 
         [Fact]
@@ -74,6 +72,17 @@ namespace Api.Client.Tests
             Assert.Equal(HttpStatusCode.NotFound, exception.StatusCode);
         }
 
+        [Fact]
+        public async Task ListContainsPagingData()
+        {
+            var view = new ViewInfo()
+            {
+                DataSetName = "mike"
+            };
+            var actual = await fixture.Client.Views.List(new ViewQuery { Page = 1, PageSize = 1 }) as IPagedList<ViewDefinition>;
+            Assert.NotNull(actual);
+            Assert.Equal(1, actual.PageSize);
+        }
 
 
 

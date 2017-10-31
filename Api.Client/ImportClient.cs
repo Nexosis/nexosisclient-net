@@ -18,16 +18,15 @@ namespace Nexosis.Api.Client
             this.apiConnection = apiConnection;
         }
 
-        public async Task<List<ImportDetail>> List()
-        {
-            return await ListInternal().ConfigureAwait(false);
-        }
-
-        // we are returning just the list object, so we need a wrapper here and will then pull the results off of it.
-        private class ImportsList
+        private class ImportsList : IPagedList<ImportDetail>
         {
             [JsonProperty("items", Required = Required.Always)]
-            public List<ImportDetail> items { get; set; }
+            public List<ImportDetail> Items { get; set; }
+            public int PageSize { get; set; }
+            public int PageNumber { get; set; }
+            public int TotalPages { get; set; }
+            public int TotalCount { get; set; }
+            public List<Link> Links { get; set; }
         }
 
         //we expose these inputs as method parameters, but need a class to post to as the http message body
@@ -40,11 +39,57 @@ namespace Nexosis.Api.Client
             public Dictionary<string, ColumnMetadata> Columns { get; set; }
         }
 
+        public async Task<List<ImportDetail>> List(int pageNumber = 0, int pageSize = 50)
+        {
+            return await ListInternal(pageNumber: pageNumber, pageSize: pageSize).ConfigureAwait(false);
+        }
+
+        public async Task<List<ImportDetail>> List(string dataSetName, int pageNumber = 0, int pageSize = 50)
+        {
+            return await ListInternal(dataSetName: dataSetName, pageNumber: pageNumber, pageSize: pageSize).ConfigureAwait(false);
+        }
+
+        public async Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
+            DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = 50)
+        {
+            return await ListInternal(dataSetName: dataSetName,
+                requestedAfterDate: requestedAfterDate,
+                requestedBeforeDate: requestedBeforeDate
+                , pageNumber: pageNumber, pageSize: pageSize).ConfigureAwait(false);
+        }
+
+        public async Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
+            DateTimeOffset requestedBeforeDate,
+            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = 50)
+        {
+            return await ListInternal(dataSetName: dataSetName,
+                requestedAfterDate: requestedAfterDate,
+                requestedBeforeDate: requestedBeforeDate,
+                httpMessageTransformer: httpMessageTransformer,
+                pageNumber: pageNumber, pageSize: pageSize)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
+            DateTimeOffset requestedBeforeDate,
+            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken
+            , int pageNumber = 0, int pageSize = 50)
+        {
+            return await ListInternal(dataSetName: dataSetName,
+                requestedAfterDate: requestedAfterDate,
+                requestedBeforeDate: requestedBeforeDate,
+                httpMessageTransformer: httpMessageTransformer,
+                cancellationToken: cancellationToken,
+                pageNumber: pageNumber, pageSize: pageSize).ConfigureAwait(false);
+        }
+
         private async Task<List<ImportDetail>> ListInternal(string dataSetName = null,
-            DateTimeOffset? requestedAfterDate = null,
-            DateTimeOffset? requestedBeforeDate = null,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer = null,
-            CancellationToken? cancellationToken = null)
+           DateTimeOffset? requestedAfterDate = null,
+           DateTimeOffset? requestedBeforeDate = null,
+           int pageNumber = 0,
+           int pageSize = 50,
+           Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer = null,
+           CancellationToken? cancellationToken = null)
         {
             var parameters = new Dictionary<string, string>();
             if (!string.IsNullOrEmpty(dataSetName))
@@ -59,48 +104,14 @@ namespace Nexosis.Api.Client
             {
                 parameters.Add(nameof(requestedBeforeDate), requestedBeforeDate.Value.ToString("O"));
             }
+            parameters.Add("page", pageNumber.ToString());
+            parameters.Add("pageSize", pageSize.ToString());
 
             var list = await apiConnection.Get<ImportsList>("imports", parameters, httpMessageTransformer,
                 cancellationToken ?? CancellationToken.None).ConfigureAwait(false);
 
-            return (list?.items ?? Enumerable.Empty<ImportDetail>()).ToList();
+            return (new PagedList<ImportDetail>(list) ?? Enumerable.Empty<ImportDetail>()).ToList();
         }
-
-        public async Task<List<ImportDetail>> List(string dataSetName)
-        {
-            return await ListInternal(dataSetName: dataSetName).ConfigureAwait(false);
-        }
-
-        public async Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
-            DateTimeOffset requestedBeforeDate)
-        {
-            return await ListInternal(dataSetName: dataSetName,
-                requestedAfterDate: requestedAfterDate,
-                requestedBeforeDate: requestedBeforeDate).ConfigureAwait(false);
-        }
-
-        public async Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
-            DateTimeOffset requestedBeforeDate,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
-        {
-            return await ListInternal(dataSetName: dataSetName,
-                requestedAfterDate: requestedAfterDate,
-                requestedBeforeDate: requestedBeforeDate,
-                httpMessageTransformer: httpMessageTransformer)
-                .ConfigureAwait(false);
-        }
-
-        public async Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
-            DateTimeOffset requestedBeforeDate,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
-        {
-            return await ListInternal(dataSetName: dataSetName,
-                requestedAfterDate: requestedAfterDate,
-                requestedBeforeDate: requestedBeforeDate,
-                httpMessageTransformer: httpMessageTransformer,
-                cancellationToken: cancellationToken).ConfigureAwait(false);
-        }
-
 
         public async Task<ImportDetail> Get(Guid id)
         {

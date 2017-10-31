@@ -21,40 +21,23 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Gets the list of all models that have been created.
         /// </summary>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
-        /// <returns>A list of <see cref="ModelSummary"/>.</returns>
-        /// <remarks>GET of https://ml.nexosis.com/api/model</remarks>
-        Task<List<ModelSummary>>List();
-
-        /// <summary>
-        /// Gets the list of all models that have been created.
-        /// </summary>
-        /// <param name="page">zero index page of the results to get</param>
+        /// <param name="pageNumber">zero index page of the results to get</param>
         /// <param name="pageSize">number of items per page</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A list of <see cref="ModelSummary"/>.</returns>
         /// <remarks>GET of https://ml.nexosis.com/api/model</remarks>
-        Task<List<ModelSummary>>List(int page, int pageSize);
+        Task<List<ModelSummary>>List(int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// Gets the list of all models that have been created.
         /// </summary>
         /// <param name="dataSourceName">Limits models to those for a particular data source.</param>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
-        /// <returns>A list of <see cref="ModelSummary"/>.</returns>
-        /// <remarks>GET of https://ml.nexosis.com/api/model</remarks>
-        Task<List<ModelSummary>>List(string dataSourceName);
-
-        /// <summary>
-        /// Gets the list of all models that have been created.
-        /// </summary>
-        /// <param name="dataSourceName">Limits models to those for a particular data source.</param>
-        /// <param name="page">zero index page of the results to get</param>
+        /// <param name="pageNumber">zero index page of the results to get</param>
         /// <param name="pageSize">number of items per page</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A list of <see cref="ModelSummary"/>.</returns>
         /// <remarks>GET of https://ml.nexosis.com/api/model</remarks>
-        Task<List<ModelSummary>>List(string dataSourceName, int page, int pageSize);
+        Task<List<ModelSummary>>List(string dataSourceName, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// Gets the list of all models that have been created.
@@ -62,10 +45,12 @@ namespace Nexosis.Api.Client
         /// <param name="dataSourceName">Limits models to those for a particular data source.</param>
         /// <param name="createdAfterDate">Limits sessions to those requested on or after the specified date.</param>
         /// <param name="createdBeforeDate">Limits sessions to those requested on or before the specified date.</param>
+        /// <param name="pageNumber">zero index page of the results to get</param>
+        /// <param name="pageSize">number of items per page</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A list of <see cref="ModelSummary"/>.</returns>
         /// <remarks>GET of https://ml.nexosis.com/api/model</remarks>
-        Task<List<ModelSummary>>List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate);
+        Task<List<ModelSummary>>List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// Gets the list of all models that have been created.
@@ -74,10 +59,12 @@ namespace Nexosis.Api.Client
         /// <param name="createdAfterDate">Limits sessions to those requested on or after the specified date.</param>
         /// <param name="createdBeforeDate">Limits sessions to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <param name="pageNumber">zero index page of the results to get</param>
+        /// <param name="pageSize">number of items per page</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A list of <see cref="ModelSummary"/>.</returns>
         /// <remarks>GET of https://ml.nexosis.com/api/model</remarks>
-        Task<List<ModelSummary>>List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<List<ModelSummary>>List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// Gets the list of all models that have been created.
@@ -87,10 +74,12 @@ namespace Nexosis.Api.Client
         /// <param name="createdBeforeDate">Limits sessions to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <param name="pageNumber">zero index page of the results to get</param>
+        /// <param name="pageSize">number of items per page</param>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A list of <see cref="ModelSummary"/>.</returns>
         /// <remarks>GET of https://ml.nexosis.com/api/model</remarks>
-        Task<List<ModelSummary>>List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<List<ModelSummary>>List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// Predicts target values for a set of features using the specified model. 

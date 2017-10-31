@@ -378,7 +378,7 @@ namespace Nexosis.Api.Client
             return apiConnection.Post<SessionResponse>(path, parameters, data, httpMessageTransformer, cancellationToken);
         }
 
-        private Task<SessionResponse> CreateSessionInternal(string path, ModelSessionDetail data, 
+        private Task<SessionResponse> CreateSessionInternal(string path, ModelSessionDetail data,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, bool isEstimate)
         {
             data.IsEstimate = isEstimate;
@@ -386,81 +386,73 @@ namespace Nexosis.Api.Client
             return apiConnection.Post<SessionResponse>(path, null, data, httpMessageTransformer, cancellationToken);
         }
 
-        public Task<List<SessionResponse>> List()
+        public Task<List<SessionResponse>> List(int pageNumber = 0, int pageSize = 50)
         {
-            return ListSessionsInternal(new Dictionary<string, string>(), null, CancellationToken.None);
+            return ListSessionsInternal(BuildListParameters(null, pageNumber, pageSize), null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> List(int page, int pageSize)
+        public Task<List<SessionResponse>> List(string dataSetName, int pageNumber = 0, int pageSize = 50)
         {
-            return List(String.Empty, page, pageSize);
+            return ListSessionsInternal(BuildListParameters(dataSetName, pageNumber, pageSize), null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> List(string dataSetName)
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName, int pageNumber = 0, int pageSize = 50)
         {
-            var parameters = new Dictionary<string, string>
-            {
-                { nameof(dataSetName), dataSetName },
-            };
-            return ListSessionsInternal(parameters, null, CancellationToken.None);
+            return ListSessionsInternal(BuildListParameters(dataSetName, pageNumber, pageSize, eventName), null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> List(string dataSetName, int page, int pageSize)
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = 50)
         {
-            var parameters = new Dictionary<string, string>
-            {
-                { nameof(dataSetName), dataSetName },
-                { nameof(page), page.ToString()  },
-                {nameof(pageSize), pageSize.ToString() }
-            };
-            return ListSessionsInternal(parameters, null, CancellationToken.None);
-        }
-
-        public Task<List<SessionResponse>> List(string dataSetName, string eventName)
-        {
-            var parameters = new Dictionary<string, string>
-            {
-                { nameof(dataSetName), dataSetName },
-                { nameof(eventName), eventName },
-            };
-            return ListSessionsInternal(parameters, null, CancellationToken.None);
-        }
-
-        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate)
-        {
-            return List(dataSetName, eventName, requestedAfterDate, requestedBeforeDate, null, CancellationToken.None);
+            return ListSessionsInternal(BuildListParameters(dataSetName, pageNumber, pageSize, eventName, requestedAfterDate, requestedBeforeDate), null, CancellationToken.None);
         }
 
         public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer
+            , int pageNumber = 0, int pageSize = 50)
         {
-            return List(dataSetName, eventName, requestedAfterDate, requestedBeforeDate, httpMessageTransformer, CancellationToken.None);
+            return ListSessionsInternal(BuildListParameters(dataSetName, pageNumber, pageSize, eventName, requestedAfterDate, requestedBeforeDate), httpMessageTransformer, CancellationToken.None);
         }
 
         public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken
+            , int pageNumber = 0, int pageSize = 50)
         {
-            var parameters = new Dictionary<string, string> {
-                { nameof(dataSetName), dataSetName },
-                { nameof(eventName), eventName },
-                { nameof(requestedAfterDate), requestedAfterDate.ToString("O") },
-                { nameof(requestedBeforeDate), requestedBeforeDate.ToString("O") }
-            };
+            return ListSessionsInternal(BuildListParameters(dataSetName, pageNumber, pageSize, eventName, requestedAfterDate, requestedBeforeDate), httpMessageTransformer, cancellationToken);
+        }
 
-            return ListSessionsInternal(parameters, httpMessageTransformer, cancellationToken);
+        private Dictionary<string, string> BuildListParameters(string dataSetName, int page, int pageSize, string eventName = null, DateTimeOffset? requestedAfterDate = null, DateTimeOffset? requestedBeforeDate = null)
+        {
+            var parameters = new Dictionary<string, string>{
+                { nameof(page), page.ToString()},
+                { nameof(pageSize), pageSize.ToString()}
+            };
+            if (String.IsNullOrEmpty(dataSetName) == false)
+                parameters.Add(nameof(dataSetName), dataSetName);
+            if (String.IsNullOrEmpty(eventName) == false)
+                parameters.Add(nameof(eventName), eventName);
+            if (requestedAfterDate.HasValue)
+                parameters.Add(nameof(requestedAfterDate), requestedAfterDate.Value.ToString("O"));
+            if (requestedBeforeDate.HasValue)
+                parameters.Add(nameof(requestedBeforeDate), requestedBeforeDate.Value.ToString("O"));
+            return parameters;
         }
 
         // we are returning just the list object, so we need a wrapper here and will then pull the results off of it.
-        private class SessionResponseDto
+        private class SessionResponseDto : IPagedList<SessionResponse>
         {
             [JsonProperty("items", Required = Required.Always)]
-            public List<SessionResponse> items { get; set; }
+            public List<SessionResponse> Items { get; set; }
+            public int PageSize { get; set; }
+            public int PageNumber { get; set; }
+            public int TotalPages { get; set; }
+            public int TotalCount { get; set; }
+            public List<Link> Links { get; set; }
         }
         private async Task<List<SessionResponse>> ListSessionsInternal(IDictionary<string, string> parameters,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var response = await apiConnection.Get<SessionResponseDto>("sessions", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
-            return response?.items;
+            return new PagedList<SessionResponse>(response);
         }
 
         public async Task Remove()

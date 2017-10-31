@@ -575,47 +575,30 @@ namespace Nexosis.Api.Client
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List();
-
-        /// <summary>
-        /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
-        /// </summary>
-        /// <param name="page">zero index page of the results to get</param>
-        /// <param name="pageSize">number of items per page</param>
-        /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
-        /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(int page, int pageSize);
+        Task<List<SessionResponse>> List(int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
         /// </summary>
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
-        /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
-        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
-        /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName);
-
-        /// <summary>
-        /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
-        /// </summary>
-        /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
-        /// <param name="page">zero index page of the results to get</param>
+        /// <param name="pageNumber">zero index page of the results to get</param>
         /// <param name="pageSize">number of items per page</param>
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, int page, int pageSize);
+        Task<List<SessionResponse>> List(string dataSetName, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
         /// </summary>
         /// <param name="dataSetName">Limits sessions to those with the specified name.</param>
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
+        /// <param name="pageNumber">zero index page of the results to get</param>
+        /// <param name="pageSize">number of items per page</param>
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
@@ -624,10 +607,12 @@ namespace Nexosis.Api.Client
         /// <param name="eventName">Limits impact sessions to those for a particular event.</param>
         /// <param name="requestedAfterDate">Limits sessions to those requested on or after the specified date.</param>
         /// <param name="requestedBeforeDate">Limits sessions to those requested on or before the specified date.</param>
+        /// <param name="pageNumber">zero index page of the results to get</param>
+        /// <param name="pageSize">number of items per page</param>
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
@@ -637,10 +622,12 @@ namespace Nexosis.Api.Client
         /// <param name="requestedAfterDate">Limits sessions to those requested on or after the specified date.</param>
         /// <param name="requestedBeforeDate">Limits sessions to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <param name="pageNumber">zero index page of the results to get</param>
+        /// <param name="pageSize">number of items per page</param>
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
@@ -651,10 +638,12 @@ namespace Nexosis.Api.Client
         /// <param name="requestedBeforeDate">Limits sessions to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <param name="pageNumber">zero index page of the results to get</param>
+        /// <param name="pageSize">number of items per page</param>
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// Remove sessions that have been run.

@@ -27,9 +27,15 @@ namespace Nexosis.Api.Client
             return List(new ViewQuery(), httpMessageTransformer, cancellationToken);
         }
 
-        private class ViewListResponse
+        private class ViewListResponse : IPagedList<ViewDefinition>
         {
-            public List<ViewDefinition> items { get; set; }
+            [Newtonsoft.Json.JsonProperty("items")]
+            public List<ViewDefinition> Items { get; set; }
+            public int PageSize { get; set; }
+            public int PageNumber { get; set; }
+            public int TotalPages { get; set; }
+            public int TotalCount { get; set; }
+            public List<Link> Links { get; set; }
         }
 
         public async Task<List<ViewDefinition>> List(ViewQuery query, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
@@ -51,8 +57,7 @@ namespace Nexosis.Api.Client
             {
                 parameters.Add(nameof(query.PageSize), query.PageSize.ToString());
             }
-
-            return (await apiConnection.Get<ViewListResponse>($"views", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false))?.items;
+            return new PagedList<ViewDefinition>(await apiConnection.Get<ViewListResponse>($"views", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false));
         }
 
         public Task<List<ViewDefinition>> List(ViewQuery query)

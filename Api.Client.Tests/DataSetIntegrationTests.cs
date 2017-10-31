@@ -159,6 +159,14 @@ namespace Api.Client.Tests
         }
 
         [Fact]
+        public async Task ListRespectPageingInfo()
+        {
+            var list = await fixture.Client.DataSets.List(1, 1);
+            Assert.Equal(1, list.Count);
+            Assert.Equal(1, (list as PagedList<DataSetSummary>).PageNumber);
+        }
+
+        [Fact]
         public async Task CanRemoveDataSet()
         {
             var id = Guid.NewGuid().ToString("N");

@@ -27,70 +27,67 @@ namespace Nexosis.Api.Client
             return await apiConnection.Get<ModelSummary>($"models/{id}", null, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task<List<ModelSummary>> List()
-        {
-            return ListModelInternal(new Dictionary<string, string>(), null, CancellationToken.None);
-        }
-
-        public Task<List<ModelSummary>> List(int page, int pageSize)
-        {
-            return List(String.Empty, page, pageSize);
-        }
-
-        public Task<List<ModelSummary>> List(string dataSourceName)
+        public Task<List<ModelSummary>> List(int pageNumber = 0, int pageSize = 50)
         {
             var parameters = new Dictionary<string, string>
             {
-                { nameof(dataSourceName), dataSourceName },
+                {"page", pageNumber.ToString() },
+                { nameof(pageSize), pageSize.ToString() }
             };
-
             return ListModelInternal(parameters, null, CancellationToken.None);
         }
 
-        public Task<List<ModelSummary>> List(string dataSourceName, int page, int pageSize)
+        public Task<List<ModelSummary>> List(string dataSourceName, int pageNumber = 0, int pageSize = 50)
         {
             var parameters = new Dictionary<string, string>
             {
                 { nameof(dataSourceName), dataSourceName },
-                { nameof(page), page.ToString() },
+                {"page", pageNumber.ToString() },
                 { nameof(pageSize), pageSize.ToString() }
             };
 
             return ListModelInternal(parameters, null, CancellationToken.None);
         }
 
-        public Task<List<ModelSummary>> List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate)
+        public Task<List<ModelSummary>> List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, int pageNumber = 0, int pageSize = 50)
         {
-            return List(dataSourceName, createdAfterDate, createdBeforeDate, null, CancellationToken.None);
+            return List(dataSourceName, createdAfterDate, createdBeforeDate, null, CancellationToken.None, pageNumber, pageSize);
         }
 
-        public Task<List<ModelSummary>> List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<List<ModelSummary>> List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = 50)
         {
-            return List(dataSourceName, createdAfterDate, createdBeforeDate, httpMessageTransformer, CancellationToken.None);
+            return List(dataSourceName, createdAfterDate, createdBeforeDate, httpMessageTransformer, CancellationToken.None, pageNumber, pageSize);
         }
 
-        public Task<List<ModelSummary>> List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public Task<List<ModelSummary>> List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, int pageNumber = 0, int pageSize = 50)
         {
             var parameters = new Dictionary<string, string>
             {
                 { nameof(dataSourceName), dataSourceName },
                 { nameof(createdAfterDate), createdAfterDate.ToString("O") },
-                { nameof(createdBeforeDate), createdBeforeDate.ToString("O") }
+                { nameof(createdBeforeDate), createdBeforeDate.ToString("O") },
+                { "page", pageNumber.ToString() },
+                { nameof(pageSize), pageSize.ToString() }
             };
 
             return ListModelInternal(parameters, httpMessageTransformer, cancellationToken);
         }
-        private class ModelResponseDto
+        private class ModelResponseDto : IPagedList<ModelSummary>
         {
             [JsonProperty("items", Required = Required.Always)]
-            public List<ModelSummary> items { get; set; }
+            public List<ModelSummary> Items { get; set; }
+            public int PageSize { get; set; }
+            public int PageNumber { get; set; }
+            public int TotalPages { get; set; }
+            public int TotalCount { get; set; }
+            public List<Link> Links { get; set; }
         }
 
         private async Task<List<ModelSummary>> ListModelInternal(IDictionary<string, string> parameters,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
         {
             var response = await apiConnection.Get<ModelResponseDto>("models", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
-            return response?.items;
+            return new PagedList<ModelSummary>(response);
         }
 
         public Task<ModelPredictionResult> Predict(Guid modelId, List<Dictionary<string, string>> data)

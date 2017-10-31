@@ -12,19 +12,23 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// List imports that have been run. This will show information about them such as id and status
         /// </summary>
+        /// <param name="pageNumber">The page of the list results requested</param>
+        /// <param name="pageSize">How many items per page to return</param>
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
-        Task<List<ImportDetail>> List();
+        Task<List<ImportDetail>> List(int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// List imports that have been run. This will show information about them such as id and status
         /// </summary>
         /// <param name="dataSetName">Limits imports to those with the specified name.</param>
+        /// <param name="pageNumber">The page of the list results requested</param>
+        /// <param name="pageSize">How many items per page to return</param>
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
-        Task<List<ImportDetail>> List(string dataSetName);
+        Task<List<ImportDetail>> List(string dataSetName, int pageNumber = 0, int pageSize = 50);
 
 
         /// <summary>
@@ -33,11 +37,13 @@ namespace Nexosis.Api.Client
         /// <param name="dataSetName">Limits imports to those with the specified name.</param>
         /// <param name="requestedAfterDate">Limits imports to those requested on or after the specified date.</param>
         /// <param name="requestedBeforeDate">Limits imports to those requested on or before the specified date.</param>
+        /// <param name="pageNumber">The page of the list results requested</param>
+        /// <param name="pageSize">How many items per page to return</param>
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
-            DateTimeOffset requestedBeforeDate);
+            DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// List imports that have been run. This will show information about them such as id and status
@@ -46,11 +52,13 @@ namespace Nexosis.Api.Client
         /// <param name="requestedAfterDate">Limits imports to those requested on or after the specified date.</param>
         /// <param name="requestedBeforeDate">Limits imports to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
+        /// <param name="pageNumber">The page of the list results requested</param>
+        /// <param name="pageSize">How many items per page to return</param>
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
-            DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer);
+            DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = 50);
 
         /// <summary>
         /// List imports that have been run. This will show information about them such as id and status
@@ -60,12 +68,14 @@ namespace Nexosis.Api.Client
         /// <param name="requestedBeforeDate">Limits imports to those requested on or before the specified date.</param>
         /// <param name="httpMessageTransformer">A function that is called immediately before sending the request and after receiving a response which allows for message transformation.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <param name="pageNumber">The page of the list results requested</param>
+        /// <param name="pageSize">How many items per page to return</param>
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
             DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
-            CancellationToken cancellationToken);
+            CancellationToken cancellationToken, int pageNumber = 0, int pageSize = 50);
 
 
         /// <summary>
