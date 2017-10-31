@@ -39,18 +39,18 @@ namespace Nexosis.Api.Client
             public Dictionary<string, ColumnMetadata> Columns { get; set; }
         }
 
-        public async Task<List<ImportDetail>> List(int pageNumber = 0, int pageSize = 50)
+        public async Task<List<ImportDetail>> List(int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return await ListInternal(pageNumber: pageNumber, pageSize: pageSize).ConfigureAwait(false);
         }
 
-        public async Task<List<ImportDetail>> List(string dataSetName, int pageNumber = 0, int pageSize = 50)
+        public async Task<List<ImportDetail>> List(string dataSetName, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return await ListInternal(dataSetName: dataSetName, pageNumber: pageNumber, pageSize: pageSize).ConfigureAwait(false);
         }
 
         public async Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
-            DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = 50)
+            DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return await ListInternal(dataSetName: dataSetName,
                 requestedAfterDate: requestedAfterDate,
@@ -60,7 +60,7 @@ namespace Nexosis.Api.Client
 
         public async Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
             DateTimeOffset requestedBeforeDate,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = 50)
+            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return await ListInternal(dataSetName: dataSetName,
                 requestedAfterDate: requestedAfterDate,
@@ -73,7 +73,7 @@ namespace Nexosis.Api.Client
         public async Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
             DateTimeOffset requestedBeforeDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken
-            , int pageNumber = 0, int pageSize = 50)
+            , int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return await ListInternal(dataSetName: dataSetName,
                 requestedAfterDate: requestedAfterDate,
@@ -87,7 +87,7 @@ namespace Nexosis.Api.Client
            DateTimeOffset? requestedAfterDate = null,
            DateTimeOffset? requestedBeforeDate = null,
            int pageNumber = 0,
-           int pageSize = 50,
+           int pageSize = NexosisClient.DefaultPageSize,
            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer = null,
            CancellationToken? cancellationToken = null)
         {

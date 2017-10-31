@@ -17,7 +17,7 @@ namespace Nexosis.Api.Client
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
-        Task<List<ImportDetail>> List(int pageNumber = 0, int pageSize = 50);
+        Task<List<ImportDetail>> List(int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
         /// <summary>
         /// List imports that have been run. This will show information about them such as id and status
@@ -28,7 +28,7 @@ namespace Nexosis.Api.Client
         /// <returns>The list of <see cref="ImportDetail"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
-        Task<List<ImportDetail>> List(string dataSetName, int pageNumber = 0, int pageSize = 50);
+        Task<List<ImportDetail>> List(string dataSetName, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Nexosis.Api.Client
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
-            DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = 50);
+            DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
         /// <summary>
         /// List imports that have been run. This will show information about them such as id and status
@@ -58,7 +58,7 @@ namespace Nexosis.Api.Client
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
-            DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = 50);
+            DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
         /// <summary>
         /// List imports that have been run. This will show information about them such as id and status
@@ -75,7 +75,7 @@ namespace Nexosis.Api.Client
         /// <remarks>GET of https://ml.nexosis.com/api/imports</remarks>
         Task<List<ImportDetail>> List(string dataSetName, DateTimeOffset requestedAfterDate,
             DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
-            CancellationToken cancellationToken, int pageNumber = 0, int pageSize = 50);
+            CancellationToken cancellationToken, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
 
         /// <summary>

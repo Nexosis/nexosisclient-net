@@ -386,36 +386,36 @@ namespace Nexosis.Api.Client
             return apiConnection.Post<SessionResponse>(path, null, data, httpMessageTransformer, cancellationToken);
         }
 
-        public Task<List<SessionResponse>> List(int pageNumber = 0, int pageSize = 50)
+        public Task<List<SessionResponse>> List(int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return ListSessionsInternal(BuildListParameters(null, pageNumber, pageSize), null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> List(string dataSetName, int pageNumber = 0, int pageSize = 50)
+        public Task<List<SessionResponse>> List(string dataSetName, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return ListSessionsInternal(BuildListParameters(dataSetName, pageNumber, pageSize), null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> List(string dataSetName, string eventName, int pageNumber = 0, int pageSize = 50)
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return ListSessionsInternal(BuildListParameters(dataSetName, pageNumber, pageSize, eventName), null, CancellationToken.None);
         }
 
-        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = 50)
+        public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return ListSessionsInternal(BuildListParameters(dataSetName, pageNumber, pageSize, eventName, requestedAfterDate, requestedBeforeDate), null, CancellationToken.None);
         }
 
         public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer
-            , int pageNumber = 0, int pageSize = 50)
+            , int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return ListSessionsInternal(BuildListParameters(dataSetName, pageNumber, pageSize, eventName, requestedAfterDate, requestedBeforeDate), httpMessageTransformer, CancellationToken.None);
         }
 
         public Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate,
             Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken
-            , int pageNumber = 0, int pageSize = 50)
+            , int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return ListSessionsInternal(BuildListParameters(dataSetName, pageNumber, pageSize, eventName, requestedAfterDate, requestedBeforeDate), httpMessageTransformer, cancellationToken);
         }

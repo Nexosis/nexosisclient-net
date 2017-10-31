@@ -43,6 +43,7 @@ namespace Nexosis.Api.Client
         public string ConfiguredUrl => configuredUrl ?? BaseUrl;
 
         public const int MaxPageSize = 1000;
+        public const int DefaultPageSize = 50;
 
         /// <summary>
         /// Constructs a instance of the client with the api key read from an environement variable

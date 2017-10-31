@@ -575,7 +575,7 @@ namespace Nexosis.Api.Client
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(int pageNumber = 0, int pageSize = 50);
+        Task<List<SessionResponse>> List(int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
@@ -586,7 +586,7 @@ namespace Nexosis.Api.Client
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, int pageNumber = 0, int pageSize = 50);
+        Task<List<SessionResponse>> List(string dataSetName, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
@@ -598,7 +598,7 @@ namespace Nexosis.Api.Client
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName, int pageNumber = 0, int pageSize = 50);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
@@ -612,7 +612,7 @@ namespace Nexosis.Api.Client
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = 50);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
@@ -627,7 +627,7 @@ namespace Nexosis.Api.Client
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = 50);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
         /// <summary>
         /// List sessions that have been run. This will show the information about them such as the id, status, and the analysis date range. 
@@ -643,7 +643,7 @@ namespace Nexosis.Api.Client
         /// <returns>The list of <see cref="SessionResponse"/> objects.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
-        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, int pageNumber = 0, int pageSize = 50);
+        Task<List<SessionResponse>> List(string dataSetName, string eventName, DateTimeOffset requestedAfterDate, DateTimeOffset requestedBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize);
 
         /// <summary>
         /// Remove sessions that have been run.

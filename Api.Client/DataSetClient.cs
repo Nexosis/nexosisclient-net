@@ -61,12 +61,12 @@ namespace Nexosis.Api.Client
             return List(null, pageNumber, pageSize);
         }
 
-        public Task<List<DataSetSummary>> List(string partialName, int pageNumber = 0, int pageSize = 50)
+        public Task<List<DataSetSummary>> List(string partialName, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return List(partialName, null, pageNumber, pageSize);
         }
 
-        public Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = 50)
+        public Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             return List(partialName, httpMessageTransformer, CancellationToken.None, pageNumber, pageSize);
         }
@@ -82,7 +82,7 @@ namespace Nexosis.Api.Client
             public List<Link> Links { get; set; }
         }
 
-        public async Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, int pageNumber = 0, int pageSize = 50)
+        public async Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
             var parameters = new Dictionary<string, string>();
             if (!string.IsNullOrEmpty(partialName))
