@@ -73,6 +73,16 @@ namespace Api.Client.Tests
         }
 
         [Fact]
+        public async Task ListRespectsPagingInfo()
+        {
+            var models = await fixture.Client.Models.List(1, 2);
+            var actual = models as PagedList<ModelSummary>;
+            Assert.NotNull(actual);
+            Assert.Equal(1, actual.PageNumber);
+            Assert.Equal(2, actual.PageSize);
+        }
+
+        [Fact]
         public async Task GetModelDetailsHasResults()
         {
             var result = await fixture.Client.Models.Get(savedModel.ModelId);

@@ -134,6 +134,16 @@ namespace Api.Client.Tests
         }
 
         [Fact]
+        public async Task GetSessionListRespectsPagingInfo()
+        {
+            var sessions = await fixture.Client.Sessions.List(1, 2);
+            var actual = sessions as PagedList<SessionResponse>;
+            Assert.NotNull(actual);
+            Assert.Equal(1, actual.PageNumber);
+            Assert.Equal(2, actual.PageSize);
+        }
+
+        [Fact]
         public async Task GetSessionResultsHasResults()
         {
             var results = await fixture.Client.Sessions.GetResults(savedSession.SessionId);
@@ -146,7 +156,7 @@ namespace Api.Client.Tests
         [Fact]
         public async Task GetSessionResultsHasLinks()
         {
-            var result = await fixture.Client.Sessions.GetResults(savedSession.SessionId);
+            var result = await fixture.Client.Sessions.Get(savedSession.SessionId);
             Assert.NotNull(result);
             Assert.Equal(2, result.Links.Count);
             Assert.Equal(new[] { "results", "data" }, result.Links.Select(l => l.Rel));

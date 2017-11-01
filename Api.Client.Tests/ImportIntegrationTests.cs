@@ -20,8 +20,15 @@ namespace Api.Client.Tests
         {
             var response = await fixture.Client.Imports.ImportFromS3("s3-import-locationa", "nexosis-sample-data",
                 "LocationA.csv", "us-east-1");
-            
+
             Assert.NotEqual(Guid.Empty, response.ImportId);
+        }
+
+        [Fact]
+        public async Task ListRespectsPageSize()
+        {
+            var response = await fixture.Client.Imports.List(pageNumber: 0, pageSize: 1);
+            Assert.Equal(1, response.Count);
         }
     }
 #endif

@@ -47,5 +47,13 @@ namespace Api.Client.Tests.ViewTests
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, "views?Page=1&PageSize=10"), handler.Request.RequestUri);
         }
+
+        [Fact]
+        public async Task ResultIncludesPagingDetails()
+        {
+            var result = await target.Views.List(new ViewQuery { Page = 1, PageSize = 1 });
+            var actual = result as IPagedList<ViewDefinition>;
+            Assert.NotNull(actual);
+        }
     }
 }

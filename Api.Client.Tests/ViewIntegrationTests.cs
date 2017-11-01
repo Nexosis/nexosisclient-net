@@ -21,39 +21,46 @@ namespace Api.Client.Tests
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
 
             var result = fixture.Client.DataSets.Create("mike", data).Result;
-
-
         }
 
         [Fact]
         public async Task CanSaveView()
         {
+            //This test fails occassionally because dataset doesn't exist
+            //adding within test to ensure success
+            var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
+            await fixture.Client.DataSets.Create("forSaveView", data);
             var view = new ViewInfo()
             {
-                DataSetName = "mike"
+                DataSetName = "forSaveView"
             };
 
-            var result = await fixture.Client.Views.Create("mikeView", view);
+            var result = await fixture.Client.Views.Create("saveTestView", view);
 
-            Assert.Equal("mike", result.DataSetName);
-            Assert.Equal("mikeView", result.ViewName);
+            Assert.Equal("forSaveView", result.DataSetName);
+            Assert.Equal("saveTestView", result.ViewName);
+            await fixture.Client.DataSets.Remove("forSaveView", DataSetDeleteOptions.CascadeAll);
         }
 
 
         [Fact]
         public async Task ListViews()
         {
-
+            //This test fails occassionally because dataset doesn't exist
+            //adding within test to ensure success
+            var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
+            await fixture.Client.DataSets.Create("forViewList", data);
             var view = new ViewInfo()
             {
-                DataSetName = "mike"
+                DataSetName = "forViewList"
             };
 
-            var result = await fixture.Client.Views.Create("mikeView", view);
+            var result = await fixture.Client.Views.Create("listTestView", view);
 
             var list = await fixture.Client.Views.List();
 
             Assert.True(list.Count > 0);
+            await fixture.Client.DataSets.Remove("forViewList", DataSetDeleteOptions.CascadeAll);
         }
 
         [Fact]
@@ -74,6 +81,17 @@ namespace Api.Client.Tests
             Assert.Equal(HttpStatusCode.NotFound, exception.StatusCode);
         }
 
+        [Fact]
+        public async Task ListContainsPagingData()
+        {
+            var view = new ViewInfo()
+            {
+                DataSetName = "mike"
+            };
+            var actual = await fixture.Client.Views.List(new ViewQuery { Page = 1, PageSize = 1 }) as IPagedList<ViewDefinition>;
+            Assert.NotNull(actual);
+            Assert.Equal(1, actual.PageSize);
+        }
 
 
 

@@ -56,34 +56,43 @@ namespace Nexosis.Api.Client
             return await apiConnection.Put<DataSetSummary>($"data/{dataSetName}", null, input, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
 
-        public Task<List<DataSetSummary>> List()
+        public Task<List<DataSetSummary>> List(int pageNumber = 0, int pageSize =50)
         {
-            return List(null);
+            return List(null, pageNumber, pageSize);
         }
 
-        public Task<List<DataSetSummary>> List(string partialName)
+        public Task<List<DataSetSummary>> List(string partialName, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
-            return List(partialName, null);
+            return List(partialName, null, pageNumber, pageSize);
         }
 
-        public Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
+        public Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
-            return List(partialName, httpMessageTransformer, CancellationToken.None);
+            return List(partialName, httpMessageTransformer, CancellationToken.None, pageNumber, pageSize);
         }
 
-        private class DataSetListResponse
+        private class DataSetListResponse : IPagedList<DataSetSummary>
         {
-            public List<DataSetSummary> items { get; set; }
+            [Newtonsoft.Json.JsonProperty("items")]
+            public List<DataSetSummary> Items { get; set; }
+            public int PageSize { get; set; }
+            public int PageNumber { get; set; }
+            public int TotalPages { get; set; }
+            public int TotalCount { get; set; }
+            public List<Link> Links { get; set; }
         }
-        public async Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+
+        public async Task<List<DataSetSummary>> List(string partialName, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
         {
-            Dictionary<string, string> parameters = null;
+            var parameters = new Dictionary<string, string>();
             if (!string.IsNullOrEmpty(partialName))
             {
-                parameters = new Dictionary<string, string> { { "partialName", partialName } };
+                parameters.Add("partialName", partialName);
             }
+            parameters.Add("page", pageNumber.ToString());
+            parameters.Add("pageSize", pageSize.ToString());
             var result = await apiConnection.Get<DataSetListResponse>("data", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
-            return result?.items;
+            return new PagedList<DataSetSummary>(result);
         }
 
         public Task<DataSetData> Get(string dataSetName)
