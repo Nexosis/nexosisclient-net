@@ -113,10 +113,10 @@ namespace Api.Client.Tests
         {
             var result = await fixture.Client.DataSets.Get(fixture.ForecastDataSetName);
 
-            Assert.Equal(1, result.Links.Count);
-            Assert.Equal(new [] { "sessions"}, result.Links.Select(l => l.Rel));
+            Assert.Equal(4, result.Links.Count);
+            Assert.Equal(new [] { "self", "sessions", "first", "last"}, result.Links.Select(l => l.Rel));
             
-            Assert.Equal($"{fixture.Client.ConfiguredUrl}sessions?dataSourceName={fixture.ForecastDataSetName}", result.Links[0].Href);
+            Assert.Equal($"{fixture.Client.ConfiguredUrl}sessions?dataSourceName={fixture.ForecastDataSetName}", result.Links[1].Href);
         }
 
         [Fact]
@@ -156,6 +156,14 @@ namespace Api.Client.Tests
             var list = await fixture.Client.DataSets.List();
 
             Assert.True(list.Count > 0);
+        }
+
+        [Fact]
+        public async Task ListRespectPageingInfo()
+        {
+            var list = await fixture.Client.DataSets.List(1, 1);
+            Assert.Equal(1, list.Count);
+            Assert.Equal(1, (list as PagedList<DataSetSummary>).PageNumber);
         }
 
         [Fact]
