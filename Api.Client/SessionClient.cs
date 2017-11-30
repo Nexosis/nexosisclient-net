@@ -185,6 +185,10 @@ namespace Nexosis.Api.Client
         {
             Argument.IsNotNullOrEmpty(dataSourceName, nameof(dataSourceName));
             Argument.IsNotNullOrEmpty(targetColumn, nameof(targetColumn));
+            if (predictionDomain > PredictionDomain.Classification)
+            {
+                throw new ArgumentException("Models may only be built for regression and classification", nameof(predictionDomain));
+            }
 
             var data = new ModelSessionDetail
             {
