@@ -25,10 +25,10 @@ namespace Api.Client.Tests
         {
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
 
-            var result = await fixture.Client.DataSets.Create("mike", data);
+            var result = await fixture.Client.DataSets.Create(DataSet.From("mike", data));
 
             Assert.Equal("mike", result.DataSetName);
-            await fixture.Client.DataSets.Remove("mike", DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("mike"){Options = DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
@@ -36,13 +36,13 @@ namespace Api.Client.Tests
         {
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
 
-            var result = await fixture.Client.DataSets.Create("mike", data);
+            var result = await fixture.Client.DataSets.Create(DataSet.From("mike", data));
 
-            var dataSet = await fixture.Client.DataSets.Get("mike");
+            var dataSet = await fixture.Client.DataSets.Get(DataSet.Get("mike"));
             
             Assert.Equal(ImputationStrategy.Zeroes, dataSet.Columns["xray"].Imputation);
             Assert.Equal(AggregationStrategy.Sum, dataSet.Columns["xray"].Aggregation);
-            await fixture.Client.DataSets.Remove("mike", DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("mike"){ Options= DataSetDeleteOptions.CascadeAll});
         }
 
 
@@ -52,14 +52,14 @@ namespace Api.Client.Tests
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "temp");
             data.Columns["temp"].DataType = ColumnType.NumericMeasure;
 
-            var result = await fixture.Client.DataSets.Create("temps", data);
+            var result = await fixture.Client.DataSets.Create(DataSet.From("temps", data));
 
-            var dataSet = await fixture.Client.DataSets.Get("temps");
+            var dataSet = await fixture.Client.DataSets.Get(DataSet.Get("temps"));
 
             Assert.Equal(ImputationStrategy.Mean, dataSet.Columns["temp"].Imputation);
             Assert.Equal(AggregationStrategy.Mean, dataSet.Columns["temp"].Aggregation);
 
-            await fixture.Client.DataSets.Remove("temps", DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("temps"){ Options = DataSetDeleteOptions.CascadeAll});
         }
 
 
@@ -70,13 +70,13 @@ namespace Api.Client.Tests
             data.Columns["temp"].Imputation = ImputationStrategy.Mode;
             data.Columns["temp"].Aggregation = AggregationStrategy.Median;
 
-            var result = await fixture.Client.DataSets.Create("agg", data);
+            var result = await fixture.Client.DataSets.Create(DataSet.From("agg", data));
 
-            var dataSet = await fixture.Client.DataSets.Get("agg");
+            var dataSet = await fixture.Client.DataSets.Get(DataSet.Get("agg"));
 
             Assert.Equal(ImputationStrategy.Mode, dataSet.Columns["temp"].Imputation);
             Assert.Equal(AggregationStrategy.Median, dataSet.Columns["temp"].Aggregation);
-            await fixture.Client.DataSets.Remove("agg", DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("agg"){ Options = DataSetDeleteOptions.CascadeAll});
         }
         
         [Fact]
@@ -85,9 +85,9 @@ namespace Api.Client.Tests
             var name = Guid.NewGuid().ToString();
             using (var file = File.OpenText("..\\..\\..\\CsvFiles\\noheader.csv"))
             {
-                var summary = await fixture.Client.DataSets.Create(name, file);
-                var dataSet = await fixture.Client.DataSets.Get(name);
-                await fixture.Client.DataSets.Remove(name, DataSetDeleteOptions.None);
+                var summary = await fixture.Client.DataSets.Create(DataSet.From(name, file));
+                var dataSet = await fixture.Client.DataSets.Get(DataSet.Get(name));
+                await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria(name) {Options= DataSetDeleteOptions.None});
 
                 Assert.Contains("column1", dataSet.Columns.Keys);
                 Assert.Contains("column2", dataSet.Columns.Keys);
@@ -102,16 +102,16 @@ namespace Api.Client.Tests
         {
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "foxtrot", implicitTimestamp: true);
 
-            var result = await fixture.Client.DataSets.Create("whiskey", data);
+            var result = await fixture.Client.DataSets.Create(DataSet.From("whiskey", data));
 
             Assert.Equal("whiskey", result.DataSetName);
-            await fixture.Client.DataSets.Remove("whiskey", DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("whiskey"){Options = DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
         public async Task GettingDataSetGivesBackLinks()
         {
-            var result = await fixture.Client.DataSets.Get(fixture.ForecastDataSetName);
+            var result = await fixture.Client.DataSets.Get(DataSet.Get(fixture.ForecastDataSetName));
 
             Assert.Equal(4, result.Links.Count);
             Assert.Equal(new [] { "self", "sessions", "first", "last"}, result.Links.Select(l => l.Rel));
@@ -124,30 +124,30 @@ namespace Api.Client.Tests
         {
             var data = DataSetGenerator.Run(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse("2017-03-31 0:00 -0:00"), "india juliet");
 
-            await fixture.Client.DataSets.Create("zulu yankee", data);
+            await fixture.Client.DataSets.Create(DataSet.From("zulu yankee", data));
 
-            var result = await fixture.Client.DataSets.Get("zulu yankee");
+            var result = await fixture.Client.DataSets.Get(DataSet.Get("zulu yankee"));
 
             Assert.Equal(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse(result.Data.First()["time"]));
             Assert.True(result.Data.First().ContainsKey("india juliet"));
-            await fixture.Client.DataSets.Remove("zulu yankee", DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("zulu yankee"){Options = DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
         public async Task CanPutMoreDataToSameDataSet()
         {
             var data = DataSetGenerator.Run(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse("2017-01-31 0:00 -0:00"), "golf hotel");
-            await fixture.Client.DataSets.Create("alpha bravo", data);
+            await fixture.Client.DataSets.Create(DataSet.From("alpha bravo", data));
 
             var moreData = DataSetGenerator.Run(DateTimeOffset.Parse("2017-02-01 0:00 -0:00"), DateTimeOffset.Parse("2017-03-01 0:00 -0:00"), "golf hotel");
-            await fixture.Client.DataSets.Create("alpha bravo", moreData);
+            await fixture.Client.DataSets.Create(DataSet.From("alpha bravo", moreData));
 
-            var result = await fixture.Client.DataSets.Get("alpha bravo");
+            var result = await fixture.Client.DataSets.Get(DataSet.Get("alpha bravo"));
 
             var orderedData = result.Data.Select(d => DateTimeOffset.Parse(d["time"])).OrderBy(it => it);
             Assert.Equal(DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), orderedData.First());
             Assert.Equal(DateTimeOffset.Parse("2017-02-28 0:00 -0:00"), orderedData.Last());
-            await fixture.Client.DataSets.Remove("alpha bravo", DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("alpha bravo") {Options = DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
@@ -155,15 +155,15 @@ namespace Api.Client.Tests
         {
             var list = await fixture.Client.DataSets.List();
 
-            Assert.True(list.Count > 0);
+            Assert.True(list.Items.Count > 0);
         }
 
         [Fact]
         public async Task ListRespectPageingInfo()
         {
-            var list = await fixture.Client.DataSets.List(1, 1);
-            Assert.Equal(1, list.Count);
-            Assert.Equal(1, (list as PagedList<DataSetSummary>).PageNumber);
+            var list = await fixture.Client.DataSets.List(new DataSetSummaryQuery() { Page = new PagingInfo(1, 1)});
+            Assert.Equal(1, list.Items.Count);
+            Assert.Equal(1, list.PageNumber);
         }
 
         [Fact]
@@ -173,10 +173,10 @@ namespace Api.Client.Tests
 
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "hotel");
 
-            await fixture.Client.DataSets.Create(id, data);
-            await fixture.Client.DataSets.Remove(id, DataSetDeleteOptions.None);
+            await fixture.Client.DataSets.Create(DataSet.From(id, data));
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria(id){Options = DataSetDeleteOptions.None});
 
-            var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await fixture.Client.DataSets.Get(id));
+            var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await fixture.Client.DataSets.Get(DataSet.Get(id)));
 
             Assert.Equal(HttpStatusCode.NotFound, exception.StatusCode);
         }

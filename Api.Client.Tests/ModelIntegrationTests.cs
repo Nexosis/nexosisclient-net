@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Nexosis.Api.Client;
 using Xunit;
 
 namespace Api.Client.Tests
@@ -48,7 +49,7 @@ namespace Api.Client.Tests
         {
             var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(90, 10, "instances");
-            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+            await fixture.Client.DataSets.Create(DataSet.From(dataSetName, dataSet));
 
             var sessionRequest = new ModelSessionDetail()
             {
@@ -62,7 +63,7 @@ namespace Api.Client.Tests
 
             var actual = await fixture.Client.Sessions.TrainModel(sessionRequest);
             Assert.NotNull(actual.SessionId);
-            await fixture.Client.DataSets.Remove(dataSetName, DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria(dataSetName) {Options = DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]

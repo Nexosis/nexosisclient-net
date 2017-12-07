@@ -20,7 +20,7 @@ namespace Api.Client.Tests
             this.fixture = fixture;
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
 
-            var result = fixture.Client.DataSets.Create("mike", data).Result;
+            var result = fixture.Client.DataSets.Create(DataSet.From( "mike", data)).Result;
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace Api.Client.Tests
             //This test fails occassionally because dataset doesn't exist
             //adding within test to ensure success
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
-            await fixture.Client.DataSets.Create("forSaveView", data);
+            await fixture.Client.DataSets.Create(DataSet.From("forSaveView", data));
             var view = new ViewInfo()
             {
                 DataSetName = "forSaveView"
@@ -39,7 +39,7 @@ namespace Api.Client.Tests
 
             Assert.Equal("forSaveView", result.DataSetName);
             Assert.Equal("saveTestView", result.ViewName);
-            await fixture.Client.DataSets.Remove("forSaveView", DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("forSaveView"){ Options= DataSetDeleteOptions.CascadeAll});
         }
 
 
@@ -49,7 +49,7 @@ namespace Api.Client.Tests
             //This test fails occassionally because dataset doesn't exist
             //adding within test to ensure success
             var data = DataSetGenerator.Run(DateTime.Parse("2017-01-01"), DateTime.Parse("2017-03-31"), "xray");
-            await fixture.Client.DataSets.Create("forViewList", data);
+            await fixture.Client.DataSets.Create(DataSet.From("forViewList", data));
             var view = new ViewInfo()
             {
                 DataSetName = "forViewList"
@@ -60,7 +60,7 @@ namespace Api.Client.Tests
             var list = await fixture.Client.Views.List();
 
             Assert.True(list.Count > 0);
-            await fixture.Client.DataSets.Remove("forViewList", DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("forViewList") { Options= DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Api.Client.Tests
             await fixture.Client.Views.Create(id, view);
             await fixture.Client.Views.Remove(id);
 
-            var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await fixture.Client.DataSets.Get(id));
+            var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await fixture.Client.DataSets.Get(DataSet.Get(id)));
 
             Assert.Equal(HttpStatusCode.NotFound, exception.StatusCode);
         }
@@ -104,7 +104,7 @@ namespace Api.Client.Tests
             {
                 if (disposing)
                 {
-                    fixture.Client.DataSets.Remove("mike", DataSetDeleteOptions.CascadeAll);
+                    fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("mike") { Options= DataSetDeleteOptions.CascadeAll});
                 }
                 disposedValue = true;
             }

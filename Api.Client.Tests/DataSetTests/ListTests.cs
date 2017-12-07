@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Nexosis.Api.Client.Model;
 using Xunit;
 
 namespace Api.Client.Tests.DataSetTests
@@ -17,16 +18,16 @@ namespace Api.Client.Tests.DataSetTests
             var result = await target.DataSets.List();
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "data?page=0&pageSize=50"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "data"), handler.Request.RequestUri);
         }
 
         [Fact]
         public async Task WillIncludeFilterParameterWhenNotNull()
         {
-            var result = await target.DataSets.List("partialSomething");
+            var result = await target.DataSets.List(new DataSetSummaryQuery(){PartialName = "partialSomething"});
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "data?partialName=partialSomething&page=0&pageSize=50"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "data?partialName=partialSomething"), handler.Request.RequestUri);
         }
     }
 }

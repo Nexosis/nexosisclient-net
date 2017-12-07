@@ -57,7 +57,7 @@ namespace Api.Client.Tests
         {
             var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+            await fixture.Client.DataSets.Create(DataSet.From(dataSetName, dataSet));
 
             var sessionRequest = new SessionDetail()
             {
@@ -71,7 +71,7 @@ namespace Api.Client.Tests
 
             var actual = await fixture.Client.Sessions.CreateForecast(sessionRequest, DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
             Assert.NotNull(actual.SessionId);
-            await fixture.Client.DataSets.Remove(dataSetName, DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria(dataSetName) { Options= DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
@@ -80,14 +80,14 @@ namespace Api.Client.Tests
             var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
 
-            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+            await fixture.Client.DataSets.Create(DataSet.From(dataSetName, dataSet));
 
 
 
             var actual = await fixture.Client.Sessions.CreateForecast(dataSetName, "instances",
                 DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
             Assert.NotNull(actual.SessionId);
-            await fixture.Client.DataSets.Remove(dataSetName, DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria(dataSetName) { Options= DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace Api.Client.Tests
         {
             var sessionData = new SessionDetail { DataSetName = "HourlyNetTest" };
             sessionData.Columns.Add("value", new ColumnMetadata { DataType = ColumnType.Numeric, Role = ColumnRole.Target });
-            await fixture.Client.DataSets.Create(sessionData.DataSetName, new StreamReader(File.OpenRead("csvfiles/sensor2.csv")));
+            await fixture.Client.DataSets.Create( DataSet.From(sessionData.DataSetName, new StreamReader(File.OpenRead("csvfiles/sensor2.csv"))));
             var session = await fixture.Client.Sessions.CreateForecast(sessionData, DateTime.Parse("2017-01-08"), DateTime.Parse("2017-01-09"), ResultInterval.Hour);
             while (true)
             {
@@ -111,7 +111,7 @@ namespace Api.Client.Tests
             var date1 = DateTimeOffset.Parse(results.Data[0]["timeStamp"]);
             var date2 = DateTimeOffset.Parse(results.Data[1]["timeStamp"]);
             Assert.Equal(1, (date2 - date1).Hours);
-            await fixture.Client.DataSets.Remove(sessionData.DataSetName, DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria(sessionData.DataSetName){Options= DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
@@ -119,11 +119,11 @@ namespace Api.Client.Tests
         {
             var dataSetName = $"testDataSet-{DateTime.UtcNow:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
-            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+            await fixture.Client.DataSets.Create(DataSet.From(dataSetName, dataSet));
 
             var actual = await fixture.Client.Sessions.CreateForecast(dataSetName, "instances", DateTimeOffset.Parse("2017-03-26"), DateTimeOffset.Parse("2017-04-25"), ResultInterval.Day);
             Assert.NotNull(actual.SessionId);
-            await fixture.Client.DataSets.Remove(dataSetName, DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria( dataSetName) { Options= DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
@@ -167,8 +167,8 @@ namespace Api.Client.Tests
         [Fact]
         public async Task GetSessionResultsWillWriteFile()
         {
-            var dataSets = await fixture.Client.DataSets.List(fixture.ForecastDataSetName);
-            var dataSet = dataSets.First();
+            var dataSets = await fixture.Client.DataSets.List(new DataSetSummaryQuery {PartialName = fixture.ForecastDataSetName});
+            var dataSet = dataSets.Items.First();
             var filename = Path.Combine(AppContext.BaseDirectory, $"test-ouput-{DateTime.UtcNow:yyyyMMddhhmmss}.csv");
             try
             {
@@ -196,7 +196,7 @@ namespace Api.Client.Tests
             var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
 
-            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+            await fixture.Client.DataSets.Create(DataSet.From(dataSetName, dataSet));
 
             var actual = await fixture.Client.Sessions.AnalyzeImpact(dataSetName, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
 
@@ -204,7 +204,7 @@ namespace Api.Client.Tests
             var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await fixture.Client.Sessions.Get(actual.SessionId));
 
             Assert.Equal(exception.StatusCode, HttpStatusCode.NotFound);
-            await fixture.Client.DataSets.Remove(dataSetName, DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria(dataSetName){Options = DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
@@ -213,14 +213,14 @@ namespace Api.Client.Tests
             var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
 
-            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+            await fixture.Client.DataSets.Create(DataSet.From(dataSetName, dataSet));
 
             var actual = await fixture.Client.Sessions.EstimateImpact(dataSetName, $"charlie-delta-{DateTime.UtcNow:s}", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
 
             var status = await fixture.Client.Sessions.GetStatus(actual.SessionId);
 
             Assert.Equal(actual.Status, status.Status);
-            await fixture.Client.DataSets.Remove(dataSetName, DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria(dataSetName) { Options= DataSetDeleteOptions.CascadeAll});
         }
 
         [Fact]
@@ -229,7 +229,7 @@ namespace Api.Client.Tests
             var dataSetName = $"testDataSet-{DateTime.Now:s}";
             var dataSet = DataSetGenerator.Run(DateTime.Parse("2016-08-01"), DateTime.Parse("2017-03-26"), "instances");
 
-            await fixture.Client.DataSets.Create(dataSetName, dataSet);
+            await fixture.Client.DataSets.Create(DataSet.From( dataSetName, dataSet));
 
             var first = await fixture.Client.Sessions.AnalyzeImpact(dataSetName, "juliet-juliet-echo-1", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
             var second = await fixture.Client.Sessions.AnalyzeImpact(dataSetName, "juliet-juliet-echo-2", "instances", DateTimeOffset.Parse("2016-11-26"), DateTimeOffset.Parse("2016-12-25"), ResultInterval.Day);
@@ -241,7 +241,7 @@ namespace Api.Client.Tests
 
             Assert.Equal(exceptionTheFirst.StatusCode, HttpStatusCode.NotFound);
             Assert.Equal(exceptionTheSecond.StatusCode, HttpStatusCode.NotFound);
-            await fixture.Client.DataSets.Remove(dataSetName, DataSetDeleteOptions.CascadeAll);
+            await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria( dataSetName) { Options= DataSetDeleteOptions.CascadeAll});
         }
     }
 #endif
