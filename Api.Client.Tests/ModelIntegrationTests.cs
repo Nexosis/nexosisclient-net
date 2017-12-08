@@ -32,7 +32,7 @@ namespace Api.Client.Tests
         ModelSummary savedModel;
         private async Task CreateSession()
         {
-            var session = await fixture.Client.Sessions.TrainModel(fixture.ModelDataSetName, "instances", PredictionDomain.Regression);
+            var session = await fixture.Client.Sessions.TrainModel(Sessions.TrainModel(fixture.ModelDataSetName, PredictionDomain.Regression, "instances"));
             while (true)
             {
                 var status = await fixture.Client.Sessions.GetStatus(session.SessionId);
@@ -51,17 +51,15 @@ namespace Api.Client.Tests
             var dataSet = DataSetGenerator.Run(90, 10, "instances");
             await fixture.Client.DataSets.Create(DataSet.From(dataSetName, dataSet));
 
-            var sessionRequest = new ModelSessionDetail()
-            {
-                DataSourceName = dataSetName,
-                PredictionDomain = PredictionDomain.Regression,
-                Columns = new Dictionary<string, ColumnMetadata>
+            var actual = await fixture.Client.Sessions.TrainModel(Sessions.TrainModel(dataSetName,
+                PredictionDomain.Regression,
+                options: new ModelSessionRequest
                 {
-                    ["instances"] = new ColumnMetadata { DataType = ColumnType.Numeric, Role = ColumnRole.Target }
-                }
-            };
-
-            var actual = await fixture.Client.Sessions.TrainModel(sessionRequest);
+                    Columns = new Dictionary<string, ColumnMetadata>
+                    {
+                        ["instances"] = new ColumnMetadata {DataType = ColumnType.Numeric, Role = ColumnRole.Target}
+                    }
+                }));
             Assert.NotNull(actual.SessionId);
             await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria(dataSetName) {Options = DataSetDeleteOptions.CascadeAll});
         }

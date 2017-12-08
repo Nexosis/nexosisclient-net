@@ -59,7 +59,8 @@ namespace Nexosis.Api.Client.Model
 
         /// <summary>Metadata about each column in the dataset</summary>
         /// <remarks>Initialized with a case-insensitive key comparer as the API ignores case on column names.</remarks>
-        public Dictionary<string, ColumnMetadata> Columns { get; set; } = new Dictionary<string, ColumnMetadata>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, ColumnMetadata> Columns { get; set; } =
+            new Dictionary<string, ColumnMetadata>(StringComparer.OrdinalIgnoreCase);
 
         public List<Link> Links { get; set; }
     }

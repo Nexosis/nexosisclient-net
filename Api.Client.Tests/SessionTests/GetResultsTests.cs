@@ -22,14 +22,5 @@ namespace Api.Client.Tests.SessionTests
             Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/results"), handler.Request.RequestUri);
         }
 
-        [Fact]
-        public async Task GetResultToFileThrowsWithNullWriter()
-        {
-            var sessionId = Guid.NewGuid();
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Sessions.GetResults(sessionId, (StreamWriter)null));
-
-            Assert.Equal("output", exception.ParamName);
-        }
-
     }
 }
