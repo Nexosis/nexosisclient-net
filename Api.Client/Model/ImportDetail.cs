@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Nexosis.Api.Client.Model
 {
@@ -46,7 +47,7 @@ namespace Nexosis.Api.Client.Model
         public List<StatusMessage> Messages { get; set; } = new List<StatusMessage>();
 
         /// <summary>
-        /// Metadata about which 
+        /// Describes the columns that are in the data to be imported 
         /// </summary>
         public Dictionary<string, ColumnMetadata> Columns { get; set; } =
             new Dictionary<string, ColumnMetadata>(StringComparer.OrdinalIgnoreCase);
