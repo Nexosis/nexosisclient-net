@@ -15,14 +15,17 @@ namespace Api.Client.Tests.ViewTests
         [Fact]
         public async Task RemoveRequiresDataSetName()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Views.Remove(null, null));
-            Assert.Equal("viewName", exception.ParamName);
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Views.Remove(new ViewDeleteCriteria(null)));
+            Assert.Equal("Name", exception.ParamName);
+
+            exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Views.Remove(null));
+            Assert.Equal("Name", exception.ParamName);
         }
 
         [Fact]
         public async Task GeneratesCascadeValuesFromDeleteOptions()
         {
-            await target.Views.Remove("sierra", new ViewDeleteOptions() {Cascade = ViewCascadeOptions.CascadeSessions});
+            await target.Views.Remove(new ViewDeleteCriteria("sierra") {Cascade = ViewCascadeOptions.CascadeSessions});
 
             Assert.Equal(HttpMethod.Delete, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, "views/sierra?cascade=sessions"), handler.Request.RequestUri);
@@ -31,7 +34,7 @@ namespace Api.Client.Tests.ViewTests
         [Fact]
         public async Task DoesNotSetCascadeWhenNoneOptionGiven()
         {
-            await target.Views.Remove("november");
+            await target.Views.Remove(new ViewDeleteCriteria("november"));
 
             Assert.Equal(HttpMethod.Delete, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, "views/november"), handler.Request.RequestUri);

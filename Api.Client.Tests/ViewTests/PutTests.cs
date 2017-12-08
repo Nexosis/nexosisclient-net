@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Nexosis.Api.Client;
 using Nexosis.Api.Client.Model;
 using Xunit;
 
@@ -64,19 +65,40 @@ namespace Api.Client.Tests.ViewTests
         }
 
         [Fact]
-        public async Task CreatesWithCalendarName(){
-            var actual = await target.Views.Create("TestCalendarView", "TestDataSet", "Nexosis.Holidays-US", "america/new_york", null);
+        public async Task CreatesWithCalendarName()
+        {
+            var actual = await target.Views.Create("TestCalendarView", new ViewInfo()
+            {
+                DataSetName = "TestDataSet",
+                Joins = new JoinMetadata[]
+                {
+                   new JoinMetadata() {Calendar = new CalendarJoinSource {Name = "Nexosis.Holidays-US", TimeZone = "america/new_york"}}
+                }
+            });
+
             Assert.Equal(HttpMethod.Put, handler.Request.Method);
-            var expected = "{\"DataSetName\":\"TestDataSet\",\"Joins\":[{\"Calendar\":{\"Name\":\"Nexosis.Holidays-US\",\"TimeZone\":\"america/new_york\"},\"ColumnOptions\":{}}]}";
+            var expected = "{\"DataSetName\":\"TestDataSet\",\"Columns\":{},\"Joins\":[{\"Calendar\":{\"Name\":\"Nexosis.Holidays-US\",\"TimeZone\":\"america/new_york\"},\"ColumnOptions\":{}}]}";
             Assert.Equal(expected, handler.RequestBody);
         }
 
         [Fact]
         public async Task CreatesWithCalendarUrl()
         {
-            var actual = await target.Views.Create("TestCalendarView", "TestDataSet", new Uri("http://example.com/mycalendar.ical"), "america/new_york", null);
+
+            var actual = await target.Views.Create("TestCalendarView", new ViewInfo()
+            {
+                DataSetName = "TestDataSet",
+                Joins = new JoinMetadata[]
+                {
+                    new JoinMetadata()
+                    {
+                        Calendar = new CalendarJoinSource {Url = "http://example.com/mycalendar.ical", TimeZone = "america/new_york"}
+                    }
+                }
+            });
+            
             Assert.Equal(HttpMethod.Put, handler.Request.Method);
-            var expected = "{\"DataSetName\":\"TestDataSet\",\"Joins\":[{\"Calendar\":{\"Url\":\"http://example.com/mycalendar.ical\",\"TimeZone\":\"america/new_york\"},\"ColumnOptions\":{}}]}";
+            var expected = "{\"DataSetName\":\"TestDataSet\",\"Columns\":{},\"Joins\":[{\"Calendar\":{\"Url\":\"http://example.com/mycalendar.ical\",\"TimeZone\":\"america/new_york\"},\"ColumnOptions\":{}}]}";
             Assert.Equal(expected, handler.RequestBody);
         }
     }

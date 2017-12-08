@@ -42,6 +42,5 @@ namespace Nexosis.Api.Client
             queryObject.Name = name;
             return queryObject;
         }
-
     }
 }

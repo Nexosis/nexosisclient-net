@@ -19,18 +19,25 @@ namespace Api.Client.Tests.ViewTests
         [Fact]
         public async Task LoadsByName()
         {
-            await target.Views.Get("test");
+            await target.Views.Get(new ViewDataQuery("test"));
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, $"views/test"), handler.Request.RequestUri);
         }
 
-        [Fact]
-        public async Task RequiresDataSetNameIsNotNullOrEmpty()
+        public static IEnumerable<object[]> NullOrEmptyViewQueries()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Views.Get(""));
-             
-            Assert.Equal("viewName", exception.ParamName);
+            yield return new object[] {new ViewDataQuery("")};
+            yield return new object[] {new ViewDataQuery(null)};
+            yield return new object[] {null};
+        }
+
+        [Theory]
+        [MemberData(nameof(NullOrEmptyViewQueries))]
+        public async Task RequiresDataSetNameIsNotNullOrEmpty(ViewDataQuery query)
+        {
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Views.Get(query));
+            Assert.Equal("Name", exception.ParamName);
         }
 
 
@@ -38,19 +45,18 @@ namespace Api.Client.Tests.ViewTests
         public async Task IncludesAllParametersWhenGiven()
         {
             //10, 10, DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse("2017-01-31 0:00 -0:00"), new []{ "test1", "test2" });
-            await target.Views.Get("test",
-                new GetViewOptions()
-                {
-                    Page = 10,
-                    PageSize = 10,
-                    StartDate = new DateTimeOffset(2017, 1, 1, 0, 0, 0, TimeSpan.Zero),
-                    EndDate = new DateTimeOffset(2017, 1, 31, 0, 0, 0, TimeSpan.Zero),
-                    Include = new[]{"test1", "test2"}
-                });
+            await target.Views.Get(new ViewDataQuery("test")
+            {
+                Page = new PagingInfo(10, 10),
+                StartDate = new DateTimeOffset(2017, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                EndDate = new DateTimeOffset(2017, 1, 31, 0, 0, 0, TimeSpan.Zero),
+                Include = new[] {"test1", "test2"}
+            });
                 
+            
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "views/test?StartDate=2017-01-01T00:00:00.0000000%2B00:00&EndDate=2017-01-31T00:00:00.0000000%2B00:00&Page=10&PageSize=10&include=test1&include=test2"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "views/test?startDate=2017-01-01T00:00:00.0000000%2B00:00&endDate=2017-01-31T00:00:00.0000000%2B00:00&page=10&pageSize=10&include=test1&include=test2"), handler.Request.RequestUri);
         }
 
     }

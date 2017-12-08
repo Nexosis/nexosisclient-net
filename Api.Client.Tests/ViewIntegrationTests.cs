@@ -59,7 +59,7 @@ namespace Api.Client.Tests
 
             var list = await fixture.Client.Views.List();
 
-            Assert.True(list.Count > 0);
+            Assert.True(list.Items.Count > 0);
             await fixture.Client.DataSets.Remove(new DataSetRemoveCriteria("forViewList") { Options= DataSetDeleteOptions.CascadeAll});
         }
 
@@ -74,7 +74,7 @@ namespace Api.Client.Tests
             };
 
             await fixture.Client.Views.Create(id, view);
-            await fixture.Client.Views.Remove(id);
+            await fixture.Client.Views.Remove(new ViewDeleteCriteria(id));
 
             var exception = await Assert.ThrowsAsync<NexosisClientException>(async () => await fixture.Client.DataSets.Get(DataSet.Get(id)));
 
@@ -88,7 +88,8 @@ namespace Api.Client.Tests
             {
                 DataSetName = "mike"
             };
-            var actual = await fixture.Client.Views.List(new ViewQuery { Page = 1, PageSize = 1 }) as IPagedList<ViewDefinition>;
+            var actual = await fixture.Client.Views.List(new ViewQuery {Page = new PagingInfo(1,1)});
+            
             Assert.NotNull(actual);
             Assert.Equal(1, actual.PageSize);
         }
