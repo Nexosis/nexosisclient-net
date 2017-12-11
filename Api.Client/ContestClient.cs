@@ -33,5 +33,18 @@ namespace Nexosis.Api.Client
         {
             return apiConnection.Get<ContestSelectionResponse>($"/sessions/{sessionId}/contest/selection", null, HttpMessageTransformer, cancellationToken);
         }
+
+        public Task<ChampionContestantList> ListContestants(Guid sessionId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return apiConnection.Get<ChampionContestantList>($"/sessions/{sessionId}/contest/contestants", null, HttpMessageTransformer, cancellationToken);
+        }
+
+        public Task<ContestantResponse> GetContestant(Guid sessionId, string contestantId, ChampionQueryOptions options = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameters = options.ToParameters();
+            
+            return apiConnection.Get<ContestantResponse>($"/sessions/{sessionId}/contest/contestants/{contestantId}", parameters, HttpMessageTransformer, cancellationToken);
+        }
     }
 }

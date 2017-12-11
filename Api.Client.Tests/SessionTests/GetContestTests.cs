@@ -40,5 +40,26 @@ namespace Api.Client.Tests.SessionTests
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/contest/selection"), handler.Request.RequestUri);
         }
+
+        [Fact]
+        public async Task ListContestantsUsesCorrectUrl()
+        {
+            var sessionId = Guid.NewGuid();
+            await target.Sessions.Contest.ListContestants(sessionId);
+
+            Assert.Equal(HttpMethod.Get, handler.Request.Method);
+            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/contest/contestants"), handler.Request.RequestUri);
+        }
+
+        [Fact]
+        public async Task GetContestantUsesCorrectUrl()
+        {
+            var sessionId = Guid.NewGuid();
+            var contestantId = "foo";
+            await target.Sessions.Contest.GetContestant(sessionId, contestantId, new ChampionQueryOptions() {PredictionInterval = "0.5"});
+
+            Assert.Equal(HttpMethod.Get, handler.Request.Method);
+            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/contest/contestants/{contestantId}?predictionInterval=0.5"), handler.Request.RequestUri);
+        }
     }
 }
