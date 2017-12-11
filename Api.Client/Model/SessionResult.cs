@@ -7,7 +7,14 @@ namespace Nexosis.Api.Client.Model
         /// <summary>The data</summary>
         public List<Dictionary<string, string>> Data { get; set; } = new List<Dictionary<string, string>>();
 
-        /// <summary>For impact sessions, an object containing overall metrics about the impact</summary>
+        /// <summary>
+        /// Overall metrics about the results of the session, including impact, accuracy scores, etc.
+        /// </summary>
         public Dictionary<string, double> Metrics { get; set; }
+
+        /// <summary>
+        /// For classification sessions, the list of classes that were included in the model
+        /// </summary>
+        public string[] Classes { get; set; }
     }
 }
