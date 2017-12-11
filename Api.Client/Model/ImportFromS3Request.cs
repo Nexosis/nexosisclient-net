@@ -19,5 +19,15 @@ namespace Nexosis.Api.Client.Model
         /// The AWS Region in which the bucket resides.  Optional.  US-East-1 will be used by default if not specified.
         /// </summary>
         public string Region { get; set; }
+
+        /// <summary>
+        /// The AWS Access Key ID to use when authenticating the file request. Not necessary if the file is public.
+        /// </summary>
+        public string AccessKeyId { get; set; }
+
+        /// <summary>
+        /// The AWS Secret Access Key to use when authenticating the file request. Not necessary if the file is public.
+        /// </summary>
+        public string SecretAccessKey { get; set; }
     }
 }

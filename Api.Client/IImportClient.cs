@@ -43,5 +43,7 @@ namespace Nexosis.Api.Client
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
         Task<ImportDetail> ImportFromS3(ImportFromS3Request detail, CancellationToken cancellationToken = default(CancellationToken));
+        
+       
     }
 }
