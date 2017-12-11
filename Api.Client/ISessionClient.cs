@@ -122,5 +122,11 @@ namespace Nexosis.Api.Client
         /// <returns>A <see cref="SessionResult"/> which contains the results of the run.</returns>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         Task<ConfusionMatrixResult> GetResultConfusionMatrix(Guid id, CancellationToken cancellationToken = default(CancellationToken));
+        
+        /// <summary>
+        /// A client for getting information about how Nexosis determined the algorithm to use for a session.
+        /// <remarks>Only available to customers on our paid tiers</remarks>
+        /// </summary>
+        IContestClient Contest { get; }
     }
 }

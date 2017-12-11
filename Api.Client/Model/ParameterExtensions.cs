@@ -135,5 +135,12 @@ namespace Nexosis.Api.Client.Model
 
             return builder.GetParameters();
         }
+
+        internal static IEnumerable<KeyValuePair<string, string>> ToParameters(this ChampionQueryOptions query)
+        {
+            var builder = new ParameterBuilder();
+            builder.Add("predictionInterval", query?.PredictionInterval);
+            return builder.GetParameters();
+        }
     }
 }
