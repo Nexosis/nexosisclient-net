@@ -39,11 +39,11 @@ namespace Nexosis.Api.Client.Utility
 
         public void Add(PagingInfo paging)
         {
-            if (paging != null)
-            {
-                Add("page", paging.PageNumber);
-                Add("pageSize", paging.PageSize);
-            }
+            paging = paging ?? PagingInfo.Default;
+            
+            Add("page", paging.PageNumber);
+            Add("pageSize", paging.PageSize);
+            
         }
 
         public List<KeyValuePair<string, string>> GetParameters()

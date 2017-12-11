@@ -29,7 +29,7 @@ namespace Nexosis.Api.Client
 
         public async Task<ModelSummaryList> List(ModelSummaryQuery query = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var parameters = query?.ToParameters();
+            var parameters = query.ToParameters();
             var response = await apiConnection
                 .Get<ModelSummaryList>("models", parameters, HttpMessageTransformer, cancellationToken)
                 .ConfigureAwait(false);
@@ -61,7 +61,7 @@ namespace Nexosis.Api.Client
             }
             else
             {
-                var parameters = criteria?.ToParameters();
+                var parameters = criteria.ToParameters();
 
                 await apiConnection.Delete("models", parameters, HttpMessageTransformer, cancellationToken)
                     .ConfigureAwait(false);                

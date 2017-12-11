@@ -39,7 +39,7 @@ namespace Nexosis.Api.Client
 
         public async Task<DataSetSummaryList> List(DataSetSummaryQuery query, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var parameters = query?.ToParameters();
+            var parameters = query.ToParameters();
             
             var result = await apiConnection
                 .Get<DataSetSummaryList>("data", parameters, HttpMessageTransformer, cancellationToken)

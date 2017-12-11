@@ -40,22 +40,7 @@ namespace Nexosis.Api.Client.Model
         /// </summary>
         public PagingInfo Page { get; set; }
 
-        internal List<KeyValuePair<string, string>> ToParameters()
-        {
-            var builder = new ParameterBuilder();
-            builder.Add("startDate", StartDate);
-            builder.Add("endDate", EndDate);
-            if (IncludedColumns != null && IncludedColumns.Any())
-            {
-                foreach (var col in IncludedColumns)
-                {
-                    builder.Add("include", col);
-                }
-            }
-            builder.Add(Page);
-
-            return builder.GetParameters();
-        }
+        
 
 
     }

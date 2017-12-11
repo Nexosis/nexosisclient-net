@@ -26,14 +26,6 @@ namespace Nexosis.Api.Client.Model
         /// </summary>
         public PagingInfo Page { get; set; }
 
-        internal IEnumerable<KeyValuePair<string, string>> ToParameters()
-        {
-            var builder = new ParameterBuilder();
-            builder.Add("dataSourceName", DataSourceName);
-            builder.Add("requestedAfterDate", RequestedAfterDate);
-            builder.Add("requestedBeforeDate", RequestedBeforeDate);
-            builder.Add(Page);
-            return builder.GetParameters();
-        }
+        
     }
 }

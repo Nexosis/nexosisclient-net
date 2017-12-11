@@ -21,14 +21,6 @@ namespace Nexosis.Api.Client.Model
         public PagingInfo Page { get; set; }
 
 
-        internal List<KeyValuePair<string, string>> ToParameters()
-        {
-            var builder = new ParameterBuilder();
-            builder.Add("partialName", PartialName);
-            builder.Add("dataSetName", DataSetName);
-            
-            builder.Add(Page);
-            return builder.GetParameters();
-        }
+        
     }
 }

@@ -23,7 +23,7 @@ namespace Nexosis.Api.Client
         
         public async Task<ImportDetailList> List(ImportDetailQuery query = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var parameters = query?.ToParameters();
+            var parameters = query.ToParameters();
             
             var list = await apiConnection
                 .Get<ImportDetailList>("imports", parameters, HttpMessageTransformer, cancellationToken).ConfigureAwait(false);

@@ -22,7 +22,7 @@ namespace Api.Client.Tests.ViewTests
             await target.Views.Get(new ViewDataQuery("test"));
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, $"views/test"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, $"views/test?pageSize=50"), handler.Request.RequestUri);
         }
 
         public static IEnumerable<object[]> NullOrEmptyViewQueries()

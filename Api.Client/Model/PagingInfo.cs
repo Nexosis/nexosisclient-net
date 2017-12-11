@@ -5,6 +5,9 @@ namespace Nexosis.Api.Client.Model
     /// </summary>
     public class PagingInfo
     {
+        
+        public static PagingInfo Default = new PagingInfo(null, 50);
+        
         public PagingInfo(int? pageNumber = null, int? pageSize = null)
         {
             PageNumber = pageNumber;

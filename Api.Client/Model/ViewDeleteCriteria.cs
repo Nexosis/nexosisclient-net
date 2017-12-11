@@ -21,15 +21,6 @@ namespace Nexosis.Api.Client.Model
         /// </summary>
         public ViewCascadeOptions? Cascade { get; set; }
 
-        internal List<KeyValuePair<string, string>> ToParameters()
-        {
-            var builder = new ParameterBuilder();
-            
-            if (Cascade.HasValue && (Cascade & ViewCascadeOptions.CascadeSessions) != 0)
-            {
-                builder.Add("cascade", "sessions");
-            }
-            return builder.GetParameters();
-        }
+        
     }
 }

@@ -22,7 +22,7 @@ namespace Api.Client.Tests.DataSetTests
             await target.DataSets.Get(DataSet.Get("test"));
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, $"data/test"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, $"data/test?pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]

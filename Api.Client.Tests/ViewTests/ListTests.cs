@@ -18,7 +18,7 @@ namespace Api.Client.Tests.ViewTests
             var result = await target.Views.List();
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "views"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "views?pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]
@@ -27,7 +27,7 @@ namespace Api.Client.Tests.ViewTests
             var result = await target.Views.List(new ViewQuery {PartialName = "partialSomething"});
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "views?partialName=partialSomething"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "views?partialName=partialSomething&pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Api.Client.Tests.ViewTests
             var result = await target.Views.List(new ViewQuery {DataSetName = "something"});
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "views?dataSetName=something"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "views?dataSetName=something&pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]

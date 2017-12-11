@@ -28,16 +28,7 @@ namespace Nexosis.Api.Client.Model
         /// </summary>
         public DateTimeOffset? CreatedBeforeDate { get; set; }
 
-        internal IEnumerable<KeyValuePair<string, string>> ToParameters()
-        {
-            var builder = new ParameterBuilder();
-            builder.Add("modelId", ModelId);
-            builder.Add("dataSourceName", DataSourceName);
-            builder.Add("createdAfterDate", CreatedAfterDate);
-            builder.Add("createdBeforeDate", CreatedBeforeDate);
-
-            return builder.GetParameters();
-        }
+        
 
     }
 }

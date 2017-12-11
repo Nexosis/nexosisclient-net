@@ -18,7 +18,7 @@ namespace Api.Client.Tests.DataSetTests
             var result = await target.DataSets.List();
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "data"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "data?pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]
@@ -27,7 +27,7 @@ namespace Api.Client.Tests.DataSetTests
             var result = await target.DataSets.List(new DataSetSummaryQuery(){PartialName = "partialSomething"});
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "data?partialName=partialSomething"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "data?partialName=partialSomething&pageSize=50"), handler.Request.RequestUri);
         }
     }
 }

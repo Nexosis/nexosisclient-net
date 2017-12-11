@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Nexosis.Api.Client.Utility;
 
 namespace Nexosis.Api.Client.Model
 {
@@ -26,16 +24,6 @@ namespace Nexosis.Api.Client.Model
         /// </summary>
         public PagingInfo Page { get; set; }
 
-        internal IEnumerable<KeyValuePair<string, string>> ToParameters()
-        {
-            var builder = new ParameterBuilder();
-            var parameters = new Dictionary<string, string>();
-            builder.Add("dataSetName", DataSetName);
-            builder.Add("requestedAfterDate", RequestedAfterDate);
-            builder.Add("requestedBeforeDate", RequestedBeforeDate);
-            builder.Add(Page);
-            return builder.GetParameters();
-
-        }
+        
     }
 }

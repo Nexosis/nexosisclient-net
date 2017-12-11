@@ -49,7 +49,7 @@ namespace Nexosis.Api.Client
 
         public Task<SessionResponseList> List(SessionQuery query = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var parameters = query?.ToParameters();
+            var parameters = query.ToParameters();
 
             return apiConnection.Get<SessionResponseList>("/sessions", parameters, HttpMessageTransformer, cancellationToken);
         }

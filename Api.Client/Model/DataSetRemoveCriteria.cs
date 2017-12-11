@@ -35,17 +35,6 @@ namespace Nexosis.Api.Client.Model
         /// </summary>
         public DataSetDeleteOptions? Options { get; set; }
 
-        internal IEnumerable<KeyValuePair<string, string>> ToParameters()
-        {
-            var builder = new ParameterBuilder();
-            builder.Add("startDate", StartDate);
-            builder.Add("endDate", EndDate);
-            
-            if ((Options & DataSetDeleteOptions.CascadeForecast) != 0) builder.Add("cascade", "forecast");
-            if ((Options & DataSetDeleteOptions.CascadeSessions) != 0) builder.Add("cascade", "session");
-            if ((Options & DataSetDeleteOptions.CascadeViews) != 0) builder.Add("cascade", "view");
-
-            return builder.GetParameters();
-        }
+        
     }
 }

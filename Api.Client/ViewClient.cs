@@ -23,7 +23,7 @@ namespace Nexosis.Api.Client
         
         public async Task<ViewDefinitionList> List(ViewQuery viewQuery = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var parameters = viewQuery?.ToParameters();
+            var parameters = viewQuery.ToParameters();
             
             return await apiConnection.Get<ViewDefinitionList>($"views", parameters, HttpMessageTransformer, cancellationToken).ConfigureAwait(false);
         }
