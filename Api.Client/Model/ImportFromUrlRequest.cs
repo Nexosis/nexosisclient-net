@@ -42,6 +42,4 @@ namespace Nexosis.Api.Client.Model
         /// </summary>
         public string Password { get; set; }
     }
-
-
 }

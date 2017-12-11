@@ -52,6 +52,14 @@ namespace Nexosis.Api.Client
                 .ConfigureAwait(false);
             return response;
         }
+
+        public async Task<ImportDetail> ImportFromAzure(ImportFromAzureRequest detail, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var response = await apiConnection
+                .Post<ImportDetail>("imports/azure", null, detail, HttpMessageTransformer, cancellationToken)
+                .ConfigureAwait(false);
+            return response;
+        }
     }
     
 }

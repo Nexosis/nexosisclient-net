@@ -53,6 +53,16 @@ namespace Nexosis.Api.Client
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
         Task<ImportDetail> ImportFromUrl(ImportFromUrlRequest detail, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Import data into the Nexosis Api from a file in Azure Blob storage
+        /// </summary>
+        /// <param name="detail">The details required to import from Azure Blob storage</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>     
+        /// <remarks>POST of https://ml.nexosis.com/api/imports/azure</remarks>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
+        /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
+        Task<ImportDetail> ImportFromAzure(ImportFromAzureRequest detail, CancellationToken cancellationToken = default(CancellationToken));
         
         
         
