@@ -9,6 +9,7 @@ namespace Nexosis.Api.Client.Model
     public class DataSetSummary : ReturnsCost
     {
         public Dictionary<string, ColumnMetadata> Columns { get; set; } = new Dictionary<string, ColumnMetadata>(StringComparer.OrdinalIgnoreCase);
+        
         /// <summary>
         /// The name of the DataSet
         /// </summary>

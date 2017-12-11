@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Nexosis.Api.Client;
 using Nexosis.Api.Client.Model;
 using Xunit;
 
@@ -20,25 +21,25 @@ namespace Api.Client.Tests.DataSetTests
         [Fact]
         public async Task RequiresDataSetNameToBeGiven()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.DataSets.Create((string)null, (DataSetDetail)null));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.DataSets.Create(DataSet.From(null, (DataSetDetail)null)));
 
-            Assert.Equal(exception.ParamName, "dataSetName");
+            Assert.Equal(exception.ParamName, "Name");
         }
 
         [Fact]
         public async Task RequiresDataSetListToBeGiven()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.DataSets.Create("foxtrot", (DataSetDetail)null));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.DataSets.Create(DataSet.From("foxtrot", (DataSetDetail)null)));
 
-            Assert.Equal(exception.ParamName, "data");
+            Assert.Equal(exception.ParamName, "Data");
         }
 
         [Fact]
         public async Task RequiresFileToBeGiven()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.DataSets.Create("whiskey", (StreamReader)null));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.DataSets.Create(DataSet.From("whiskey", (StreamReader)null)));
 
-            Assert.Equal(exception.ParamName, "input");
+            Assert.Equal(exception.ParamName, "Data");
         }
 
         [Fact]
@@ -50,7 +51,7 @@ namespace Api.Client.Tests.DataSetTests
             {
                 using (var input = new StreamReader(stream, Encoding.UTF8, false, 1024, leaveOpen: true)) 
                 {
-                    await target.DataSets.Create("tango", input);
+                    await target.DataSets.Create(DataSet.From("tango", input));
                 }
 
                 Assert.Equal(HttpMethod.Put, handler.Request.Method);
@@ -64,7 +65,7 @@ namespace Api.Client.Tests.DataSetTests
         public async Task WillSaveDataGivenDirectly()
         {
             var data = DataSetGenerator.Run(DateTime.Today.AddDays(-90), DateTime.Today, "something");
-            var result = await target.DataSets.Create("yankee", data);
+            var result = await target.DataSets.Create(DataSet.From("yankee", data));
 
             Assert.Equal(HttpMethod.Put, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, "data/yankee"), handler.Request.RequestUri);

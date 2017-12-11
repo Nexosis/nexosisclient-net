@@ -1,5 +1,6 @@
 using Nexosis.Api.Client;
 using System;
+using Nexosis.Api.Client.Model;
 using Xunit;
 
 namespace Api.Client.Tests
@@ -18,12 +19,12 @@ namespace Api.Client.Tests
                 , baseUrl
                 , new ApiConnection.HttpClientFactory());
 
-            var dataSetTask = Client.DataSets.Create(ForecastDataSetName,
-                DataSetGenerator.Run(DateTime.Parse("2016-01-01"), DateTime.Parse("2017-03-26"), "instances"));
+            var dataSetTask = Client.DataSets.Create(DataSet.From(ForecastDataSetName,
+                DataSetGenerator.Run(DateTime.Parse("2016-01-01"), DateTime.Parse("2017-03-26"), "instances")));
             dataSetTask.GetAwaiter().GetResult();
 
-            var keyedDatasetTask = Client.DataSets.Create(ModelDataSetName,
-                DataSetGenerator.Run(90, 10, "instances"));
+            var keyedDatasetTask = Client.DataSets.Create(DataSet.From(ModelDataSetName,
+                DataSetGenerator.Run(90, 10, "instances")));
             keyedDatasetTask.GetAwaiter().GetResult();
         }
 
@@ -44,10 +45,10 @@ namespace Api.Client.Tests
             {
                 try
                 {
-                    var task = Client.DataSets.Remove(ForecastDataSetName, Nexosis.Api.Client.Model.DataSetDeleteOptions.CascadeAll);
+                    var task = Client.DataSets.Remove(new DataSetRemoveCriteria(ForecastDataSetName) {Options =  Nexosis.Api.Client.Model.DataSetDeleteOptions.CascadeAll});
                     task.GetAwaiter().GetResult();
 
-                    var removeModelDataset = Client.DataSets.Remove(ModelDataSetName, Nexosis.Api.Client.Model.DataSetDeleteOptions.CascadeAll);
+                    var removeModelDataset = Client.DataSets.Remove(new DataSetRemoveCriteria(ModelDataSetName){Options = Nexosis.Api.Client.Model.DataSetDeleteOptions.CascadeAll});
                     removeModelDataset.GetAwaiter().GetResult();
                 }
                 catch

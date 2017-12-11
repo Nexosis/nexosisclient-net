@@ -1,4 +1,7 @@
-﻿namespace Nexosis.Api.Client.Model
+﻿using System.Collections.Generic;
+using Nexosis.Api.Client.Utility;
+
+namespace Nexosis.Api.Client.Model
 {
     public class ViewQuery
     {
@@ -13,13 +16,11 @@
         public string DataSetName { get; set; }
 
         /// <summary>
-        /// Zero-based page number of view definitions to retrieve
+        /// Paging info for the response
         /// </summary>
-        public int? Page { get; set; }
+        public PagingInfo Page { get; set; }
 
-        /// <summary>
-        /// Count of view definitions to retrieve in each page (max 1000)
-        /// </summary>
-        public int? PageSize { get; set; }
+
+        
     }
 }

@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 
 namespace Nexosis.Api.Client
 {
+
     public class ModelClient : IModelClient
     {
         private readonly ApiConnection apiConnection;
@@ -16,143 +17,57 @@ namespace Nexosis.Api.Client
         {
             this.apiConnection = apiConnection;
         }
-
-        public Task<ModelSummary> Get(Guid id)
+        
+        public Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer { get; set; }
+        
+        public async Task<ModelSummary> Get(Guid id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Get(id, null, CancellationToken.None);
+            return await apiConnection
+                .Get<ModelSummary>($"models/{id}", null, HttpMessageTransformer, cancellationToken)
+                .ConfigureAwait(false);
         }
 
-        public async Task<ModelSummary> Get(Guid id, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
+        public async Task<ModelSummaryList> List(ModelSummaryQuery query = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await apiConnection.Get<ModelSummary>($"models/{id}", null, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
+            var parameters = query.ToParameters();
+            var response = await apiConnection
+                .Get<ModelSummaryList>("models", parameters, HttpMessageTransformer, cancellationToken)
+                .ConfigureAwait(false);
+
+            return response;
         }
 
-        public Task<List<ModelSummary>> List(int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
+        public Task<ModelPredictionResult> Predict(ModelPredictionRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var parameters = new Dictionary<string, string>
+            Argument.IsNotNull(request.Data, nameof(ModelPredictionRequest.Data));
+
+            var requestBody = new {Data = request.Data};
+            
+            return apiConnection.Post<ModelPredictionResult>($"models/{request.ModelId}/predict", null, requestBody,
+                HttpMessageTransformer, cancellationToken);
+        }
+
+        public async Task Remove(ModelRemoveCriteria criteria, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Argument.OneOfIsNotNullOrEmpty(
+                Tuple.Create(criteria?.DataSourceName, nameof(ModelRemoveCriteria.DataSourceName)),
+                Tuple.Create(criteria?.ModelId.ToString(), nameof(ModelRemoveCriteria.ModelId))
+            );
+
+            if (criteria.ModelId.HasValue)
             {
-                {"page", pageNumber.ToString() },
-                { nameof(pageSize), pageSize.ToString() }
-            };
-            return ListModelInternal(parameters, null, CancellationToken.None);
-        }
-
-        public Task<List<ModelSummary>> List(string dataSourceName, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
-        {
-            var parameters = new Dictionary<string, string>
-            {
-                { nameof(dataSourceName), dataSourceName },
-                {"page", pageNumber.ToString() },
-                { nameof(pageSize), pageSize.ToString() }
-            };
-
-            return ListModelInternal(parameters, null, CancellationToken.None);
-        }
-
-        public Task<List<ModelSummary>> List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
-        {
-            return List(dataSourceName, createdAfterDate, createdBeforeDate, null, CancellationToken.None, pageNumber, pageSize);
-        }
-
-        public Task<List<ModelSummary>> List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
-        {
-            return List(dataSourceName, createdAfterDate, createdBeforeDate, httpMessageTransformer, CancellationToken.None, pageNumber, pageSize);
-        }
-
-        public Task<List<ModelSummary>> List(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken, int pageNumber = 0, int pageSize = NexosisClient.DefaultPageSize)
-        {
-            var parameters = new Dictionary<string, string>
-            {
-                { nameof(dataSourceName), dataSourceName },
-                { nameof(createdAfterDate), createdAfterDate.ToString("O") },
-                { nameof(createdBeforeDate), createdBeforeDate.ToString("O") },
-                { "page", pageNumber.ToString() },
-                { nameof(pageSize), pageSize.ToString() }
-            };
-
-            return ListModelInternal(parameters, httpMessageTransformer, cancellationToken);
-        }
-        private class ModelResponseDto : IPagedList<ModelSummary>
-        {
-            [JsonProperty("items", Required = Required.Always)]
-            public List<ModelSummary> Items { get; set; }
-            public int PageSize { get; set; }
-            public int PageNumber { get; set; }
-            public int TotalPages { get; set; }
-            public int TotalCount { get; set; }
-            public List<Link> Links { get; set; }
-        }
-
-        private async Task<List<ModelSummary>> ListModelInternal(IDictionary<string, string> parameters,
-            Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
-        {
-            var response = await apiConnection.Get<ModelResponseDto>("models", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
-            return new PagedList<ModelSummary>(response);
-        }
-
-        public Task<ModelPredictionResult> Predict(Guid modelId, List<Dictionary<string, string>> data)
-        {
-            return Predict(modelId, data, null);
-        }
-
-        public Task<ModelPredictionResult> Predict(Guid modelId, List<Dictionary<string, string>> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
-        {
-            return Predict(modelId, data, httpMessageTransformer, CancellationToken.None);
-        }
-
-        public Task<ModelPredictionResult> Predict(Guid modelId, List<Dictionary<string, string>> data, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
-        {
-            Argument.IsNotNull(data, nameof(data));
-
-            var requestBody = new { Data = data };
-            return apiConnection.Post<ModelPredictionResult>($"models/{modelId}/predict", null, requestBody, httpMessageTransformer, cancellationToken);
-        }
-
-        public Task Remove(Guid modelId)
-        {
-            return Remove(modelId, null);
-        }
-
-        public Task Remove(Guid modelId, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
-        {
-            return Remove(modelId, httpMessageTransformer, CancellationToken.None);
-        }
-
-        public async Task Remove(Guid modelId, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
-        {
-            await apiConnection.Delete($"models/{modelId}", null, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
-        }
-
-        public Task Remove(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate)
-        {
-            return Remove(dataSourceName, createdAfterDate, createdBeforeDate, null);
-        }
-
-        public Task Remove(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
-        {
-            return Remove(dataSourceName, createdAfterDate, createdBeforeDate, httpMessageTransformer, CancellationToken.None);
-        }
-
-        public Task Remove(string dataSourceName, DateTimeOffset createdAfterDate, DateTimeOffset createdBeforeDate, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
-        {
-            var parameters = new Dictionary<string, string>
-            {
-                { nameof(createdAfterDate), createdAfterDate.ToString("O") },
-                { nameof(createdBeforeDate), createdBeforeDate.ToString("O") },
-            };
-
-            if (!string.IsNullOrEmpty(dataSourceName))
-            {
-                parameters.Add(nameof(dataSourceName), dataSourceName);
+                await apiConnection.Delete($"models/{criteria.ModelId}", null, HttpMessageTransformer, cancellationToken)
+                    .ConfigureAwait(false);
             }
+            else
+            {
+                var parameters = criteria.ToParameters();
 
-            return RemoveModelsInternal(parameters, httpMessageTransformer, cancellationToken);
-        }
-
-        private async Task RemoveModelsInternal(IDictionary<string, string> parameters, Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer,
-            CancellationToken cancellationToken)
-        {
-            await apiConnection.Delete("models", parameters, httpMessageTransformer, cancellationToken).ConfigureAwait(false);
+                await apiConnection.Delete("models", parameters, HttpMessageTransformer, cancellationToken)
+                    .ConfigureAwait(false);                
+            }
+            
+            
         }
     }
 }

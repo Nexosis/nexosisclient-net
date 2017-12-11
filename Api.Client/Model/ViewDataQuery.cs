@@ -1,10 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Nexosis.Api.Client.Utility;
 
 namespace Nexosis.Api.Client.Model
 {
-    public class GetViewOptions
+    public class ViewDataQuery
     {
+        public ViewDataQuery(string name)
+        {
+            this.Name = name;
+        }
+
+        public string Name { get; set; }
+
         /// <summary>
         /// Limits view data rows to those on or after the specified date
         /// </summary>
@@ -16,18 +25,15 @@ namespace Nexosis.Api.Client.Model
         public DateTimeOffset? EndDate { get; set; }
 
         /// <summary>
-        /// Zero-based page number of view data rows to retrieve 
-        /// </summary>
-        public int? Page { get; set; }
-
-        /// <summary>
-        /// Count of view data rows to retrieve in each page (max 1000)
-        /// </summary>
-        public int? PageSize { get; set; }
-
-        /// <summary>
         /// Includes only the specified columns in view data rows
         /// </summary>
         public IEnumerable<string> Include { get; set; }
+
+        /// <summary>
+        /// The paging info for the response
+        /// </summary>
+        public PagingInfo Page { get; set; }
+
+        
     }
 }

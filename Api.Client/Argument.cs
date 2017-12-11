@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Nexosis.Api.Client
 {
@@ -14,6 +15,15 @@ namespace Nexosis.Api.Client
         {
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentException("Value cannot be null or empty.", name);
+        }
+
+        public static void OneOfIsNotNullOrEmpty(params Tuple<string, string>[] args)
+        {
+            if (args.All(a => string.IsNullOrEmpty(a.Item1)))
+            {
+                var keys = string.Join(",", args.Select(a => a.Item2));
+                throw new ArgumentException($"One of {keys} should not be null or empty");
+            }
         }
     }
 }

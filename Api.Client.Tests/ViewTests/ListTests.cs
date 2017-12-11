@@ -18,7 +18,7 @@ namespace Api.Client.Tests.ViewTests
             var result = await target.Views.List();
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "views"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "views?pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]
@@ -27,7 +27,7 @@ namespace Api.Client.Tests.ViewTests
             var result = await target.Views.List(new ViewQuery {PartialName = "partialSomething"});
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "views?PartialName=partialSomething"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "views?partialName=partialSomething&pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]
@@ -36,24 +36,17 @@ namespace Api.Client.Tests.ViewTests
             var result = await target.Views.List(new ViewQuery {DataSetName = "something"});
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "views?DataSetName=something"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "views?dataSetName=something&pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]
         public async Task WillIncludePagingParameters()
         {
-            var result = await target.Views.List(new ViewQuery {Page = 1, PageSize = 10});
+            var result = await target.Views.List(new ViewQuery {Page = new PagingInfo(1, 10)});
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "views?Page=1&PageSize=10"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "views?page=1&pageSize=10"), handler.Request.RequestUri);
         }
 
-        [Fact]
-        public async Task ResultIncludesPagingDetails()
-        {
-            var result = await target.Views.List(new ViewQuery { Page = 1, PageSize = 1 });
-            var actual = result as IPagedList<ViewDefinition>;
-            Assert.NotNull(actual);
-        }
     }
 }

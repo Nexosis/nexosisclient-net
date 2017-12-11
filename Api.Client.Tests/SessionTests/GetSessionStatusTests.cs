@@ -26,7 +26,8 @@ namespace Api.Client.Tests.SessionTests
         public async Task HttpTransformerIsWrappedAndCalled()
         {
             bool called = false;
-            var result = await target.Sessions.GetStatus(Guid.NewGuid(), (request, response) => { called = true; });
+            target.Sessions.HttpMessageTransformer = (request, response) => { called = true; };
+            var result = await target.Sessions.GetStatus(Guid.NewGuid());
 
             Assert.True(called, "Http transform function not called");
         }

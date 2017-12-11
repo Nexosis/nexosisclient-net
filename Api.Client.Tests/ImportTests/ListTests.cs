@@ -22,16 +22,20 @@ namespace Api.Client.Tests.ImportTests
         {
             var result = await target.Imports.List();
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(@"https://nada.nexosis.com/imports?page=0&pageSize=50"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(@"https://nada.nexosis.com/imports?pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]
         public async Task IncludesParametersCorrectly()
         {
-            var result = await target.Imports.List("foo", DateTimeOffset.Parse("2017-01-01 0:00 -0:00"),
-                DateTimeOffset.Parse("2017-01-02 0:00 -0:00"));
+            var result = await target.Imports.List(new ImportDetailQuery()
+            {
+                DataSetName = "foo",
+                RequestedAfterDate = DateTimeOffset.Parse("2017-01-01 0:00 -0:00"),
+                RequestedBeforeDate = DateTimeOffset.Parse("2017-01-02 0:00 -0:00"),
+            });
 
-            Assert.Equal(new Uri(@"https://nada.nexosis.com/imports?dataSetName=foo&requestedAfterDate=2017-01-01T00:00:00.0000000%2B00:00&requestedBeforeDate=2017-01-02T00:00:00.0000000%2B00:00&page=0&pageSize=50"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(@"https://nada.nexosis.com/imports?dataSetName=foo&requestedAfterDate=2017-01-01T00:00:00.0000000%2B00:00&requestedBeforeDate=2017-01-02T00:00:00.0000000%2B00:00&pageSize=50"), handler.Request.RequestUri);
         }
     }
 }

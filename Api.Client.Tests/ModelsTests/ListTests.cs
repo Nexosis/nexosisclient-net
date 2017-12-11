@@ -23,22 +23,27 @@ namespace Api.Client.Tests.ModelsTests
             var result = await target.Models.List();
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "models?page=0&pageSize=50"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "models?pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]
         public async Task FormatsPropertiesWhenProvided()
         {
-            var result = await target.Models.List("data-source-name", DateTimeOffset.Parse("2017-01-01 0:00 -0:00"), DateTimeOffset.Parse("2017-01-11 0:00 -0:00"));
+            var result = await target.Models.List(new ModelSummaryQuery
+            {
+                DataSourceName = "data-source-name",
+                CreatedAfterDate = DateTimeOffset.Parse("2017-01-01 0:00 -0:00"),
+                CreatedBeforeDate = DateTimeOffset.Parse("2017-01-11 0:00 -0:00")
+            });
 
             Assert.NotNull(result);
-            Assert.Equal(new Uri(baseUri, "models?dataSourceName=data-source-name&createdAfterDate=2017-01-01T00:00:00.0000000%2B00:00&createdBeforeDate=2017-01-11T00:00:00.0000000%2B00:00&page=0&pageSize=50"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "models?dataSourceName=data-source-name&createdAfterDate=2017-01-01T00:00:00.0000000%2B00:00&createdBeforeDate=2017-01-11T00:00:00.0000000%2B00:00&pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]
         public async Task SetPageSizeIncludesParam()
         {
-            var result = await target.Models.List(0, 20);
+            var result = await target.Models.List(new ModelSummaryQuery {Page = new PagingInfo(0, 20)});
             Assert.Equal(handler.Request.RequestUri.Query, "?page=0&pageSize=20");
         }
     }
