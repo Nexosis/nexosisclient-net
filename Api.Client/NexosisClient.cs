@@ -21,8 +21,48 @@ namespace Nexosis.Api.Client
         /// </summary>
         public const string NexosisApiKeyEnvironmentVariable = "NEXOSIS_API_KEY";
         public const string NexosisApiUriEnvironmentVariable = "NEXOSIS_API_TESTURI";
-        
-        public Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer { get; set; }
+
+        private Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer;
+
+        public Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer
+        {
+            get => httpMessageTransformer;
+            set
+            {
+                httpMessageTransformer = value;
+                UpdateChildClientTransformers();
+            }
+        }
+
+        private void UpdateChildClientTransformers()
+        {
+            //update them if not explicitly set on the child client
+            
+            if (Sessions.HttpMessageTransformer == null)
+            {
+                Sessions.HttpMessageTransformer = httpMessageTransformer;
+            }
+
+            if (DataSets.HttpMessageTransformer == null)
+            {
+                DataSets.HttpMessageTransformer = httpMessageTransformer;
+            }
+
+            if (Imports.HttpMessageTransformer == null)
+            {
+                Imports.HttpMessageTransformer = httpMessageTransformer;
+            }
+
+            if (Views.HttpMessageTransformer == null)
+            {
+                Views.HttpMessageTransformer = httpMessageTransformer;
+            }
+
+            if (Models.HttpMessageTransformer == null)
+            {
+                Models.HttpMessageTransformer = httpMessageTransformer;
+            }
+        }
 
         /// <summary>
         /// The default URL of the api endpoint.

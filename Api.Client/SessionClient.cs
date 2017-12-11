@@ -20,7 +20,7 @@ namespace Nexosis.Api.Client
         public SessionClient(ApiConnection apiConnection)
         {
             this.apiConnection = apiConnection;
-            this.contestClient = new ContestClient(apiConnection); 
+            this.contestClient = new ContestClient(apiConnection);
         }
 
         public IContestClient Contest => contestClient;
