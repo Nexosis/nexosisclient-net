@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Nexosis.Api.Client.Model
 {
-    public class ImportDetail : ReturnsCost
+    public class ImportDetail : ReturnsQuotas
     {
         /// <summary>
         /// The unique identifier of the Import

@@ -172,9 +172,9 @@ namespace Nexosis.Api.Client
                     try
                     {
                         var result = JsonConvert.DeserializeObject<T>(resultContent);
-                        if (result is ReturnsCost)
+                        if (result is ReturnsQuotas)
                         {
-                            (result as ReturnsCost).AssignCost(responseMessage.Headers);
+                            (result as ReturnsQuotas).AssignQuotas(responseMessage.Headers);
                         }
                         return result;
                     }

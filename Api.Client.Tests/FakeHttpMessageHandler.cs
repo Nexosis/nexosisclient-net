@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -11,7 +12,7 @@ namespace Api.Client.Tests
         public FakeHttpMessageHandler()
         {
             ReturnStatus = HttpStatusCode.OK;
-            ResponseHeaders = new Dictionary<string, IEnumerable<string>>();
+            ResponseHeaders = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase);
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
