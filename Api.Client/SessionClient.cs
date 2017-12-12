@@ -14,14 +14,29 @@ namespace Nexosis.Api.Client
     public class SessionClient : ISessionClient
     {
         private readonly ApiConnection apiConnection;
+        private readonly ContestClient contestClient;
+
 
         public SessionClient(ApiConnection apiConnection)
         {
             this.apiConnection = apiConnection;
+            this.contestClient = new ContestClient(apiConnection);
         }
 
-        public Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer { get; set; }
-        
+        public IContestClient Contest => contestClient;
+
+        private Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer;
+
+        public Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer
+        {
+            get => httpMessageTransformer;
+            set
+            {
+                httpMessageTransformer = value;
+                contestClient.HttpMessageTransformer = value;
+            }
+        }
+
         public Task<SessionResponse> CreateForecast(ForecastSessionRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {            
             Argument.IsNotNullOrEmpty(request?.DataSourceName, "dataSourceName");
