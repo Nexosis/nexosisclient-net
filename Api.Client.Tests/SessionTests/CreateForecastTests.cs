@@ -60,14 +60,6 @@ namespace Api.Client.Tests.SessionTests
 
             Assert.Equal("dataSourceName", exception.ParamName);
         }
-        [Fact]
-        public async Task ReqiresNotNullOrEmptyTargetColumn()
-        {
-            var request = Sessions.Forecast("data-set", DateTimeOffset.MinValue, DateTimeOffset.MaxValue, ResultInterval.Day);
-            
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.CreateForecast(request));
-
-            Assert.Equal("targetColumn", exception.ParamName);
-        }
+        
     }
 }

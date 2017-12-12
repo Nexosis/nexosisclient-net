@@ -40,7 +40,6 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> CreateForecast(ForecastSessionRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {            
             Argument.IsNotNullOrEmpty(request?.DataSourceName, "dataSourceName");
-            Argument.IsNotNullOrEmpty(request?.TargetColumn, "targetColumn");
             
             return apiConnection.Post<SessionResponse>("/sessions/forecast", null, request, HttpMessageTransformer, cancellationToken);
         }
@@ -48,7 +47,6 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> AnalyzeImpact(ImpactSessionRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             Argument.IsNotNullOrEmpty(request?.DataSourceName, "dataSourceName");
-            Argument.IsNotNullOrEmpty(request?.TargetColumn, "targetColumn");
             Argument.IsNotNullOrEmpty(request?.EventName, "eventName");
             
             return apiConnection.Post<SessionResponse>("/sessions/impact", null, request, HttpMessageTransformer, cancellationToken);
@@ -57,7 +55,6 @@ namespace Nexosis.Api.Client
         public Task<SessionResponse> TrainModel(ModelSessionRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             Argument.IsNotNullOrEmpty(request?.DataSourceName, "dataSourceName");
-            Argument.IsNotNullOrEmpty(request?.TargetColumn, "targetColumn");
             
             return apiConnection.Post<SessionResponse>("/sessions/model", null, request, HttpMessageTransformer, cancellationToken);
         }

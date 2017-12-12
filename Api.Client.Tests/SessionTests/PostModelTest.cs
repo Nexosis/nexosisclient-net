@@ -39,14 +39,6 @@ namespace Api.Client.Tests.SessionTests
             Assert.Equal("dataSourceName", exception.ParamName);
         }
 
-        [Fact]
-        public async Task RequiredNotNullOrEmptyTargetColumn()
-        {
-            var request = Sessions.TrainModel("data-source", PredictionDomain.Regression);
-            
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.TrainModel(request));
-
-            Assert.Equal("targetColumn", exception.ParamName);
-        }
+        
     }
 }

@@ -68,16 +68,8 @@ namespace Api.Client.Tests.SessionTests
 
             Assert.Equal("dataSourceName", exception.ParamName);
         }
-        [Fact]
-        public async Task ReqiresNotNullOrEmptyTargetColumn()
-        {
-            var request = Sessions.Impact("dataSource", DateTimeOffset.MinValue, DateTimeOffset.MaxValue, ResultInterval.Day,
-                "event");
-            
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.Sessions.AnalyzeImpact(request));
-
-            Assert.Equal("targetColumn", exception.ParamName);
-        }
+        
+        
         
         [Fact]
         public async Task ReqiresNotNullOrEmptyEventName()
