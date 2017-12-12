@@ -40,8 +40,11 @@ namespace Api.Client.Tests.ImportTests
                 Bucket = "nexosis-sample-data",
                 Path = "LocationA.csv",
                 Region = "us-east-1",
+                AccessKeyId = "my-access-key",
+                SecretAccessKey = "my-secret-key",
                 DataSetName = "my-data-set",
-                Columns = new Dictionary<string, ColumnMetadata>() {{"foo", new ColumnMetadata() {DataType = ColumnType.Numeric}}}
+                Columns = new Dictionary<string, ColumnMetadata>() {{"foo", new ColumnMetadata() {DataType = ColumnType.Numeric}}},
+                ContentType = ImportContentType.Json,
             };
 
             var response =
@@ -51,6 +54,9 @@ namespace Api.Client.Tests.ImportTests
                     Bucket = "nexosis-sample-data",
                     Path = "LocationA.csv",
                     Region = "us-east-1",
+                    ContentType = ImportContentType.Json,
+                    AccessKeyId = "my-access-key",
+                    SecretAccessKey = "my-secret-key",
                     Columns = new Dictionary<string, ColumnMetadata>()
                     {
                         {"foo", new ColumnMetadata() {DataType = ColumnType.Numeric}}

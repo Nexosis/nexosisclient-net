@@ -16,5 +16,10 @@ namespace Nexosis.Api.Client.Model
         public Dictionary<string, ColumnMetadata> Columns { get; set; } =
             new Dictionary<string, ColumnMetadata>(StringComparer.OrdinalIgnoreCase);
 
+        /// <summary>
+        /// The format of the data to be imported.  Optional.
+        /// If not provided, Nexosis will attempt to examine the file and determine the type automatically
+        /// </summary>
+        public ImportContentType? ContentType { get; set; }
     }
 }

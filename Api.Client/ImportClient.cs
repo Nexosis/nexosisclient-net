@@ -44,6 +44,22 @@ namespace Nexosis.Api.Client
                 .Post<ImportDetail>("imports/s3", null, detail, HttpMessageTransformer, cancellationToken).ConfigureAwait(false);
             return response;
         }
+
+        public async Task<ImportDetail> ImportFromUrl(ImportFromUrlRequest detail, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var response = await apiConnection
+                .Post<ImportDetail>("imports/url", null, detail, HttpMessageTransformer, cancellationToken)
+                .ConfigureAwait(false);
+            return response;
+        }
+
+        public async Task<ImportDetail> ImportFromAzure(ImportFromAzureRequest detail, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var response = await apiConnection
+                .Post<ImportDetail>("imports/azure", null, detail, HttpMessageTransformer, cancellationToken)
+                .ConfigureAwait(false);
+            return response;
+        }
     }
     
 }

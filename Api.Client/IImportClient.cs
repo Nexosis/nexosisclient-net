@@ -37,11 +37,35 @@ namespace Nexosis.Api.Client
         /// <summary>
         /// Import data into the Nexosis Api from a file on AWS S3
         /// </summary>
-        
+        /// <param name="detail">The details required to import from a file on S3</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>     
-        /// <remarks>POST of https://ml.nexosis.com/api/imports</remarks>
+        /// <remarks>POST of https://ml.nexosis.com/api/imports/S3</remarks>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
         Task<ImportDetail> ImportFromS3(ImportFromS3Request detail, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Import data into the Nexosis Api by issuing an HTTP GET to a url
+        /// </summary>
+        /// <param name="detail">The details required to import from a url</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>     
+        /// <remarks>POST of https://ml.nexosis.com/api/imports/url</remarks>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
+        /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
+        Task<ImportDetail> ImportFromUrl(ImportFromUrlRequest detail, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Import data into the Nexosis Api from a file in Azure Blob storage
+        /// </summary>
+        /// <param name="detail">The details required to import from Azure Blob storage</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>     
+        /// <remarks>POST of https://ml.nexosis.com/api/imports/azure</remarks>
+        /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
+        /// <returns>A <see cref="ImportDetail" /> populated with the import information</returns>
+        Task<ImportDetail> ImportFromAzure(ImportFromAzureRequest detail, CancellationToken cancellationToken = default(CancellationToken));
+        
+        
+        
+       
     }
 }
