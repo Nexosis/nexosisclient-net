@@ -21,6 +21,8 @@ namespace Nexosis.Api.Client
         /// </summary>
         public const string NexosisApiKeyEnvironmentVariable = "NEXOSIS_API_KEY";
         public const string NexosisApiUriEnvironmentVariable = "NEXOSIS_API_TESTURI";
+        
+        public Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer { get; set; }
 
         /// <summary>
         /// The default URL of the api endpoint.
@@ -41,9 +43,6 @@ namespace Nexosis.Api.Client
         /// The URL endpoint the client will connect to.
         /// </summary>
         public string ConfiguredUrl => configuredUrl ?? BaseUrl;
-
-        public const int MaxPageSize = 1000;
-        public const int DefaultPageSize = 50;
 
         /// <summary>
         /// Constructs a instance of the client with the api key read from an environement variable
@@ -93,20 +92,11 @@ namespace Nexosis.Api.Client
             Models = new ModelClient(apiConnection);
         }
 
-        public Task<AccountBalance> GetAccountBalance()
+        public Task<AccountBalance> GetAccountBalance(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return GetAccountBalance(null, CancellationToken.None);
+            return apiConnection.Get<AccountBalance>("/data", null, HttpMessageTransformer, cancellationToken);
         }
 
-        public Task<AccountBalance> GetAccountBalance(Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer)
-        {
-            return GetAccountBalance(httpMessageTransformer, CancellationToken.None);
-        }
-
-        public Task<AccountBalance> GetAccountBalance(Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer, CancellationToken cancellationToken)
-        {
-            return apiConnection.Get<AccountBalance>("/data", null, httpMessageTransformer, cancellationToken);
-        }
 
         public ISessionClient Sessions { get; }
         public IDataSetClient DataSets { get; }

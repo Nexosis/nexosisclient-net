@@ -5,7 +5,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Nexosis.Api.Client.Model
 {
-    public class SessionResponse : ReturnsCost
+    public class SessionResponse : ReturnsQuotas
     {
         /// <summary>The unique identifier of this session.</summary>
         public Guid SessionId { get; set; }

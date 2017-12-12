@@ -48,9 +48,10 @@ namespace Api.Client.Tests
         public async Task GetBalanceWillGiveItBack()
         {
             var actual = await fixture.Client.GetAccountBalance();
-            Assert.NotNull(actual.Balance);
-            Assert.Equal(0, actual.Cost.Amount);
-            Assert.Equal("USD", actual.Balance.Currency);
+            Assert.NotNull(actual.DataSetCount);
+            Assert.NotNull(actual.PredictionCount);
+            Assert.NotNull(actual.SessionCount);
+            
         }
 
         [Fact]

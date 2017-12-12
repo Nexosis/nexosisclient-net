@@ -60,20 +60,29 @@ namespace Api.Client.Tests
         }
 
         [Fact]
-        public async Task ProcessesCostAndBalance()
+        public async Task ProcessesQuotas()
         {
             var handler = new FakeHttpMessageHandler { ContentResult = new StringContent("{ }") };
-            handler.ResponseHeaders.Add("nexosis-request-cost", new[] { "123.12 USD" });
-            handler.ResponseHeaders.Add("nexosis-account-balance", new[] { "999.99 USD" });
+            handler.ResponseHeaders.Add("nexosis-account-datasetcount-allotted", new[] { "100" });
+            handler.ResponseHeaders.Add("nexosis-account-datasetcount-current", new[] {"99"});
+            handler.ResponseHeaders.Add("nexosis-account-predictioncount-allotted", new[] {"50"});
+            handler.ResponseHeaders.Add("nexosis-account-predictioncount-current", new[] {"49"});
+            handler.ResponseHeaders.Add("nexosis-account-sessioncount-allotted", new[] {"1000"});
+            handler.ResponseHeaders.Add("nexosis-account-sessioncount-current", new[] {"999"});
+            
 
             var target = new NexosisClient("abcdefg", "https://nada.nexosis.com/not-here", new ApiConnection.HttpClientFactory(() => handler));
 
             var result = await target.GetAccountBalance();
 
-            Assert.Equal(123.12m, result.Cost.Amount);
-            Assert.Equal("USD", result.Cost.Currency);
-            Assert.Equal(999.99m, result.Balance.Amount);
-            Assert.Equal("USD", result.Balance.Currency);
+            Assert.Equal(100, result.DataSetCount.Allotted);
+            Assert.Equal(99, result.DataSetCount.Current);
+
+            Assert.Equal(50, result.PredictionCount.Allotted);
+            Assert.Equal(49, result.PredictionCount.Current);
+
+            Assert.Equal(1000, result.SessionCount.Allotted);
+            Assert.Equal(999, result.SessionCount.Current);
         }
 
         [Fact]
