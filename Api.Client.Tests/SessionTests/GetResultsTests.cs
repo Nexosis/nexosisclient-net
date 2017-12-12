@@ -22,5 +22,16 @@ namespace Api.Client.Tests.SessionTests
             Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/results"), handler.Request.RequestUri);
         }
 
+
+        [Fact]
+        public async Task GetConfusionMatrixReturnsIt()
+        {
+            var sessionId = Guid.NewGuid();
+            await target.Sessions.GetResultConfusionMatrix(sessionId);
+
+            Assert.Equal(HttpMethod.Get, handler.Request.Method);
+            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/results/confusionmatrix"), handler.Request.RequestUri);
+        }
+
     }
 }

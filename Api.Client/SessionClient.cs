@@ -94,5 +94,11 @@ namespace Nexosis.Api.Client
         {
             return apiConnection.Get<SessionResult>($"/sessions/{id}/results", null, HttpMessageTransformer, cancellationToken);
         }
+
+        public Task<ConfusionMatrixResult> GetResultConfusionMatrix(Guid id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return apiConnection.Get<ConfusionMatrixResult>($"/sessions/{id}/results/confusionmatrix", null, HttpMessageTransformer,
+                cancellationToken);
+        }
     }
 }
