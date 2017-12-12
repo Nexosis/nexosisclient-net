@@ -17,6 +17,7 @@ namespace Nexosis.Api.Client
         /// <summary>Gets the current account balance.</summary>
         /// <exception cref="NexosisClientException">Thrown when 4xx or 5xx response is received from server, or errors in parsing the response.</exception>
         /// <remarks>GET of https://ml.nexosis.com/api/sessions</remarks>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         Task<AccountBalance> GetAccountBalance(CancellationToken cancellationToken = default(CancellationToken));
 
 
