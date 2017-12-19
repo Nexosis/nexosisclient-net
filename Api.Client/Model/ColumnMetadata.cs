@@ -20,7 +20,8 @@ namespace Nexosis.Api.Client.Model
         Numeric = 1,
         Logical = 2,
         Date = 3,
-        NumericMeasure = -1
+        NumericMeasure = -1,
+        Text = 4
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
