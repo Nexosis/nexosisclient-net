@@ -13,7 +13,9 @@ namespace Nexosis.Api.Client.Model
         Classification = 1,
         [EnumMember(Value = "forecast")]
         Forecast = 2,
-        [EnumMember(Value="impact")]
+        [EnumMember(Value = "impact")]
         Impact = 3,
+        [EnumMember(Value = "anomalies")]
+        Anomalies = 4
     }
 }
