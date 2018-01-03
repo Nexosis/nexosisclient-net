@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -38,9 +36,9 @@ namespace Nexosis.Api.Client
         }
 
         public Task<SessionResponse> CreateForecast(ForecastSessionRequest request, CancellationToken cancellationToken = default(CancellationToken))
-        {            
+        {
             Argument.IsNotNullOrEmpty(request?.DataSourceName, "dataSourceName");
-            
+
             return apiConnection.Post<SessionResponse>("/sessions/forecast", null, request, HttpMessageTransformer, cancellationToken);
         }
 
@@ -48,14 +46,14 @@ namespace Nexosis.Api.Client
         {
             Argument.IsNotNullOrEmpty(request?.DataSourceName, "dataSourceName");
             Argument.IsNotNullOrEmpty(request?.EventName, "eventName");
-            
+
             return apiConnection.Post<SessionResponse>("/sessions/impact", null, request, HttpMessageTransformer, cancellationToken);
         }
 
         public Task<SessionResponse> TrainModel(ModelSessionRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             Argument.IsNotNullOrEmpty(request?.DataSourceName, "dataSourceName");
-            
+
             return apiConnection.Post<SessionResponse>("/sessions/model", null, request, HttpMessageTransformer, cancellationToken);
         }
 
@@ -110,6 +108,18 @@ namespace Nexosis.Api.Client
         public Task<ConfusionMatrixResult> GetResultConfusionMatrix(Guid id, CancellationToken cancellationToken = default(CancellationToken))
         {
             return apiConnection.Get<ConfusionMatrixResult>($"/sessions/{id}/results/confusionmatrix", null, HttpMessageTransformer,
+                cancellationToken);
+        }
+
+        public Task<SessionResult> GetResultAnomalyScores(Guid id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return apiConnection.Get<SessionResult>($"/sessions/{id}/results/anomalyscores", null, HttpMessageTransformer,
+                cancellationToken);
+        }
+
+        public Task<SessionResult> GetResultClassScores(Guid id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return apiConnection.Get<SessionResult>($"/sessions/{id}/results/classscores", null, HttpMessageTransformer,
                 cancellationToken);
         }
     }
