@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Nexosis.Api.Client.Model;
 using Xunit;
 
 namespace Api.Client.Tests.SessionTests
@@ -19,9 +20,29 @@ namespace Api.Client.Tests.SessionTests
             await target.Sessions.GetResults(sessionId);
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/results"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/results?pageSize=50"), handler.Request.RequestUri);
         }
 
+        [Fact]
+        public async Task GetResultsByPredictionIntervalUsesPredictionInterval()
+        {
+            var sessionId = Guid.NewGuid();
+            await target.Sessions.GetResults(sessionId, new SessionResultsQuery() {PredictionInterval = "0.5"});
+
+            Assert.Equal(HttpMethod.Get, handler.Request.Method);
+            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/results?predictionInterval=0.5&pageSize=50"), handler.Request.RequestUri);
+        }
+
+
+        [Fact]
+        public async Task GetResultsUsesPagingParameters()
+        {
+            var sessionId = Guid.NewGuid();
+            await target.Sessions.GetResults(sessionId, new SessionResultsQuery() {Page = new PagingInfo(1,1)});
+
+            Assert.Equal(HttpMethod.Get, handler.Request.Method);
+            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/results?page=1&pageSize=1"), handler.Request.RequestUri);
+        }
 
         [Fact]
         public async Task GetConfusionMatrixReturnsIt()

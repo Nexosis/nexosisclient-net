@@ -102,9 +102,10 @@ namespace Nexosis.Api.Client
             return apiConnection.Delete($"/sessions/{id}", null, HttpMessageTransformer, cancellationToken);
         }
 
-        public Task<SessionResult> GetResults(Guid id, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<SessionResult> GetResults(Guid id, SessionResultsQuery query = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return apiConnection.Get<SessionResult>($"/sessions/{id}/results", null, HttpMessageTransformer, cancellationToken);
+            var parameters = query.ToParameters();
+            return apiConnection.Get<SessionResult>($"/sessions/{id}/results", parameters, HttpMessageTransformer, cancellationToken);
         }
 
         public Task<ConfusionMatrixResult> GetResultConfusionMatrix(Guid id, CancellationToken cancellationToken = default(CancellationToken))

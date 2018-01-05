@@ -11,7 +11,5 @@ namespace Nexosis.Api.Client.Model
         /// Overall metrics about the results of the session, including impact, accuracy scores, etc.
         /// </summary>
         public Dictionary<string, double> Metrics { get; set; }
-
-        
     }
 }

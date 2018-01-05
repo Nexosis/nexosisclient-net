@@ -142,5 +142,13 @@ namespace Nexosis.Api.Client.Model
             builder.Add("predictionInterval", query?.PredictionInterval);
             return builder.GetParameters();
         }
+
+        internal static IEnumerable<KeyValuePair<string, string>> ToParameters(this SessionResultsQuery query)
+        {
+            var builder = new ParameterBuilder();
+            builder.Add("predictionInterval", query?.PredictionInterval);
+            builder.Add(query?.Page);
+            return builder.GetParameters();
+        }
     }
 }
