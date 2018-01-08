@@ -38,8 +38,7 @@ namespace Api.Client.Tests.SessionTests
             await target.Sessions.Vocabularies.Get(Vocabularies.For(sessionId, "my column"));
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/results/vocabularies/my%20column?pageSize=50").AbsoluteUri,
-                handler.Request.RequestUri.AbsoluteUri);
+            Assert.Equal($"{new Uri(baseUri, $"sessions/{sessionId}/results/vocabularies")}/my%20column?pageSize=50", handler.Request.RequestUri.AbsoluteUri);
         }
 
         [Fact]
