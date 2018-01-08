@@ -15,17 +15,21 @@ namespace Nexosis.Api.Client
     {
         private readonly ApiConnection apiConnection;
         private readonly ContestClient contestClient;
+        private readonly VocabularyClient vocabularyClient;
 
 
         public SessionClient(ApiConnection apiConnection)
         {
             this.apiConnection = apiConnection;
             this.contestClient = new ContestClient(apiConnection);
+            this.vocabularyClient = new VocabularyClient(apiConnection);
         }
 
         public IContestClient Contest => contestClient;
+        public IVocabularyClient Vocabularies => vocabularyClient;
 
         private Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer;
+        
 
         public Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer
         {
@@ -34,6 +38,7 @@ namespace Nexosis.Api.Client
             {
                 httpMessageTransformer = value;
                 contestClient.HttpMessageTransformer = value;
+                vocabularyClient.HttpMessageTransformer = value;
             }
         }
 

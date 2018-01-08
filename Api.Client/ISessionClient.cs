@@ -129,5 +129,11 @@ namespace Nexosis.Api.Client
         /// <remarks>Only available to customers on our paid tiers</remarks>
         /// </summary>
         IContestClient Contest { get; }
+        
+        /// <summary>
+        /// A client for getting NLP vocabularies built by this session.
+        /// <remarks>For each column in your DataSource with type Text, Nexosis builds a vocabulary and engineers features from the words in that column</remarks>
+        /// </summary>
+        IVocabularyClient Vocabularies { get; }
     }
 }

@@ -150,5 +150,13 @@ namespace Nexosis.Api.Client.Model
             builder.Add(query?.Page);
             return builder.GetParameters();
         }
+
+        internal static IEnumerable<KeyValuePair<string, string>> ToParameters(this VocabulariesQuery query)
+        {
+            var builder = new ParameterBuilder();
+            builder.Add("type", query?.Type);
+            builder.Add(query?.Page);
+            return builder.GetParameters();
+        }
     }
 }

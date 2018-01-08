@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Nexosis.Api.Client.Utility;
+﻿using Nexosis.Api.Client.Utility;
 
 namespace Nexosis.Api.Client.Model
 {
@@ -19,8 +18,5 @@ namespace Nexosis.Api.Client.Model
         /// Paging info for the response
         /// </summary>
         public PagingInfo Page { get; set; }
-
-
-        
     }
 }
