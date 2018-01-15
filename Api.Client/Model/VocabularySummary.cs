@@ -6,23 +6,35 @@ namespace Nexosis.Api.Client.Model
     {
 
         /// <summary>
-        /// The session that built this vocabulary
+        /// The Id
         /// </summary>
-        public Guid SessionId { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
-        /// The column name in the dataset from which this vocabulary was bui;t
+        /// The data source from which this vocabulary was built
+        /// </summary>
+        public string DataSourceName { get; set; }
+
+        /// <summary>
+        /// The column name in the data source from which this vocabulary was bui;t
         /// </summary>
         public string ColumnName { get; set; }
 
-        /// <summary>
-        /// The number of words used from the corpus
-        /// </summary>
-        public int WordCount { get; set; }
 
         /// <summary>
-        /// The number of words from the corpus that were ignored
+        /// The type of data source (data set or view) that was used
         /// </summary>
-        public int StopWordCount { get; set; }
+        public DataSourceType DataSourceType { get; set; }
+
+        /// <summary>
+        /// The date / time that the vocabulary was created
+        /// </summary>
+        public DateTimeOffset? CreatedOnDate { get; set; }
+
+
+        /// <summary>
+        /// The Session that created the vocabulary
+        /// </summary>
+        public Guid CreatedBySessionId { get; set; }
     }
 }
