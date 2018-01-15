@@ -1,10 +1,8 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Nexosis.Api.Client.Model;
-using System.Threading;
-using System.Net.Http;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace Nexosis.Api.Client
 {
@@ -17,9 +15,9 @@ namespace Nexosis.Api.Client
         {
             this.apiConnection = apiConnection;
         }
-        
+
         public Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer { get; set; }
-        
+
         public async Task<ModelSummary> Get(Guid id, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await apiConnection
@@ -41,8 +39,12 @@ namespace Nexosis.Api.Client
         {
             Argument.IsNotNull(request.Data, nameof(ModelPredictionRequest.Data));
 
-            var requestBody = new {Data = request.Data};
-            
+            var requestBody = new
+            {
+                request.Data,
+                request.ExtraParameters
+            };
+
             return apiConnection.Post<ModelPredictionResult>($"models/{request.ModelId}/predict", null, requestBody,
                 HttpMessageTransformer, cancellationToken);
         }
@@ -64,10 +66,10 @@ namespace Nexosis.Api.Client
                 var parameters = criteria.ToParameters();
 
                 await apiConnection.Delete("models", parameters, HttpMessageTransformer, cancellationToken)
-                    .ConfigureAwait(false);                
+                    .ConfigureAwait(false);
             }
-            
-            
+
+
         }
     }
 }
