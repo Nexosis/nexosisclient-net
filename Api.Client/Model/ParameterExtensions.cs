@@ -154,6 +154,16 @@ namespace Nexosis.Api.Client.Model
         internal static IEnumerable<KeyValuePair<string, string>> ToParameters(this VocabulariesQuery query)
         {
             var builder = new ParameterBuilder();
+            builder.Add("dataSource", query?.DataSource);
+            builder.Add("createdFromSession", query?.CreatedFromSession);
+            builder.Add(query?.Page);
+            return builder.GetParameters();
+        }
+
+
+        internal static IEnumerable<KeyValuePair<string, string>> ToParameters(this VocabularyWordsQuery query)
+        {
+            var builder = new ParameterBuilder();
             builder.Add("type", query?.Type);
             builder.Add(query?.Page);
             return builder.GetParameters();

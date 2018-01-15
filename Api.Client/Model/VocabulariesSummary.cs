@@ -3,12 +3,8 @@ using System.Collections.Generic;
 
 namespace Nexosis.Api.Client.Model
 {
-    public class VocabulariesSummary
+    public class VocabulariesSummary : Paged<VocabularySummary>
     {
-        /// <summary>
-        /// The session in which the vocabularies were built
-        /// </summary>
-        public Guid SessionId { get; set; }
 
         /// <summary>
         /// The Vocabularies

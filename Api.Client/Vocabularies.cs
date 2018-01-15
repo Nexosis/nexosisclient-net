@@ -5,16 +5,15 @@ namespace Nexosis.Api.Client
 {
     public static class Vocabularies
     {
-        public static VocabulariesQuery For(Guid sessionId, string columnName, WordType? type = null,
-            PagingInfo page = null)
+        public static VocabularyWordsQuery For(Guid id, WordType? type = null, PagingInfo page = null)
         {
-            return new VocabulariesQuery()
+            return new VocabularyWordsQuery()
             {
-                SessionId = sessionId,
-                ColumnName = columnName,
+                Id = id,
                 Type = type,
                 Page = page
             };
         }
+               
     }
 }

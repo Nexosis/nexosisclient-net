@@ -10,8 +10,8 @@ namespace Nexosis.Api.Client
     {
         Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer { get; set; }
         
-        Task<VocabulariesSummary> List(Guid sessionId, CancellationToken cancellationToken = default(CancellationToken));
+        Task<VocabulariesSummary> List(VocabulariesQuery query = null, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<VocabularyResponse> Get(VocabulariesQuery query, CancellationToken cancellationToken = default(CancellationToken));
+        Task<VocabularyResponse> Get(VocabularyWordsQuery query, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

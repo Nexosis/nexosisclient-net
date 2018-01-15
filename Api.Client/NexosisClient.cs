@@ -62,6 +62,11 @@ namespace Nexosis.Api.Client
             {
                 Models.HttpMessageTransformer = httpMessageTransformer;
             }
+
+            if (Vocabularies.HttpMessageTransformer == null)
+            {
+                Vocabularies.HttpMessageTransformer = httpMessageTransformer;
+            }
         }
 
         /// <summary>
@@ -130,6 +135,8 @@ namespace Nexosis.Api.Client
             Imports = new ImportClient(apiConnection);
             Views = new ViewClient(apiConnection);
             Models = new ModelClient(apiConnection);
+            Vocabularies = new VocabularyClient(apiConnection);
+            
         }
 
         public Task<AccountBalance> GetAccountBalance(CancellationToken cancellationToken = default(CancellationToken))
@@ -143,5 +150,6 @@ namespace Nexosis.Api.Client
         public IImportClient Imports { get; }
         public IViewClient Views { get; }
         public IModelClient Models { get; }
+        public IVocabularyClient Vocabularies { get; }
     }
 }

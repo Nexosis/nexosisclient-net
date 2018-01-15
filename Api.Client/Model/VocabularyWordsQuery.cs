@@ -2,17 +2,17 @@
 
 namespace Nexosis.Api.Client.Model
 {
-    public class VocabulariesQuery
+    public class VocabularyWordsQuery
     {
         /// <summary>
-        /// The session id used to generate the vocabulary
+        /// The vocabulary id
         /// </summary>
-        public Guid? CreatedFromSession { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
-        /// List vocabularies built from data sources matching this string
+        /// The type of word (Word or StopWord) to retrieve
         /// </summary>
-        public string DataSource { get; set; }
+        public WordType? Type { get; set; }
 
         /// <summary>
         /// Paging configuration for the response
