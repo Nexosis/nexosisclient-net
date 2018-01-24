@@ -13,8 +13,5 @@ namespace Nexosis.Api.Client.Model
 
         public Dictionary<string, JoinColumnMetadata> ColumnOptions { get; set; } =
             new Dictionary<string, JoinColumnMetadata>(StringComparer.OrdinalIgnoreCase);
-
-        public JoinMetadata[] Joins { get; set; }
-
     }
 }
