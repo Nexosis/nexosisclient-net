@@ -24,6 +24,7 @@ namespace Nexosis.Api.Client
         public IContestClient Contest => contestClient;
 
         private Action<HttpRequestMessage, HttpResponseMessage> httpMessageTransformer;
+        
 
         public Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer
         {

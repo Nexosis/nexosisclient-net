@@ -45,5 +45,11 @@ namespace Nexosis.Api.Client
         /// Access to the Models operations in the API
         /// </summary>
         IModelClient Models { get; }
+
+        /// <summary>
+        /// A client for getting NLP vocabularies built by sessions.
+        /// <remarks>For each column in your DataSource with type Text, Nexosis builds a vocabulary and engineers features from the words in that column</remarks>
+        /// </summary>
+        IVocabularyClient Vocabularies { get; }
     }
 }

@@ -160,5 +160,7 @@ namespace Nexosis.Api.Client
         /// <remarks>Only available to customers on our paid tiers</remarks>
         /// </summary>
         IContestClient Contest { get; }
+        
+        
     }
 }
