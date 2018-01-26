@@ -20,7 +20,7 @@ namespace Api.Client.Tests.ModelsTests
 
             Assert.Equal(HttpMethod.Post, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, $"models/{modelId}/predict"), handler.Request.RequestUri);
-            Assert.Equal("{\"Data\":[{\"column\":\"value\"}]}", handler.RequestBody);
+            Assert.Equal("{\"Data\":[{\"column\":\"value\"}],\"ExtraParameters\":{}}", handler.RequestBody);
         }
 
         [Fact]
@@ -29,6 +29,22 @@ namespace Api.Client.Tests.ModelsTests
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await target.Models.Predict(new ModelPredictionRequest(Guid.NewGuid(), null)));
 
             Assert.Equal("Data", exception.ParamName);
+        }
+
+        [Fact]
+        public async Task IncludesIncludeClassScoresOptionWhenSpecified()
+        {
+            var modelId = Guid.NewGuid();
+            await target.Models.Predict(new ClassificationModelPredictionRequest
+            {
+                ModelId = modelId,
+                Data = new List<Dictionary<string, string>> { new Dictionary<string, string> { ["column"] = "value" } },
+                IncludeClassScores = true
+            });
+
+            Assert.Equal(HttpMethod.Post, handler.Request.Method);
+            Assert.Equal(new Uri(baseUri, $"models/{modelId}/predict"), handler.Request.RequestUri);
+            Assert.Equal("{\"Data\":[{\"column\":\"value\"}],\"ExtraParameters\":{\"includeClassScores\":\"True\"}}", handler.RequestBody);
         }
     }
 }
