@@ -25,10 +25,10 @@ namespace Api.Client.Tests.SessionTests
         {
             var sessionId = Guid.NewGuid();
             await target.Sessions.Contest.GetChampion(sessionId,
-                new ChampionQueryOptions() {PredictionInterval = "0.5"});
+                new ChampionQueryOptions() { PredictionInterval = "0.5" });
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/contest/champion?predictionInterval=0.5"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/contest/champion?predictionInterval=0.5&pageSize=50"), handler.Request.RequestUri);
         }
 
         [Fact]
@@ -56,10 +56,10 @@ namespace Api.Client.Tests.SessionTests
         {
             var sessionId = Guid.NewGuid();
             var contestantId = "foo";
-            await target.Sessions.Contest.GetContestant(sessionId, contestantId, new ChampionQueryOptions() {PredictionInterval = "0.5"});
+            await target.Sessions.Contest.GetContestant(sessionId, contestantId, new ChampionQueryOptions() { PredictionInterval = "0.5" });
 
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/contest/contestants/{contestantId}?predictionInterval=0.5"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, $"sessions/{sessionId}/contest/contestants/{contestantId}?predictionInterval=0.5&pageSize=50"), handler.Request.RequestUri);
         }
     }
 }
