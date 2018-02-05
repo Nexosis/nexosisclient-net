@@ -9,8 +9,6 @@ namespace Nexosis.Api.Client.Model
         internal static IEnumerable<KeyValuePair<string, string>> ToParameters(this ImportDetailQuery query)
         {
             var builder = new ParameterBuilder();
-            var parameters = new Dictionary<string, string>();
-
             builder.Add("dataSetName", query?.DataSetName);
             builder.Add("requestedAfterDate", query?.RequestedAfterDate);
             builder.Add("requestedBeforeDate", query?.RequestedBeforeDate);
@@ -19,7 +17,7 @@ namespace Nexosis.Api.Client.Model
         }
 
 
-        internal static  List<KeyValuePair<string, string>> ToParameters(this DataSetSummaryQuery query)
+        internal static List<KeyValuePair<string, string>> ToParameters(this DataSetSummaryQuery query)
         {
             var builder = new ParameterBuilder();
             builder.Add("partialName", query?.PartialName);
@@ -140,6 +138,7 @@ namespace Nexosis.Api.Client.Model
         {
             var builder = new ParameterBuilder();
             builder.Add("predictionInterval", query?.PredictionInterval);
+            builder.Add(query?.Page);
             return builder.GetParameters();
         }
 
