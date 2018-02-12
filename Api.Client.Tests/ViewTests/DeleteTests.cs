@@ -8,7 +8,7 @@ namespace Api.Client.Tests.ViewTests
 {
     public class DeleteTests : NexosisClient_TestsBase
     {
-        public DeleteTests() : base(new {})
+        public DeleteTests() : base(new { })
         {
         }
 
@@ -25,14 +25,14 @@ namespace Api.Client.Tests.ViewTests
         [Fact]
         public async Task GeneratesCascadeValuesFromDeleteOptions()
         {
-            await target.Views.Remove(new ViewDeleteCriteria("sierra") {Cascade = ViewCascadeOptions.CascadeSessions});
+            await target.Views.Remove(new ViewDeleteCriteria("sierra") { Cascade = ViewCascadeOptions.CascadeAll });
 
             Assert.Equal(HttpMethod.Delete, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "views/sierra?cascade=sessions"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "views/sierra?cascade=session&cascade=model&cascade=vocabulary"), handler.Request.RequestUri);
         }
 
         [Fact]
-        public async Task DoesNotSetCascadeWhenNoneOptionGiven()
+        public async Task DoesNotSetCascadeWhenNoOptionGiven()
         {
             await target.Views.Remove(new ViewDeleteCriteria("november"));
 
