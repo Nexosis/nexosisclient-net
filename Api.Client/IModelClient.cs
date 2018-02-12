@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,9 +8,9 @@ namespace Nexosis.Api.Client
 {
     public interface IModelClient
     {
-        
+
         Action<HttpRequestMessage, HttpResponseMessage> HttpMessageTransformer { get; set; }
-        
+
         /// <summary>
         /// Gets a model
         /// </summary>
@@ -44,7 +43,7 @@ namespace Nexosis.Api.Client
 
 
         /// <summary>
-        /// Removes a Models from your account which match the specified parameters
+        /// Removes Models from your account which match the specified parameters
         /// </summary>
         /// <param name="criteria">The criteria defining which models to remove</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>

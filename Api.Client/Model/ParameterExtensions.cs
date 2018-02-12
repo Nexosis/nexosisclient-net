@@ -134,6 +134,16 @@ namespace Nexosis.Api.Client.Model
             return builder.GetParameters();
         }
 
+        internal static IEnumerable<KeyValuePair<string, string>> ToParameters(this VocabularyRemoveCriteria criteria)
+        {
+            var builder = new ParameterBuilder();
+            builder.Add("vocabularyId", criteria?.VocabularyId);
+            builder.Add("dataSource", criteria?.DataSourceName);
+            builder.Add("createdFromSession", criteria?.CreatedFromSession);
+
+            return builder.GetParameters();
+        }
+
         internal static IEnumerable<KeyValuePair<string, string>> ToParameters(this ChampionQueryOptions query)
         {
             var builder = new ParameterBuilder();
