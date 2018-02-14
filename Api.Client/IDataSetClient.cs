@@ -48,5 +48,13 @@ namespace Nexosis.Api.Client
         /// <remarks>DELETE to https://ml.nexosis.com/v1/data/{dataSetName}</remarks>
         Task Remove(DataSetRemoveCriteria criteria, CancellationToken cancellationToken = default(CancellationToken));
 
+        /// <summary>
+        /// Retrieve statistics about a dataset
+        /// </summary>
+        /// <param name="dataSetName">The dataset whose stats should be retrieved</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <remarks>GET to https://ml.nexosis.com/v1/data/{dataSetName}/stats</remarks>
+        Task<DataSourceStatsResult> Stats(string dataSetName, CancellationToken cancellationToken = default(CancellationToken));
+
     }
 }
