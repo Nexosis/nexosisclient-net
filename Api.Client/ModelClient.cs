@@ -51,10 +51,7 @@ namespace Nexosis.Api.Client
 
         public async Task Remove(ModelRemoveCriteria criteria, CancellationToken cancellationToken = default(CancellationToken))
         {
-            Argument.OneOfIsNotNullOrEmpty(
-                Tuple.Create(criteria?.DataSourceName, nameof(ModelRemoveCriteria.DataSourceName)),
-                Tuple.Create(criteria?.ModelId.ToString(), nameof(ModelRemoveCriteria.ModelId))
-            );
+            Argument.IsNotNull(criteria, nameof(criteria));
 
             if (criteria.ModelId.HasValue)
             {

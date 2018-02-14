@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Nexosis.Api.Client;
 using Nexosis.Api.Client.Model;
 using Xunit;
 
@@ -9,30 +8,30 @@ namespace Api.Client.Tests.DataSetTests
 {
     public class RemoveTests : NexosisClient_TestsBase
     {
-        public RemoveTests() : base(new {})
+        public RemoveTests() : base(new { })
         {
         }
 
         [Fact]
         public async Task RemoveRequiresDataSetName()
         {
-            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.DataSets.Remove(new DataSetRemoveCriteria(null) {Options = DataSetDeleteOptions.None}));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await target.DataSets.Remove(new DataSetRemoveCriteria(null) { Options = DataSetDeleteOptions.None }));
             Assert.Equal("Name", exception.ParamName);
         }
 
         [Fact]
         public async Task GeneratesCascadeValuesFromDeleteOptions()
         {
-            await target.DataSets.Remove(new DataSetRemoveCriteria("sierra") { Options = DataSetDeleteOptions.CascadeBoth});
+            await target.DataSets.Remove(new DataSetRemoveCriteria("sierra") { Options = DataSetDeleteOptions.CascadeAll });
 
             Assert.Equal(HttpMethod.Delete, handler.Request.Method);
-            Assert.Equal(new Uri(baseUri, "data/sierra?cascade=forecast&cascade=session"), handler.Request.RequestUri);
+            Assert.Equal(new Uri(baseUri, "data/sierra?cascade=session&cascade=view&cascade=model&cascade=vocabulary"), handler.Request.RequestUri);
         }
 
         [Fact]
-        public async Task DoesNotSetCascadeWhenNoneOptionGiven()
+        public async Task DoesNotSetCascadeWhenNoOptionGiven()
         {
-            await target.DataSets.Remove(new DataSetRemoveCriteria("november"){Options = DataSetDeleteOptions.None});
+            await target.DataSets.Remove(new DataSetRemoveCriteria("november"));
 
             Assert.Equal(HttpMethod.Delete, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, "data/november"), handler.Request.RequestUri);
@@ -41,11 +40,12 @@ namespace Api.Client.Tests.DataSetTests
         [Fact]
         public async Task RemoveForDateRangeQueriesThatRange()
         {
-            await target.DataSets.Remove(new DataSetRemoveCriteria("oscar") {
+            await target.DataSets.Remove(new DataSetRemoveCriteria("oscar")
+            {
                 StartDate = DateTimeOffset.Parse("2015-10-12 22:23:24 -4:00"),
-                EndDate = DateTimeOffset.Parse("2015-10-31 19:47:00 -4:00"), 
+                EndDate = DateTimeOffset.Parse("2015-10-31 19:47:00 -4:00"),
                 Options = DataSetDeleteOptions.None
-                
+
             });
 
             Assert.Equal(HttpMethod.Delete, handler.Request.Method);

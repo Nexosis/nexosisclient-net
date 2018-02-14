@@ -49,9 +49,10 @@ namespace Nexosis.Api.Client.Model
             builder.Add("startDate", criteria?.StartDate);
             builder.Add("endDate", criteria?.EndDate);
 
-            if ((criteria?.Options & DataSetDeleteOptions.CascadeForecast) != 0) builder.Add("cascade", "forecast");
-            if ((criteria?.Options & DataSetDeleteOptions.CascadeSessions) != 0) builder.Add("cascade", "session");
-            if ((criteria?.Options & DataSetDeleteOptions.CascadeViews) != 0) builder.Add("cascade", "view");
+            if ((criteria?.Options & DataSetDeleteOptions.CascadeSessions).GetValueOrDefault() != 0) builder.Add("cascade", "session");
+            if ((criteria?.Options & DataSetDeleteOptions.CascadeViews).GetValueOrDefault() != 0) builder.Add("cascade", "view");
+            if ((criteria?.Options & DataSetDeleteOptions.CascadeModels).GetValueOrDefault() != 0) builder.Add("cascade", "model");
+            if ((criteria?.Options & DataSetDeleteOptions.CascadeVocabularies).GetValueOrDefault() != 0) builder.Add("cascade", "vocabulary");
 
             return builder.GetParameters();
         }
@@ -116,10 +117,10 @@ namespace Nexosis.Api.Client.Model
         {
             var builder = new ParameterBuilder();
 
-            if (criteria?.Cascade != null && (criteria.Cascade & ViewCascadeOptions.CascadeSessions) != 0)
-            {
-                builder.Add("cascade", "sessions");
-            }
+            if ((criteria?.Cascade & ViewCascadeOptions.CascadeSessions).GetValueOrDefault() != 0) builder.Add("cascade", "session");
+            if ((criteria?.Cascade & ViewCascadeOptions.CascadeModels).GetValueOrDefault() != 0) builder.Add("cascade", "model");
+            if ((criteria?.Cascade & ViewCascadeOptions.CascadeVocabularies).GetValueOrDefault() != 0) builder.Add("cascade", "vocabulary");
+
             return builder.GetParameters();
         }
 
@@ -130,6 +131,16 @@ namespace Nexosis.Api.Client.Model
             builder.Add("dataSourceName", criteria?.DataSourceName);
             builder.Add("createdAfterDate", criteria?.CreatedAfterDate);
             builder.Add("createdBeforeDate", criteria?.CreatedBeforeDate);
+
+            return builder.GetParameters();
+        }
+
+        internal static IEnumerable<KeyValuePair<string, string>> ToParameters(this VocabularyRemoveCriteria criteria)
+        {
+            var builder = new ParameterBuilder();
+            builder.Add("vocabularyId", criteria?.VocabularyId);
+            builder.Add("dataSource", criteria?.DataSourceName);
+            builder.Add("createdFromSession", criteria?.CreatedFromSession);
 
             return builder.GetParameters();
         }
