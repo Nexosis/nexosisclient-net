@@ -62,6 +62,13 @@ namespace Nexosis.Api.Client
             var parameters = criteria.ToParameters();
             await apiConnection.Delete($"data/{criteria.Name}", parameters, HttpMessageTransformer, CancellationToken.None).ConfigureAwait(false);
         }
+
+        public Task<DataSourceStatsResult> Stats(string dataSetName, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Argument.IsNotNullOrEmpty(dataSetName, nameof(dataSetName));
+
+            return apiConnection.Get<DataSourceStatsResult>($"data/{dataSetName}/stats", null, HttpMessageTransformer, cancellationToken);
+        }
     }
     
 }

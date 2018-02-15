@@ -25,6 +25,8 @@ namespace Api.Client.Tests.DataSetTests
             Assert.Equal(new Uri(baseUri, $"data/test?pageSize=50"), handler.Request.RequestUri);
         }
 
+        
+
         [Fact]
         public async Task RequiresDataSetNameIsNotNullOrEmpty()
         {
@@ -48,7 +50,5 @@ namespace Api.Client.Tests.DataSetTests
             Assert.Equal(HttpMethod.Get, handler.Request.Method);
             Assert.Equal(new Uri(baseUri, "data/test?startDate=2017-01-01T00:00:00.0000000%2B00:00&endDate=2017-01-31T00:00:00.0000000%2B00:00&include=test1&include=test2&page=10&pageSize=10"), handler.Request.RequestUri);
         }
-
-        
     }
 }
