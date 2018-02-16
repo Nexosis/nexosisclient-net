@@ -12,12 +12,9 @@ namespace Api.Client.Tests.DataSetTests
         public StatsTests() : base(new DataSourceStatsResult()
         {
             DataSetName = "test",
-            Columns = new List<Dictionary<string, Dictionary<string, double>>>()
+            Columns = new Dictionary<string, Dictionary<string, double>>()
             {
-                new Dictionary<string, Dictionary<string, double>>()
-                {
-                    ["column1"] = new Dictionary<string, double>() {["count"] = 1}
-                }
+                ["column1"] = new Dictionary<string, double>() {["count"] = 1}
             }
         }) { }
 
