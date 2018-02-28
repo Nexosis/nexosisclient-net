@@ -30,6 +30,11 @@ namespace Nexosis.Api.Client.Model
         /// </summary>
         public Algorithm Algorithm { get; set; }
 
+        /// <summary>
+        /// The date and time that the model was last used for a prediction
+        /// </summary>
+        public DateTimeOffset? LastUsedDate { get; set; }
+
         /// <summary>Metadata about each column used in the model</summary>
         /// <remarks>This is initialized as a case-insensitive dictionary. The API ignores case for column names.</remarks>
         public Dictionary<string, ColumnMetadata> Columns { get; set; } = new Dictionary<string, ColumnMetadata>(StringComparer.OrdinalIgnoreCase);
