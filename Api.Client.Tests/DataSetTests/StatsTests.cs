@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Nexosis.Api.Client.Model;
 using Xunit;
 
@@ -12,11 +13,12 @@ namespace Api.Client.Tests.DataSetTests
         public StatsTests() : base(new DataSourceStatsResult()
         {
             DataSetName = "test",
-            Columns = new Dictionary<string, Dictionary<string, double>>()
+            Columns = new Dictionary<string, JObject>()
             {
-                ["column1"] = new Dictionary<string, double>() {["count"] = 1}
+                ["column1"] = JObject.Parse("{ \"count\": 1 }")
             }
-        }) { }
+        })
+        { }
 
         [Fact]
         public async Task GetStatsByName()
