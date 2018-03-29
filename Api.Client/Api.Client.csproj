@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>
     <AssemblyName>Nexosis.Api.Client</AssemblyName>
     <RootNamespace>Nexosis.Api.Client</RootNamespace>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -26,6 +26,10 @@
     <PackageReference Include="CsvHelper" Version="2.16.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
